@@ -30,7 +30,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{" "}
+            By legendary{" "}
             <Image
               src="/if.png"
               alt="Innovate Fusion Logo"
@@ -38,6 +38,7 @@ export default function Home() {
               width={300}
               height={40}
               priority
+
             />
           </a>
         </div>
