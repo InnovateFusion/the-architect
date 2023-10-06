@@ -27,7 +27,7 @@ Users will have access to built in designing and sketching tools where they can 
 - **Drawing to Render generation**
 The drawings made on the platform as well as provided from users as images will be rendered into realistic renders within seconds.
 
-- ** Design modification and variation**
+- **Design modification and variation**
 The Architect will assist in shaping and modifying already made designs as well as sketches based on a prompt and also provides a suggestion and variation for the design
 
 - **Floor plan generation**
@@ -41,7 +41,9 @@ Based on the design and requirement constraints The Architect helps by analyzing
 The repository is structured as follows:
 
 - `web/`: Here, you will find the frontend code for the Architect platform, implemented using JavaScript, React NextJs, and Typescript. This directory also includes the HTML, CSS, and JavaScript files for the user interface including the APIs.
+
 - `mobile/`: Here, you will find the mobile app code for the architect platform, implemented using Flutter, and Dart. 
+
 - `web/src/app/api`: This directory contains the backend code of the Architect platform, including the API endpoints, database models, and business logic implemented in NextJs Server API and used for both web and mobile app.
 
 # Demo Links
