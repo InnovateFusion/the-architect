@@ -1,47 +1,30 @@
+"use client";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-around p-24">
-      <div className="bottom-0 left-10 flex-auto lg:flex  justify-center static h-auto w-auto lg:bg-none">
-        <div className="flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://architect.bisry.me"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className=""
-              src="/logo.svg"
-              alt="Next.js Logo"
-              width={130}
-              height={24}
-              priority
-            />
-            The Architect
-          </a>
+    <>
+      <button
+        className="btn"
+        onClick={() => {
+          document.getElementById("my_modal_1").showModal();
+        }}
+      >
+        open modal
+      </button>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            Press ESC key or click the button below to close
+          </p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
         </div>
-        <div></div>
-        <div className="bottom-0 right-0 flex w-fulljustify-center static h-auto w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center mx-8 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://github.com/InnovateFusion"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/if.png"
-              alt="Innovate Fusion Logo"
-              className=""
-              width={300}
-              height={40}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-    </main>
+      </dialog>
+    </>
   );
 }
