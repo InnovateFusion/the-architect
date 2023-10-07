@@ -56,6 +56,7 @@ app.*.map.json
 .flutter-plugins-dependencies
 .metadata
 .flutter-plugins
+pubspec.lock
 
 
 
