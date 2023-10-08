@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatelessWidget {
-  const ChatInput({Key? key}) : super(key: key);
+  const ChatInput({Key? key, required this.onSubmitted}) : super(key: key);
+
+  final void Function(String) onSubmitted;
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController textController = TextEditingController();
+
+    void handleSubmitted(String text) {
+      onSubmitted(text);
+      textController.clear();
+    }
+
     return Container(
       height: 60,
       width: double.infinity,
@@ -31,22 +40,28 @@ class ChatInput extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          const Expanded(
+          Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: textController,
+              onSubmitted: handleSubmitted,
+              decoration: const InputDecoration(
+                hintText: "Send a message",
                 border: InputBorder.none,
               ),
-              style: TextStyle(
-                color: Colors.black, // Example text color
+              style: const TextStyle(
+                color: Colors.black,
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Icon(
-              Icons.send_outlined,
-              size: 40,
-              color: Color(0xFFB8B9BD),
+          GestureDetector(
+            onTap: () => handleSubmitted(textController.text),
+            child: const Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Icon(
+                Icons.send_outlined,
+                size: 40,
+                color: Color(0xFFB8B9BD),
+              ),
             ),
           )
         ],

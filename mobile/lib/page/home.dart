@@ -38,7 +38,6 @@ class HomePage extends StatelessWidget {
       onLiked: () {},
       onCloned: () {},
     ),
-    
   ];
 
   final List<Tag> tags = [
@@ -73,6 +72,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(children: [
           Container(
               padding: const EdgeInsets.only(top: 10, left: 10, right: 10),

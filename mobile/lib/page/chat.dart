@@ -1,16 +1,44 @@
-import 'package:architect/widget/chat/chat_input.dart';
+import 'package:architect/widget/chat/chat_display.dart';
 import 'package:architect/widget/chat/chat_side_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../widget/chat/chat_input.dart';
 import '../widget/profile_image.dart';
 
-class Chat extends StatelessWidget {
+class Message {
+  final String text;
+  final bool isSentByMe;
+
+  Message({required this.text, required this.isSentByMe});
+}
+
+class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
+
+  @override
+  State<Chat> createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
+  final messages = [
+    Message(text: "Thank you", isSentByMe: true),
+    Message(
+        text:
+            "https://images.pexels.com/photos/2792601/pexels-photo-2792601.jpeg",
+        isSentByMe: false),
+    Message(text: "Hi there! Give cool building image", isSentByMe: true),
+  ];
+  void handleSubmitted(String text) {
+    setState(() {
+      messages.insert(0, Message(text: text, isSentByMe: true));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Container(
           padding:
               const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
@@ -53,8 +81,19 @@ class Chat extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 15),
-              const ChatSideBar(),
-              const ChatInput(),
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const ChatSideBar(),
+                    ChatDisplay(messages: messages),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ChatInput(
+                onSubmitted: handleSubmitted,
+              ),
             ],
           ),
         ),
@@ -62,4 +101,3 @@ class Chat extends StatelessWidget {
     );
   }
 }
-

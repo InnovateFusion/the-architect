@@ -1,7 +1,7 @@
 import 'package:architect/page/drawing/view/drawing_page.dart';
 import 'package:flutter/material.dart';
 
-const Color kCanvasColor = Color(0xfff2f3f7);
+const Color kCanvasColor = Color.fromARGB(255, 255, 255, 255);
 
 class Draw extends StatelessWidget {
   const Draw({super.key});

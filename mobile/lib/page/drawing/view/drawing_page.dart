@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:architect/page/drawing/drawing.dart';
 import 'package:architect/page/drawing/view/drawing_canvas/drawing_canvas.dart';
 import 'package:architect/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
 import 'package:architect/page/drawing/view/drawing_canvas/models/sketch.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart' hide Image;
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../drawing.dart';
 import 'drawing_canvas/widgets/canvas_side_bar.dart';
 
 class DrawingPage extends HookWidget {
@@ -33,9 +33,7 @@ class DrawingPage extends HookWidget {
         child: Stack(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: kCanvasColor,
-              ),
+              color: kCanvasColor,
               width: double.maxFinite,
               height: double.maxFinite,
               child: DrawingCanvas(
