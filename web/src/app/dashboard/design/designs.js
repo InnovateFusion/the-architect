@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 
 function DesignList() {
   const images = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   return (
-    <div className="container mx-auto px-5 py-2 lg:px-2 lg:pt-14">
+    <div className="mx-auto px-4 py-16 sm:px-6 sm:py-16 lg:px-8">
       <div className="flex flex-wrap md:-m-2">
         <div className="w-full lg:w-1/2 p-2">
           <div className={`card image-full opacity-100`}>
@@ -28,19 +29,24 @@ function DesignList() {
                 <div className="flex gap-2 align-center justify-center">
                   2.7k{" "}
                   <span className="text-gray-400">
-                    <Image
-                      width={20}
-                      height={20}
-                      alt="author"
-                      src="/clone.png"
-                    />
+                    <Link href="/dashboard/edit">
+                      <Image
+                        width={20}
+                        height={20}
+                        alt="author"
+                        src="/clone.png"
+                      />
+                    </Link>
                   </span>
                   <span className="text-gray-400"> | </span>
                   3.5k <span className="text-gray-100"> views</span>
                 </div>
-                <button className="btn btn-neutral btn-circle">
+                <Link
+                  className="btn btn-neutral btn-circle"
+                  href="/dashboard/edit"
+                >
                   <Image width={20} height={20} alt="author" src="/clone.png" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -86,14 +92,17 @@ function DesignList() {
                         <span className="text-gray-400"> | </span>
                         3.5k <span className="text-gray-100"> views</span>
                       </div>
-                      <button className="btn btn-neutral btn-circle">
+                      <Link
+                        className="btn btn-neutral btn-circle"
+                        href="/dashboard/edit"
+                      >
                         <Image
                           width={20}
                           height={20}
                           alt="author"
                           src="/clone.png"
                         />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -145,14 +154,17 @@ function DesignList() {
                       <span className="text-gray-400"> | </span>
                       3.5k <span className="text-gray-100"> views</span>
                     </div>
-                    <button className="btn btn-neutral btn-circle">
+                    <Link
+                      className="btn btn-neutral btn-circle"
+                      href="/dashboard/edit"
+                    >
                       <Image
                         width={20}
                         height={20}
                         alt="author"
                         src="/clone.png"
                       />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

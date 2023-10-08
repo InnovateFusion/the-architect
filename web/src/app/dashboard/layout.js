@@ -1,16 +1,18 @@
-"use client"
+"use client";
 import { useState } from "react";
 import Sidebar from "./sidebar";
+import Header from "./header";
 
 export default function DashboardLayout({ children }) {
-  const [showSidebar, setShowSidebar] = useState(false);
   return (
     <section>
       <div className="min-h-screen">
         <div className="flex">
-          {/* <MenuBarMobile setter={setShowSidebar} /> */}
-          <Sidebar show={showSidebar} setter={setShowSidebar} />
-          <div className="min-h-screen  sm:pl-16">{children}</div>
+          <Sidebar />
+          <Header />
+          <div className="pt-16 max-h-screen min-w-full sm:max-w-full sm:pl-16 flex  flex-wrap sm:block">
+            {children}
+          </div>
         </div>
       </div>
     </section>

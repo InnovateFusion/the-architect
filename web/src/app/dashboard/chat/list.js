@@ -5,7 +5,7 @@ function List() {
   return (
     <div>
       <div className="">
-        <div className="mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <div className="mx-auto px-4 py-16 sm:px-6 sm:py-14 lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight ">
             Inspiration for your home office
           </h2>
