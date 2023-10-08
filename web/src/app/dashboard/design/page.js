@@ -3,7 +3,7 @@ import DesignListList from "./designs";
 
 export default function Page() {
   return (
-    <div>
+    <div className="block">
       <DesignListList />
     </div>
   );
