@@ -46,6 +46,16 @@ The repository is structured as follows:
 
 - `web/src/app/api`: This directory contains the backend code of the Architect platform, including the API endpoints, database models, and business logic implemented in NextJs Server API and used for both web and mobile app.
 
+## Purpose
+
+The purpose of this repository is to provide a collaborative space for development and improvement of the Architect platform. By making the repository publicly accessible, we aim to foster community engagement, allowing mentors, advisors, developers, contributors, and users to explore the codebase, report issues, and suggest enhancements.
+
+## How Generative AI Models are Solving the Problem
+
+At Innovate Fusion we leverage Generative AI models to enhance the Architect platform's functionality, particularly in the domain of visual generation and modification. The chosen Generative AI models, such as the `stable-diffusion-v1-5` and `xs-architectural-interior-design` models, have been fine-tuned to generate, process and modify architectural images. These models utilize cutting-edge machine learning techniques and deep learning models that utilize diffusion processes to generate high-quality architectural artwork from input design images.
+
+By incorporating Generative AI models into The Architect, we enable architects to get design inspirations before starting their design based on nedds and requests of clients. The architect assists architects in every step of the design step to design interior designs, floor designs as well as built in sketching tool with image modeification based on natural language communication with their AI assistant. This significantly enhances the design process, reducing hours of development and research time wasted in the traditional esign process. It opens up new possibilities for interactive and dynamic architectural design development, making The Architect a powerful assistant for architects.
+
 # Demo Links
 - [Design Link](https://www.figma.com/file/jXADel71KkZXyLnb6Wrjgq/Untitled?type=design&node-id=104%3A1071&mode=design&t=sp5S4B9AmIDIXG6d-1)
 - [Presentation Link](https://www.canva.com/design/DAFv3UnQxgM/Y1Bbf9UlyyDlYAmk3k5Bcw/edit?utm_content=DAFv3UnQxgM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
