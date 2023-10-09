@@ -1,7 +1,7 @@
-import 'package:architect/widget/custom_bottom_navigation.dart';
-import 'package:architect/widget/post/post.dart';
-import 'package:architect/widget/profile_image.dart';
-import 'package:architect/widget/search.dart';
+import 'package:architect/features/architect/presentations/widget/custom_bottom_navigation.dart';
+import 'package:architect/features/architect/presentations/widget/post/post.dart';
+import 'package:architect/features/architect/presentations/widget/profile_image.dart';
+import 'package:architect/features/architect/presentations/widget/search.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/tag.dart';

@@ -1,4 +1,4 @@
-import 'package:architect/widget/gallery_item.dart';
+import 'package:architect/features/architect/presentations/widget/gallery_item.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {

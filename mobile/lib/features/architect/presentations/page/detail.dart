@@ -1,4 +1,4 @@
-import 'package:architect/widget/post/user_info.dart';
+import 'package:architect/features/architect/presentations/widget/post/user_info.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {

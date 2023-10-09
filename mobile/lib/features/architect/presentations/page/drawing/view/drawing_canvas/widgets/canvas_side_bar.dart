@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:architect/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
-import 'package:architect/page/drawing/view/drawing_canvas/models/sketch.dart';
-import 'package:architect/page/drawing/view/drawing_canvas/widgets/color_palette.dart';
-import 'package:architect/page/drawing/view/drawing_canvas/widgets/icon_box.dart';
+import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
+import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/sketch.dart';
+import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/widgets/color_palette.dart';
+import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/widgets/icon_box.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Image;

@@ -1,5 +1,5 @@
-import 'package:architect/widget/chat/chat_display.dart';
-import 'package:architect/widget/chat/chat_side_bar.dart';
+import 'package:architect/features/architect/presentations/widget/chat/chat_display.dart';
+import 'package:architect/features/architect/presentations/widget/chat/chat_side_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/chat/chat_input.dart';

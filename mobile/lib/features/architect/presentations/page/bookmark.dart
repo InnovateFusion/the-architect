@@ -1,6 +1,6 @@
-import 'package:architect/widget/custom_bottom_navigation.dart';
-import 'package:architect/widget/gallery_item.dart';
-import 'package:architect/widget/profile_image.dart';
+import 'package:architect/features/architect/presentations/widget/custom_bottom_navigation.dart';
+import 'package:architect/features/architect/presentations/widget/gallery_item.dart';
+import 'package:architect/features/architect/presentations/widget/profile_image.dart';
 import 'package:flutter/material.dart';
 
 class BookMark extends StatelessWidget {

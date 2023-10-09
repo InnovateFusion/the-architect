@@ -1,6 +1,6 @@
-import 'package:architect/widget/chat/chat_item.dart';
-import 'package:architect/widget/chat/chat_pompt_tags/pomptTag.dart';
-import 'package:architect/widget/chat/chat_pompt_tags/function.dart';
+import 'package:architect/features/architect/presentations/widget/chat/chat_item.dart';
+import 'package:architect/features/architect/presentations/widget/chat/chat_pompt_tags/pomptTag.dart';
+import 'package:architect/features/architect/presentations/widget/chat/chat_pompt_tags/function.dart';
 import 'package:flutter/material.dart';
 
 class ChatSideBar extends StatefulWidget {
@@ -278,22 +278,25 @@ class _ChatSideBarState extends State<ChatSideBar> {
           pomptTagStyle: floorMaterial,
           selectedPomptTag: selectedFloorMaterial),
     ];
-    return Column(
-      children: [
-        for (int i = 0; i < icons.length; i++)
-          ChatItem(
-            body: widgets[i],
-            index: i,
-            isSelected: i == selectedIndex,
-            title: titles[i],
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            icon: icons[i],
-          ),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          for (int i = 0; i < icons.length; i++)
+            ChatItem(
+              body: widgets[i],
+              index: i,
+              isSelected: i == selectedIndex,
+              title: titles[i],
+              onTap: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              icon: icons[i],
+            ),
+        ],
+      ),
     );
   }
 }

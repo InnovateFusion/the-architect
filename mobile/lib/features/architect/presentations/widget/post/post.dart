@@ -1,6 +1,6 @@
-import 'package:architect/widget/post/clone.dart';
-import 'package:architect/widget/post/react.dart';
-import 'package:architect/widget/post/user_info.dart';
+import 'package:architect/features/architect/presentations/widget/post/clone.dart';
+import 'package:architect/features/architect/presentations/widget/post/react.dart';
+import 'package:architect/features/architect/presentations/widget/post/user_info.dart';
 import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {

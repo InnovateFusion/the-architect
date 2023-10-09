@@ -1,4 +1,4 @@
-import 'package:architect/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
+import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
 import 'package:flutter/material.dart';
 
 

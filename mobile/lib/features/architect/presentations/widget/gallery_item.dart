@@ -1,4 +1,4 @@
-import 'package:architect/page/detail.dart';
+import 'package:architect/features/architect/presentations/page/detail.dart';
 import 'package:flutter/material.dart';
 
 class GalleryItem extends StatelessWidget {
