@@ -1,4 +1,4 @@
-import 'package:architect/page/home.dart';
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -5,9 +5,9 @@ function List() {
   return (
     <div>
       <div className="">
-        <div className="mx-auto px-4 py-16 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto px-4 py-16 sm:px-6 sm:py-6 lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight ">
-            Inspiration for your home office
+            My Designs
           </h2>
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
