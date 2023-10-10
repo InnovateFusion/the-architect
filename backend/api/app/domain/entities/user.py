@@ -1,8 +1,21 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, TypedDict
+
+from api.app.domain.entities import BaseEntity
+
+class User(TypedDict):
+    id: Optional[str]
+    firstName: str
+    lastName: str
+    bio: Optional[str]
+    email: str
+    password: str
+    country: Optional[str]
+    followers: int
+    following: int
 
 @dataclass
-class User:
+class UserEntity(BaseEntity):
     id: Optional[str]
     firstName: str
     lastName: str
@@ -14,7 +27,7 @@ class User:
     following: int
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'User':
+    def from_dict(cls, data: dict) -> 'UserEntity':
         return cls(
             id=data.get('id'),
             firstName=data.get('firstName'),

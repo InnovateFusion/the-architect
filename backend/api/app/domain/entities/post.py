@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 import datetime
-from typing import Optional
+from typing import Optional, TypedDict, List
+from api.app.domain.entities import BaseEntity
 
-@dataclass
-class Post:
+class Post(TypedDict):
     id: Optional[str]
     userId: Optional[str]
     image: Optional[str]
@@ -16,9 +16,27 @@ class Post:
     clone: int
     isLiked: bool
     isCloned: bool
+    tags: List[str] 
+
+
+@dataclass
+class PostEntity(BaseEntity):
+    id: Optional[str]
+    userId: Optional[str]
+    image: Optional[str]
+    firstName: Optional[str]
+    lastName: Optional[str]
+    title: str
+    content: str
+    date: datetime.datetime
+    like: int
+    clone: int
+    isLiked: bool
+    isCloned: bool
+    tags: List[str]  
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Post':
+    def from_dict(cls, data: dict) -> 'PostEntity':
         return cls(
             id=data.get('id'),
             userId=data.get('userId'),
@@ -29,9 +47,10 @@ class Post:
             content=data.get('content'),
             date=data.get('date'),
             like=data.get('like'),
-            cloned=data.get('clone'),
+            clone=data.get('clone'), 
             isLiked=data.get('isLiked'),
-            isCloned=data.get('isCloned')
+            isCloned=data.get('isCloned'),
+            tags=data.get('tags', [])  
         )
 
     def to_dict(self) -> dict:
@@ -47,5 +66,6 @@ class Post:
             'like': self.like,
             'clone': self.clone,
             'isLiked': self.isLiked,
-            'isCloned': self.isCloned
+            'isCloned': self.isCloned,
+            'tags': self.tags  
         }
