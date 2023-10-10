@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import datetime
 from typing import Optional, TypedDict, List
-from api.app.domain.entities import BaseEntity
+from app.domain.entities import BaseEntity
 
 class Post(TypedDict):
     id: Optional[str]

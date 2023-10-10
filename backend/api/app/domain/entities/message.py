@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 from typing import TypedDict
-from api.app.domain.entities import BaseEntity
+from app.domain.entities import BaseEntity
 
 class Message(TypedDict):
     id: str

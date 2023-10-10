@@ -1,6 +1,6 @@
-from api.core.use_cases.use_case import UseCase
-from api.app.domain.repositories.post import BaseRepository
-from api.core.common.equatable import Equatable
+from core.use_cases.use_case import UseCase
+from app.domain.repositories.post import BaseRepository
+from core.common.equatable import Equatable
 from core.common.either import Either
 from core.errors.failure import Failure
 from app.domain.entities.post import Post, PostEntity

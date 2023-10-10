@@ -1,6 +1,6 @@
 from typing import Iterable
-from api.core.use_cases.use_case import UseCase, NoParams
-from api.app.domain.repositories.message import BaseRepository
+from core.use_cases.use_case import UseCase, NoParams
+from app.domain.repositories.message import BaseRepository
 from core.common.either import Either
 from core.errors.failure import Failure
 from app.domain.entities.message import Message

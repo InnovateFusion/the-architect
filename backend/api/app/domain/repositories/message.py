@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from api.app.domain.repositories import ContextManagerRepository
+from app.domain.repositories import ContextManagerRepository
 from core.common.either import Either
 from core.errors.failure import Failure
 from app.domain.entities.message import Message

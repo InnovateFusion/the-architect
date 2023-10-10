@@ -1,8 +1,8 @@
 import json
 from dataclasses import dataclass
 from typing import List, Optional
-from api.app.domain.entities.message import Message
-from api.app.domain.entities import BaseEntity
+from app.domain.entities.message import Message
+from app.domain.entities import BaseEntity
 
 class Chat(BaseEntity):
     id: Optional[str]

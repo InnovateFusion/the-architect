@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional, TypedDict
-
-from api.app.domain.entities import BaseEntity
+from app.domain.entities import BaseEntity
 
 class User(TypedDict):
     id: Optional[str]

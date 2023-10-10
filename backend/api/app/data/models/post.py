@@ -1,0 +1,1 @@
+core.config.database_config import Base
