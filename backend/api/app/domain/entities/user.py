@@ -8,10 +8,8 @@ class User(TypedDict):
     lastName: str
     bio: Optional[str]
     email: str
-    password: str
+    password: Optional[str]
     country: Optional[str]
-    followers: int
-    following: int
 
 @dataclass
 class UserEntity(BaseEntity):
@@ -22,8 +20,8 @@ class UserEntity(BaseEntity):
     email: str
     password: str
     country: Optional[str]
-    followers: int
-    following: int
+    followers: Optional[int]
+    following: Optional[int]
 
     @classmethod
     def from_dict(cls, data: dict) -> 'UserEntity':
