@@ -7,9 +7,9 @@ from app.data.models.user import UserModel
 from app.domain.entities.user import UserEntity
 
 from core.config.database_config import get_db
-
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
+import os 
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30000000
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
