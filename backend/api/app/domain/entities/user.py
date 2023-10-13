@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, TypedDict
 from app.domain.entities import BaseEntity
 
-class User(dict):
+class User(TypedDict):
     firstName: str
     lastName: str
     bio: Optional[str]
