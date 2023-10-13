@@ -1,5 +1,5 @@
 from fastapi import HTTPException, APIRouter, Depends
-from typing import Annotated, List, Optional
+from typing import List, Optional
 from app.data.datasources.local.user import UserLocalDataSourceImpl
 from app.domain.repositories.user import BaseRepository as UserRepository
 from app.data.repositories.user import UserRepositoryImpl
@@ -109,9 +109,7 @@ async def view_user(
         raise HTTPException(status_code=404, detail=result.get().error_message)
 
 @router.get("/me", response_model=UserResponse)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
+async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.get("/users/{user_id}/follow/", response_model=UserResponse)
