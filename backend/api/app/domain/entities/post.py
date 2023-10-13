@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 import datetime
-from typing import Optional, TypedDict, List
+from typing import Optional, List
 from app.domain.entities import BaseEntity
 
-class Post(TypedDict):
+class Post(dict):
     userId: Optional[str]
     image: Optional[str]
     title: str

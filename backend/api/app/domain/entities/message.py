@@ -1,9 +1,8 @@
 import json
 from dataclasses import dataclass
-from typing import TypedDict
 from app.domain.entities import BaseEntity
 
-class Message(TypedDict):
+class Message(dict):
     user_id: str
     payload: dict
     model: str
