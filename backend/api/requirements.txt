@@ -1,8 +1,8 @@
-FastAPI==0.68.0
-pydantic==1.8.2
-typing==3.10.0.0
-openai==0.27.0
-SQLAlchemy==1.4.23
-pymysql==1.0.2
-uvicorn==0.15.0
-cloudinary==1.26.1
+FastAPI
+pydantic
+typing
+openai
+SQLAlchemy
+pymysql
+uvicorn
+cloudinary
