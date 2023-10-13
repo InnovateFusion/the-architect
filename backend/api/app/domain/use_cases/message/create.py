@@ -6,7 +6,8 @@ from core.errors.failure import Failure
 from app.domain.entities.message import Message, MessageEntity
 
 class Params(Equatable):
-    def __init__(self, message: MessageEntity) -> None:
+    def __init__(self, message: MessageEntity, chat_id: str) -> None:
+        self.chat_id = chat_id
         self.message = message
 
 
@@ -15,4 +16,4 @@ class CreateMessage(UseCase[Message]):
         self.repository = repository
     
     async def __call__(self, params: Params) -> Either[Failure, Message]:
-        return await self.repository.create_message(params.message)
+        return await self.repository.create_message(params.message, params.chat_id)

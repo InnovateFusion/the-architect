@@ -1,6 +1,4 @@
-from typing import Annotated
 from fastapi import HTTPException, APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
 from app.data.datasources.local.auth import AuthLocalDataSourceImpl
 from app.domain.repositories.auth import BaseRepository as AuthRepository
 from app.data.repositories.auth import AuthRepositoryImpl
@@ -9,7 +7,6 @@ from core.config.database_config import get_db
 from sqlalchemy.orm.session import Session
 from pydantic import BaseModel
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class AuthResponse(BaseModel):
     access_token: str
@@ -28,6 +25,7 @@ def get_repository(db: Session = Depends(get_db)):
 async def get_token(
     auth: Auth,
     repository: AuthRepository = Depends(get_repository)
+
 ):
     result = await repository.get_auth(auth)
     if result.is_right():

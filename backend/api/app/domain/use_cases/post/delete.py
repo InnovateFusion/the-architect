@@ -7,7 +7,7 @@ from app.domain.entities.post import Post
 
 class Params(Equatable):
     def __init__(self, post_id: str) -> None:
-        self.post = post_id
+        self.post_id = post_id
 
 class DeletePost(UseCase[Post]):
     def __init__(self, repository: BaseRepository):

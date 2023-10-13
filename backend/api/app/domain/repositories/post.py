@@ -18,15 +18,30 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
     async def delete_post(self, post_id: str) -> Either[Failure, Post]:
         ...
 
+    @abstractmethod
+    async def like_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+        ...
+
+    @abstractmethod
+    async def unlike_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+        ...
+
+    @abstractmethod
+    async def clone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+        ...
+
+    @abstractmethod
+    async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+        ...
+
 class BaseReadOnlyRepository(ABC):
     @abstractmethod
-    async def view_posts(self) -> Either[Failure, Iterable[Post]]:
+    async def view_posts(self, user_id: str) -> Either[Failure, Iterable[Post]]:
         ...
 
     @abstractmethod
     async def view_post(self, post_id: str) -> Either[Failure, Post]:
         ...
-
 
 class BaseRepository(BaseReadOnlyRepository, BaseWriteOnlyRepository, ABC):
     ...

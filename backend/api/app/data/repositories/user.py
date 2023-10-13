@@ -44,3 +44,31 @@ class UserRepositoryImpl(BaseRepository):
             return Either.right(user_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
+        
+    async def followers(self, user_id: str) -> Either[Failure, list]:
+        try:
+            _followers = await self.user_local_datasource.followers(user_id)
+            return Either.right(_followers)
+        except CacheException as e:
+            return Either.left(CacheFailure(error_message=str(e)))
+        
+    async def following(self, user_id: str) -> Either[Failure, list]:
+        try:
+            _following = await self.user_local_datasource.following(user_id)
+            return Either.right(_following)
+        except CacheException as e:
+            return Either.left(CacheFailure(error_message=str(e)))
+    
+    async def follow(self, user_id: str, follower_id: str) -> Either[Failure, UserEntity]:
+        try:
+            user_entity = await self.user_local_datasource.follow(user_id, follower_id)
+            return Either.right(user_entity)
+        except CacheException as e:
+            return Either.left(CacheFailure(error_message=str(e)))
+    
+    async def unfollow(self, user_id: str, follower_id: str) -> Either[Failure, UserEntity]:
+        try:
+            user_entity = await self.user_local_datasource.unfollow(user_id, follower_id)
+            return Either.right(user_entity)
+        except CacheException as e:
+            return Either.left(CacheFailure(error_message=str(e)))

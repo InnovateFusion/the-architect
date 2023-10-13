@@ -4,16 +4,15 @@ from typing import TypedDict
 from app.domain.entities import BaseEntity
 
 class Message(TypedDict):
-    id: str
-    sender: str  
-    content: str 
-    date: str
+    user_id: str
+    payload: dict
+    model: str
 
 @dataclass
 class MessageEntity(BaseEntity):
     id: str
-    sender: str  
-    content: str 
+    sender: str
+    content: str
     date: str
     
     @classmethod
@@ -30,7 +29,7 @@ class MessageEntity(BaseEntity):
             'id': self.id,
             'sender': self.sender,
             'content': self.content,
-            'date': self.date
+            'date': str(self.date)
         }
     
     def to_json(self) -> str:

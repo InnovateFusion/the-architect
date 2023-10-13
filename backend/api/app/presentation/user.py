@@ -8,6 +8,10 @@ from app.domain.use_cases.user.create import CreateUser, Params as CreateUserPar
 from app.domain.use_cases.user.delete import DeleteUser, Params as DeleteUserParams
 from app.domain.use_cases.user.update import UpdateUser, Params as UpdateUserParams
 from app.domain.use_cases.user.view import ViewUser, Params as ViewUserParams
+from app.domain.use_cases.user.follow import FollowUser, Params as FollowUserParams
+from app.domain.use_cases.user.unfollow import UnFollowUser, Params as UnfollowUserParams
+from app.domain.use_cases.user.followers import UserFollowers, Params as UserFollowersParams
+from app.domain.use_cases.user.following import UserFollowing, Params as UserFollowingParams
 from app.domain.use_cases.user.views import ViewUsers
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
@@ -80,8 +84,7 @@ async def delete_user(
 
 @router.get("/users/", response_model=List[UserResponse])
 async def view_all_users(
-    repository: UserRepository = Depends(get_repository),
-    current_user: User = Depends(get_current_user)
+    repository: UserRepository = Depends(get_repository)
 ):
     view_all_users_use_case = ViewUsers(repository)
     params = NoParams()
@@ -105,8 +108,64 @@ async def view_user(
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
 
-@router.get("/users/me/", response_model=UserResponse)
+@router.get("/me", response_model=UserResponse)
 async def read_users_me(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
     return current_user
+
+@router.get("/users/{user_id}/follow/", response_model=UserResponse)
+async def follow_user(
+    user_id: str,
+    repository: UserRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    follow_user_use_case = FollowUser(repository)
+    params = FollowUserParams(user_id=current_user.id, follower_id=user_id)
+    result = await follow_user_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=404, detail=result.get().error_message)
+    
+@router.get("/users/{user_id}/unfollow/", response_model=UserResponse)
+async def unfollow_user(
+    user_id: str,
+    repository: UserRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    unfollow_user_use_case = UnFollowUser(repository)
+    params = UnfollowUserParams(user_id=current_user.id, follower_id=user_id)
+    result = await unfollow_user_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=404, detail=result.get().error_message)
+    
+@router.get("/users/{user_id}/followers/", response_model=List[UserResponse])
+async def view_user_followers(
+    user_id: str,
+    repository: UserRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    view_user_followers_use_case = UserFollowers(repository)
+    params = UserFollowersParams(user_id=user_id)
+    result = await view_user_followers_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=404, detail=result.get().error_message)
+    
+@router.get("/users/{user_id}/following/", response_model=List[UserResponse])
+async def view_user_following(
+    user_id: str,
+    repository: UserRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    view_user_following_use_case = UserFollowing(repository)
+    params = UserFollowingParams(user_id=user_id)
+    result = await view_user_following_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=404, detail=result.get().error_message)

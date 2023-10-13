@@ -4,20 +4,11 @@ from typing import Optional, TypedDict, List
 from app.domain.entities import BaseEntity
 
 class Post(TypedDict):
-    id: Optional[str]
     userId: Optional[str]
     image: Optional[str]
-    firstName: Optional[str]
-    lastName: Optional[str]
     title: str
     content: str
-    date: datetime.datetime
-    like: int
-    clone: int
-    isLiked: bool
-    isCloned: bool
     tags: List[str] 
-
 
 @dataclass
 class PostEntity(BaseEntity):

@@ -10,12 +10,14 @@ class UserModel(Base):
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
     bio = Column(String(128), nullable=True)
+    image = Column(String(512), nullable=True)
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     country = Column(String(512), nullable=True)
-    posts = relationship('PostModel', backref='user', lazy=True)
-    
-    
+    posts = relationship('PostModel', back_populates='user', lazy=True) 
+    likes = relationship('LikeModel', back_populates='user')
+    clones = relationship('CloneModel', back_populates='user')
+    chats = relationship('ChatModel', back_populates='user')    
     following = relationship(
         'UserModel',
         secondary='user_following',

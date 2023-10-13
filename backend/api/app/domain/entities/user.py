@@ -3,13 +3,13 @@ from typing import Optional, TypedDict
 from app.domain.entities import BaseEntity
 
 class User(TypedDict):
-    id: Optional[str]
     firstName: str
     lastName: str
     bio: Optional[str]
     email: str
     password: Optional[str]
     country: Optional[str]
+    image: Optional[str]
 
 @dataclass
 class UserEntity(BaseEntity):
@@ -19,6 +19,7 @@ class UserEntity(BaseEntity):
     bio: Optional[str]
     email: str
     password: str
+    image: Optional[str]
     country: Optional[str]
     followers: Optional[int]
     following: Optional[int]
@@ -31,6 +32,7 @@ class UserEntity(BaseEntity):
             lastName=data.get('lastName'),
             bio=data.get('bio'),
             email=data.get('email'),
+            image=data.get('image'),
             password=data.get('password'),
             country=data.get('country'),
             followers=data.get('followers', 0),
@@ -45,6 +47,7 @@ class UserEntity(BaseEntity):
             'bio': self.bio,
             'email': self.email,
             'password': self.password,
+            'image': self.image, 
             'country': self.country,
             'followers': self.followers,
             'following': self.following

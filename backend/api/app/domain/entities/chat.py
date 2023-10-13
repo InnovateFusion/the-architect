@@ -11,6 +11,8 @@ class Chat(BaseEntity):
 @dataclass
 class ChatEntity(BaseEntity):
     id: Optional[str]
+    title: str
+    user_id: str
     messages: List[Message]
 
     def add_message(self, message: Message) -> None:
@@ -22,12 +24,16 @@ class ChatEntity(BaseEntity):
         messages = [Message.from_dict(msg) for msg in message_data]
         return cls(
             id=data.get('id'),
+            title=data.get('title'),
+            user_id=data.get('user_id'),
             messages=messages
         )
     
     def to_dict(self) -> dict:
         return {
             'id': self.id,
+            'title': self.title,
+            'user_id': self.user_id,
             'messages': [msg.to_dict() for msg in self.messages]
         }
     

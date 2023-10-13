@@ -11,17 +11,9 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
     async def create_chat(self, chat: Chat) -> Either[Failure, Chat]:
         ...
 
-    @abstractmethod
-    async def update_chat(self, chat: Chat) -> Either[Failure, Chat]:
-        ...
-
-    @abstractmethod
-    async def delete_chat(self, chat_id: str) -> Either[Failure, Chat]:
-        ...
-
 class BaseReadOnlyRepository(ABC):
     @abstractmethod
-    async def view_chats(self) -> Either[Failure, List[Chat]]:
+    async def view_chats(self, user_id) -> Either[Failure, List[Chat]]:
         ...
 
     @abstractmethod

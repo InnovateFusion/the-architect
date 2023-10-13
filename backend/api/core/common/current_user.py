@@ -39,6 +39,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db = D
         bio=user.bio,
         email=user.email,
         password=user.password,
+        image=user.image,
         country=user.country,
         followers=user.get_followers_count(db),
         following=user.get_following_count(db)

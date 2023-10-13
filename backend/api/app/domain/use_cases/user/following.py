@@ -1,18 +1,18 @@
 from typing import Iterable
-from core.common.equatable import Equatable
 from core.use_cases.use_case import UseCase
-from app.domain.repositories.post import BaseRepository
+from app.domain.repositories.user import BaseRepository
+from core.common.equatable import Equatable
 from core.common.either import Either
 from core.errors.failure import Failure
-from app.domain.entities.post import Post
+from app.domain.entities.user import User
 
 class Params(Equatable):
     def __init__(self, user_id: str) -> None:
         self.user_id = user_id
 
-class ViewPosts(UseCase[Iterable[Post]]):
+class UserFollowing(UseCase[Iterable[User]]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Iterable[Post]]:
-        return await self.repository.view_posts(params.user_id)
+    async def __call__(self, params: Params) -> Either[Failure, Iterable[User]]:
+        return await self.repository.following(params.user_id)
