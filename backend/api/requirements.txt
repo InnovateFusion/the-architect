@@ -1,0 +1,8 @@
+FastAPI
+pydantic
+typing
+openai
+SQLAlchemy
+pymysql
+uvicorn
+cloudinary
