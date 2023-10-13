@@ -5,19 +5,11 @@ from app.presentation.auth import router as auth_router
 from app.presentation.post import router as post_router
 from app.presentation.chat import router as chat_router
 from app.presentation.message import router as message_router
-from fastapi.middleware.cors import CORSMiddleware
+
 import uvicorn
 
 create_database()
 app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  
-    allow_credentials=True,
-    allow_methods=["*"],    
-    allow_headers=["*"],    
-)
 
 app.include_router(user_router, prefix="/api/v1", tags=['user'])
 app.include_router(auth_router, prefix="/api/v1", tags=['auth'])

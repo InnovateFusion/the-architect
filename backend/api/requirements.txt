@@ -6,5 +6,3 @@ SQLAlchemy
 pymysql
 uvicorn
 cloudinary
-python-jose[cryptography]
-passlib[bcrypt]
