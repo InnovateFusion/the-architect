@@ -6,7 +6,7 @@ from app.domain.entities import BaseEntity
 
 class Post(BaseModel):
     userId: Optional[str]
-    image: Optional[str]
+    image: str
     title: str
     content: str
     tags: List[str] 

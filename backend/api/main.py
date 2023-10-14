@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from core.config.database_config import create_database
 from app.presentation.user import router as user_router
@@ -28,4 +29,4 @@ app.include_router(chat_router, prefix="/api/v1", tags=['chat'])
 app.include_router(message_router, prefix="/api/v1", tags=['message'])
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=os.getenv("PORT", 8000))
