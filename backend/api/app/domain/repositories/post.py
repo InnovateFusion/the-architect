@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Iterable
+from typing import Iterable, List
 from app.domain.entities.post import Post, PostEntity
 from app.domain.repositories import ContextManagerRepository
 from core.common.either import Either
@@ -34,6 +34,10 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
     async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         ...
 
+    @abstractmethod
+    async def all_posts(self, tags: List[str], search_word: str) -> Either[Failure, Iterable[PostEntity]]:
+        ...
+
 class BaseReadOnlyRepository(ABC):
     @abstractmethod
     async def view_posts(self, user_id: str) -> Either[Failure, Iterable[PostEntity]]:
@@ -42,6 +46,7 @@ class BaseReadOnlyRepository(ABC):
     @abstractmethod
     async def view_post(self, post_id: str) -> Either[Failure, PostEntity]:
         ...
+        
 
 class BaseRepository(BaseReadOnlyRepository, BaseWriteOnlyRepository, ABC):
     ...

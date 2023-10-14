@@ -1,15 +1,27 @@
 from dataclasses import dataclass
 import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from typing import Optional, List
 from app.domain.entities import BaseEntity
+
+architecture_tags = [
+    "exterior", "facade", "outdoor", "landscape", "architectural facade", "outdoor design",
+    "interior", "indoor", "interior design", "space planning", "furniture design", "decor", "lighting"
+]
 
 class Post(BaseModel):
     userId: Optional[str]
     image: str
     title: str
-    content: str
+    content: Optional[str]
     tags: List[str] 
+    
+    @validator('tags', pre=True, always=True)
+    def validate_tags(cls, v):
+        invalid_tags = [tag for tag in v if tag not in architecture_tags]
+        if invalid_tags:
+            raise ValueError(f"Invalid tags: {', '.join(invalid_tags)}")
+        return v
 
 @dataclass
 class PostEntity(BaseEntity):

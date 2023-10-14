@@ -1,4 +1,4 @@
-from fastapi import HTTPException, APIRouter, Depends
+from fastapi import HTTPException, APIRouter, Depends, Query
 from typing import List, Optional
 from datetime import datetime
 from app.data.datasources.local.post import PostLocalDataSourceImpl
@@ -12,6 +12,7 @@ from app.domain.use_cases.post.update import UpdatePost, Params as UpdatePostPar
 from app.domain.use_cases.post.view import ViewPost, Params as ViewPostParams
 from app.domain.use_cases.post.views import ViewPosts, Params as ViewPostsParams
 from app.domain.use_cases.post.status import LikePost, UnlikePost, ClonePost, UnclonePost, Params as StatusParams
+from app.domain.use_cases.post.all_posts import AllPost, Params as AllPostParams
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
 from sqlalchemy.orm.session import Session
@@ -37,6 +38,20 @@ router = APIRouter()
 def get_repository(db: Session = Depends(get_db)):
     post_local_datasource = PostLocalDataSourceImpl(db=db)
     return PostRepositoryImpl(post_local_datasource)
+
+@router.get("/posts/all", response_model=List[PostResponse])
+async def all_posts(
+    tags: List[str] = Query([]),
+    search_word: str = "",
+    repository: PostRepository = Depends(get_repository)
+):
+    all_posts_use_case = AllPost(repository)
+    params = AllPostParams(tags=tags, search_word=search_word)
+    result = await all_posts_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=404, detail=result.get().error_message)
 
 @router.post("/posts/", response_model=PostResponse)
 async def create_post(
@@ -164,3 +179,4 @@ async def unclone_post(
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
+
