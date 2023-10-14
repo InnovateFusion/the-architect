@@ -9,7 +9,7 @@ from core.config.database_config import get_db
 import os 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = 30000000
+ACCESS_TOKEN_EXPIRE_MINUTES = 3000 * 60 * 60 * 24 * 30 * 12
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -24,7 +24,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db = Depends(get
         email: str = payload.get("email")
         if email is None:
             raise credentials_exception
-    except JWTError:
+    except JWTError as e:
         raise credentials_exception
     except Exception as e:
         raise credentials_exception
