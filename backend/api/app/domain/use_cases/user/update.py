@@ -9,9 +9,9 @@ class Params(Equatable):
     def __init__(self, user: UserEntity) -> None:
         self.user = user
         
-class UpdateUser(UseCase[User]):
+class UpdateUser(UseCase[UserEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, User]:
+    async def __call__(self, params: Params) -> Either[Failure, UserEntity]:
         return await self.repository.update_user(params.user)

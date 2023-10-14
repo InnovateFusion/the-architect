@@ -1,3 +1,4 @@
+from typing import List
 from app.domain.entities.message import Message
 from core.common.either import Either
 from core.errors.failure import Failure, CacheFailure
@@ -18,7 +19,7 @@ class ChatRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
         
-    async def view_chats(self, user_id) -> Either[Failure, list]:
+    async def view_chats(self, user_id) -> Either[Failure, List[ChatEntity]]:
         try:
             chats = await self.chat_local_datasource.get_chats(user_id)
             return Either.right(chats)

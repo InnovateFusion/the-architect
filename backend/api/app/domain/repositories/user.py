@@ -3,16 +3,16 @@ from typing import Iterable
 from app.domain.repositories import ContextManagerRepository
 from core.common.either import Either
 from core.errors.failure import Failure
-from app.domain.entities.user import UserEntity
+from app.domain.entities.user import UserEntity, User
 
 
 class BaseWriteOnlyRepository(ContextManagerRepository):
     @abstractmethod
-    async def create_user(self, user: UserEntity) -> Either[Failure, UserEntity]:
+    async def create_user(self, user: User) -> Either[Failure, UserEntity]:
         ...
 
     @abstractmethod
-    async def update_user(self, user: UserEntity) -> Either[Failure, UserEntity]:
+    async def update_user(self, user: User) -> Either[Failure, UserEntity]:
         ...
 
     @abstractmethod

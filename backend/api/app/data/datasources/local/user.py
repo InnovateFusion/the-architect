@@ -51,21 +51,21 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
         self.db = db
         
     async def create_user(self, user: User) -> UserEntity:
-        _user = self.db.query(UserModel).filter(UserModel.email == user['email']).first()
+        _user = self.db.query(UserModel).filter(UserModel.email == user.email).first()
         if _user is not None:
             raise CacheException("User already exists")
-        if len(user['password']) < 8:
+        if len(user.password) < 8:
             raise CacheException("Password length atleast 8 characters")
     
         _user = UserModel(
             id=str(uuid4()),
-            first_name=user['firstName'],
-            last_name=user['lastName'],
-            bio=user['bio'],
-            image=user['image'],
-            email=user['email'],
-            password=get_password_hash(user['password']),
-            country=user['country']
+            first_name=user.firstName,
+            last_name=user.lastName,
+            bio=user.bio,
+            image=user.image,
+            email=user.email,
+            password=get_password_hash(user.password),
+            country=user.country
         )
         
         self.db.add(_user)
@@ -84,15 +84,15 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
         )
     
     async def update_user(self, user: User) -> UserEntity:
-        _user = self.db.query(UserModel).filter(UserModel.id == user['id']).first()
+        _user = self.db.query(UserModel).filter(UserModel.id == user.id).first()
         if _user is None:
             raise CacheException("User not found")
-        _user.first_name = user['firstName']
-        _user.last_name = user['lastName']
-        _user.bio = user['bio']
-        _user.image = user['image']
-        _user.password = user['password']
-        _user.country = user['country']
+        _user.first_name = user.firstName
+        _user.last_name = user.lastName
+        _user.bio = user.bio
+        _user.image = user.image
+        _user.password = user.password
+        _user.country = user.country
         self.db.commit()
         return UserEntity(
             id=_user.id,

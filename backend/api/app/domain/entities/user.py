@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, TypedDict
+from typing import Optional
 from app.domain.entities import BaseEntity
+from pydantic import BaseModel
 
-class User(TypedDict):
+class User(BaseModel):
     firstName: str
     lastName: str
     bio: Optional[str]

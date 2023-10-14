@@ -1,3 +1,4 @@
+from typing import Iterable
 from core.common.either import Either
 from core.errors.failure import Failure, CacheFailure
 from core.errors.exceptions import CacheException
@@ -45,7 +46,7 @@ class UserRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
         
-    async def followers(self, user_id: str) -> Either[Failure, list]:
+    async def followers(self, user_id: str) -> Either[Failure, Iterable[UserEntity]]:
         try:
             _followers = await self.user_local_datasource.followers(user_id)
             return Either.right(_followers)
@@ -59,7 +60,7 @@ class UserRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
     
-    async def follow(self, user_id: str, follower_id: str) -> Either[Failure, UserEntity]:
+    async def follow(self, user_id: str, follower_id: str) -> Either[Failure, Iterable[UserEntity]]:
         try:
             user_entity = await self.user_local_datasource.follow(user_id, follower_id)
             return Either.right(user_entity)

@@ -1,9 +1,9 @@
 import json
 from dataclasses import dataclass
-from typing import TypedDict
+from pydantic import BaseModel
 from app.domain.entities import BaseEntity
 
-class Message(TypedDict):
+class Message(BaseModel):
     user_id: str
     payload: dict
     model: str

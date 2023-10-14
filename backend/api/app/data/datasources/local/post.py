@@ -50,17 +50,17 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         self.db = db
 
     async def create_post(self, post: Post) -> PostEntity:
-        existing_user = self.db.query(UserModel).filter(UserModel.id == post['userId']).first()
+        existing_user = self.db.query(UserModel).filter(UserModel.id == post.userId).first()
         if not existing_user:
             raise CacheException("User does not exist")
 
         _post = PostModel(
             id=str(uuid4()),
-            title=post['title'],
-            content=post['content'],
-            image=post['image'],
-            user_id=post['userId'],
-            tags=post['tags']
+            title=post.title,
+            content=post.title,
+            image=post.title,
+            user_id=post.title,
+            tags=post.tags
         )
 
         self.db.add(_post)
@@ -68,31 +68,31 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
 
         return PostEntity(
             id=_post.id,
-            userId=post['userId'],
-            image=post['image'],
+            userId=post.userId,
+            image=post.image,
             firstName=existing_user.first_name,
             lastName=existing_user.last_name,
-            title=post['title'],
-            content=post['content'],
+            title=post.title,
+            content=post.content,
             date=_post.date,
             isLiked=False,
             isCloned=False,
             like=0,
             clone=0,
-            tags=post['tags']
+            tags=post.tags
         )
 
     async def update_post(self, post: Post) -> PostEntity:
-        _post = self.db.query(PostModel).filter(PostModel.id == post['id']).first()
+        _post = self.db.query(PostModel).filter(PostModel.id == post.id).first()
         if not _post:
             raise CacheException("Post not found")
         
-        user = self.db.query(UserModel).filter(UserModel.id == post['userId']).first()
+        user = self.db.query(UserModel).filter(UserModel.id == post.userId).first()
         
-        _post.title = post['title']
-        _post.content = post['content']
-        _post.image = post['image']
-        _post.tags = post['tags']
+        _post.title = post.title
+        _post.content = post.content
+        _post.image = post.image
+        _post.tags = post.tags
 
         self.db.commit()
 
@@ -105,8 +105,8 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             date=_post.date,
             firstName=user.first_name,
             lastName=user.last_name,
-            isLiked=_post.is_liked(self.db, post['userId']),
-            isCloned=_post.is_cloned(self.db, post['userId']),
+            isLiked=_post.is_liked(self.db, post.userId),
+            isCloned=_post.is_cloned(self.db, post.userId),
             like=_post.get_likes_count(self.db),
             clone=_post.get_clones_count(self.db),
             tags=_post.tags

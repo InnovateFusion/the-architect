@@ -6,13 +6,13 @@ from core.errors.failure import Failure
 from app.domain.entities.user import User, UserEntity
 
 class Params(Equatable):
-    def __init__(self, user: UserEntity) -> None:
+    def __init__(self, user: User) -> None:
         self.user = user
 
 
-class CreateUser(UseCase[User]):
+class CreateUser(UseCase[UserEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, User]:
+    async def __call__(self, params: Params) -> Either[Failure, UserEntity]:
         return await self.repository.create_user(params.user)

@@ -1,46 +1,46 @@
 from abc import ABC, abstractmethod
 from typing import Iterable
-from app.domain.entities.post import Post
+from app.domain.entities.post import Post, PostEntity
 from app.domain.repositories import ContextManagerRepository
 from core.common.either import Either
 from core.errors.failure import Failure
 
 class BaseWriteOnlyRepository(ContextManagerRepository):
     @abstractmethod
-    async def create_post(self, post: Post) -> Either[Failure, Post]:
+    async def create_post(self, post: Post) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def update_post(self, post: Post) -> Either[Failure, Post]:
+    async def update_post(self, post: Post) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def delete_post(self, post_id: str) -> Either[Failure, Post]:
+    async def delete_post(self, post_id: str) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def like_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def like_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def unlike_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def unlike_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def clone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def clone_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod
-    async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         ...
 
 class BaseReadOnlyRepository(ABC):
     @abstractmethod
-    async def view_posts(self, user_id: str) -> Either[Failure, Iterable[Post]]:
+    async def view_posts(self, user_id: str) -> Either[Failure, Iterable[PostEntity]]:
         ...
 
     @abstractmethod
-    async def view_post(self, post_id: str) -> Either[Failure, Post]:
+    async def view_post(self, post_id: str) -> Either[Failure, PostEntity]:
         ...
 
 class BaseRepository(BaseReadOnlyRepository, BaseWriteOnlyRepository, ABC):

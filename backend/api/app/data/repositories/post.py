@@ -45,28 +45,28 @@ class PostRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
 
-    async def like_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def like_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         try:
             post_entity =  await self.post_local_datasource.like_post(post_id, user_id)
             return Either.right(post_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
 
-    async def unlike_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def unlike_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         try:
             post_entity = await self.post_local_datasource.unlike_post(post_id, user_id)
             return Either.right(post_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
 
-    async def clone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def clone_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         try:
             post_entity = await self.post_local_datasource.clone_post(post_id, user_id)
             return Either.right(post_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
 
-    async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, None]:
+    async def unclone_post(self, post_id: str, user_id: str) -> Either[Failure, PostEntity]:
         try:
             post_entity = await self.post_local_datasource.unclone_post(post_id, user_id)
             return Either.right(post_entity)

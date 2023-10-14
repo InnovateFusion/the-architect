@@ -3,7 +3,7 @@ from app.domain.repositories.post import BaseRepository
 from core.common.equatable import Equatable
 from core.common.either import Either
 from core.errors.failure import Failure
-from app.domain.entities.post import Post, PostEntity
+from app.domain.entities.post import PostEntity
 
 class Params(Equatable):
     def __init__(self, post_id: str, user_id: str) -> None:

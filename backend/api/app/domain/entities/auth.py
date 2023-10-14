@@ -1,10 +1,9 @@
 import json
 from dataclasses import dataclass
-from typing import TypedDict
-from app.domain.entities.message import Message
+from pydantic import BaseModel
 from app.domain.entities import BaseEntity
 
-class Auth(TypedDict):
+class Auth(BaseModel):
     email: str
     password: str
 
