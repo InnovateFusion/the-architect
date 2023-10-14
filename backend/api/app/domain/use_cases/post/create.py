@@ -10,9 +10,9 @@ class Params(Equatable):
         self.post = post
 
 
-class CreatePost(UseCase[Post]):
+class CreatePost(UseCase[PostEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Post]:
+    async def __call__(self, params: Params) -> Either[Failure, PostEntity]:
         return await self.repository.create_post(params.post)

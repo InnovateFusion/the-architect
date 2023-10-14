@@ -14,5 +14,5 @@ class CreateChat(UseCase[Auth]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Auth]:
+    async def __call__(self, params: Params) -> Either[Failure, AuthEntity]:
         return await self.repository.get_auth(params.auth)

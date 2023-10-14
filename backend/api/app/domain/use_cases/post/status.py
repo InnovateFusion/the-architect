@@ -11,30 +11,30 @@ class Params(Equatable):
         self.user_id = user_id
 
 
-class LikePost(UseCase[Post]):
+class LikePost(UseCase[PostEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Post]:
+    async def __call__(self, params: Params) -> Either[Failure, PostEntity]:
         return await self.repository.like_post(params.post_id, params.user_id)
 
-class UnlikePost(UseCase[Post]):
+class UnlikePost(UseCase[PostEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Post]:
+    async def __call__(self, params: Params) -> Either[Failure, PostEntity]:
         return await self.repository.unlike_post(params.post_id, params.user_id)
     
-class ClonePost(UseCase[Post]):
+class ClonePost(UseCase[PostEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Post]:
+    async def __call__(self, params: Params) -> Either[Failure, PostEntity]:
         return await self.repository.clone_post(params.post_id, params.user_id)
 
-class UnclonePost(UseCase[Post]):
+class UnclonePost(UseCase[PostEntity]):
     def __init__(self, repository: BaseRepository):
         self.repository = repository
     
-    async def __call__(self, params: Params) -> Either[Failure, Post]:
+    async def __call__(self, params: Params) -> Either[Failure, PostEntity]:
         return await self.repository.unclone_post(params.post_id, params.user_id)
