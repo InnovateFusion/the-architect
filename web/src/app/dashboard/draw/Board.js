@@ -9,62 +9,46 @@ const styles = {
 };
 
 
-/**
- * Handles exporting the image.
- *
- * @return {void} 
- */
+
 
 
 const Canvas = () => {
   
   const canvasRef = useRef(null);
   const [Excalidraw, setExcalidraw] = useState(null);
-
+  const excalidrawRef = useRef();
   useEffect(() => {
     import("@excalidraw/excalidraw").then((comp) => setExcalidraw(comp.Excalidraw));
     console.log(Excalidraw)
   }, []);
 
-/**
- * Handles exporting the image.
- *
- * @return {void} 
- */
+  const handleExportImage = async () => {
+    const files = excalidrawRef.current.getFiles();
+    const file = files[0]; // Assuming you want the first file
+    console.log(file)
+    // Convert the file to a hexadecimal representation
+    const reader = new FileReader();
+    reader.onloadend = async function(evt) {
+      if (evt.target.readyState == FileReader.DONE) {
+        const arrayBuffer = evt.target.result;
+        const hex = Array.from(new Uint8Array(arrayBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-  const handleExportImage = () => {
-    if (canvasRef.current && canvasRef.current.toDataURL) {
-      const dataUrl = canvasRef.current.toDataURL();
-      setImageData(dataUrl);
-      sendImageToBackend(dataUrl);
-    } else {
-      console.error("canvasRef is null or doesn't have toDataURL method");
-    }
-  };
+        // Send the hexadecimal representation to the image converter API
+        const response = await fetch('https://getimg.ai/api/convert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ image: hex })
+        });
 
-/**
- * Sends the image data to the backend API for uploading.
- *
- * @param {type} imageData - The image data to be uploaded.
- * @return {type} This function does not return anything.
- */
-
-  const sendImageToBackend = (imageData) => {
-    fetch("/api/upload-image", {
-      method: "POST",
-      body: JSON.stringify({ image: imageData }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+        const data = await response.json();
         console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      }
+    };
+    reader.readAsArrayBuffer(file);
   };
+
 
   return (
     <div className="h-600 aspect-square p-4">
@@ -75,6 +59,7 @@ const Canvas = () => {
             elements: [],
             appState: {},
           }}/>} 
+          <button onClick={handleExportImage}>Export Image</button>
     </div>
   );
 };
