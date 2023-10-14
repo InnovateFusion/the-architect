@@ -43,8 +43,7 @@ def get_repository(db: Session = Depends(get_db)):
 async def all_posts(
     tags: List[str] = Query([]),
     search_word: str = "",
-    repository: PostRepository = Depends(get_repository),
-    current_user: User = Depends(get_current_user)
+    repository: PostRepository = Depends(get_repository)
 ):
     all_posts_use_case = AllPost(repository)
     params = AllPostParams(tags=tags, search_word=search_word)
