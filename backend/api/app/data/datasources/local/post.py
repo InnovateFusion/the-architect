@@ -280,7 +280,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             for tag in tags:
                 if tag in post.tags:
                     number_of_tags -= 1
-            if number_of_tags == len(tags):
+            if number_of_tags == len(tags) and tags:
                 continue
 
             user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
