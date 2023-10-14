@@ -73,3 +73,5 @@ class UserRepositoryImpl(BaseRepository):
             return Either.right(user_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
+        
+    

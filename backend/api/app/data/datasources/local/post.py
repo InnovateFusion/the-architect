@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from uuid import uuid4
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
@@ -11,6 +12,10 @@ class PostLocalDataSource(ABC):
     
     @abstractmethod
     async def create_post(self, post: Post) -> PostEntity:
+        pass
+    
+    @abstractmethod
+    async def all_posts(self,  tags: List[str], search_word: str) -> List[PostEntity]:
         pass
     
     @abstractmethod
@@ -57,9 +62,9 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         _post = PostModel(
             id=str(uuid4()),
             title=post.title,
-            content=post.title,
-            image=post.title,
-            user_id=post.title,
+            content=post.content,
+            image=post.image,
+            user_id=post.userId,
             tags=post.tags
         )
 
@@ -81,6 +86,31 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             clone=0,
             tags=post.tags
         )
+        
+    async def all_posts(self) -> List[PostEntity]:
+        posts = self.db.query(PostModel).all()
+        if not posts:
+            raise CacheException("No posts found")
+
+        post_entities = []
+        for post in posts:
+            user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
+            post_entities.append(PostEntity(
+                id=post.id,
+                userId=post.user_id,
+                image=post.image,
+                firstName=user.first_name,
+                lastName=user.last_name,
+                title=post.title,
+                content=post.content,
+                date=post.date,
+                isLiked=post.is_liked(self.db, post.user_id),
+                isCloned=post.is_cloned(self.db, post.user_id),
+                like=post.get_likes_count(self.db),
+                clone=post.get_clones_count(self.db),
+                tags=post.tags
+            ))
+        return post_entities
 
     async def update_post(self, post: Post) -> PostEntity:
         _post = self.db.query(PostModel).filter(PostModel.id == post.id).first()
@@ -253,3 +283,43 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             clone=post.get_clones_count(self.db),
             tags=post.tags
         )
+
+    async def all_posts(self, tags: List[str], search_word: str) -> List[PostEntity]:
+        query = self.db.query(PostModel)
+
+        print(tags,search_word, "tags, search_word")
+        if tags:
+            query = query.filter(or_(*[PostModel.tags.any(tag) for tag in tags]))
+
+        if search_word:
+            query = query.filter(
+                or_(
+                    PostModel.title.ilike(f"%{search_word}%"),
+                    UserModel.first_name.ilike(f"%{search_word}%")
+                )
+            )
+
+        posts = query.all()
+
+        if not posts:
+            raise CacheException("No posts found")
+
+        post_entities = []
+        for post in posts:
+            user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
+            post_entities.append(PostEntity(
+                id=post.id,
+                userId=post.user_id,
+                image=post.image,
+                firstName=user.first_name,
+                lastName=user.last_name,
+                title=post.title,
+                content=post.content,
+                date=post.date,
+                isLiked=post.is_liked(self.db, post.user_id),
+                isCloned=post.is_cloned(self.db, post.user_id),
+                like=post.get_likes_count(self.db),
+                clone=post.get_clones_count(self.db),
+                tags=post.tags
+            ))
+        return post_entities

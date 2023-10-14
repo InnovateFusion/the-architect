@@ -1,3 +1,4 @@
+from typing import Iterable
 from core.common.either import Either
 from core.errors.failure import Failure, CacheFailure
 from core.errors.exceptions import CacheException
@@ -70,5 +71,12 @@ class PostRepositoryImpl(BaseRepository):
         try:
             post_entity = await self.post_local_datasource.unclone_post(post_id, user_id)
             return Either.right(post_entity)
+        except CacheException as e:
+            return Either.left(CacheFailure(error_message=str(e)))
+        
+    async def all_posts(self, tags: list, search_word: str) -> Either[Failure, Iterable[PostEntity]]:
+        try:
+            posts = await self.post_local_datasource.all_posts(tags, search_word)
+            return Either.right(posts)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
