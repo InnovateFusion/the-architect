@@ -20,21 +20,36 @@ export function UserAuthForm({ className, ...props }) {
       body: JSON.stringify({ email: username, password: password }),
     };
     try {
-      console.log(username);
-      console.log(password);
       const res = await fetch(
         "https://the-architect.onrender.com/api/v1/token",
         options
       );
       if (res.status == 200) {
-        const user = await res.json();
-
-        localStorage.setItem("token", user.access_token);
+        const data = await res.json();
+        localStorage.setItem("token", data.access_token);
+        const result = await fetch(
+          "https://the-architect.onrender.com/api/v1/me",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${data.access_token}`,
+            },
+          }
+        );
+        if (result.status == 200) {
+          const user = await result.json();
+          localStorage.setItem("userId", user.id);
+        }else{
+          throw new Error("Invalid Token"); 
+        }
         router.push("/dashboard/design");
+      }else{
+        throw new Error("Invalid email or password");
       }
       setIsLoading(false);
-    } catch {
-      console.log("error");
+    } catch(err) {
+      console.log(err);
       setIsLoading(false);
     }
   }
