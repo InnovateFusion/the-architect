@@ -57,7 +57,7 @@ export function UserAuthForm({ className, ...props }) {
   React.useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      router.push("/dashboard/chat");
+      router.push("/dashboard/designs");
     }
   }, []);
 
