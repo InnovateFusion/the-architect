@@ -5,13 +5,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "tecdn.b-cdn.net",
+        hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "tailwindui.com",
+        hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**",
       },
