@@ -90,7 +90,7 @@ function DesignList() {
               key={index}
               className="h-64 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none "
             >
-              <div class="h-full w-full rounded-xl bg-gray-100 animate-pulse"></div>
+              <div className="h-full w-full rounded-xl bg-gray-100 animate-pulse"></div>
             </div>
           ))}
     </div>

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import Chat from "../chat/chat";
+import Chat from "./chat";
 
 const ExampleComponent = () => {
   const [image, setImage] = useState("/house.jpg");

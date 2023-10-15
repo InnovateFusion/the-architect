@@ -59,7 +59,7 @@ const Canvas = () => {
             elements: [],
             appState: {},
           }}/>} 
-          <button onClick={handleExportImage}>Export Image</button>
+          {/* <button onClick={ }>Export Image</button> */}
     </div>
   );
 };
