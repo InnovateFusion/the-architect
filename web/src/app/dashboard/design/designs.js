@@ -5,22 +5,6 @@ import React, { useEffect, useState } from "react";
 function DesignList() {
   const [posts, setPosts] = useState([]);
   const images = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-  const i = {
-    id: "0101",
-    image: "/house.jpg",
-    link: "/dashboard/edit",
-    title: "",
-    content: "",
-    alt: "alt",
-    width: 512,
-    height: 512,
-    user: {
-      name: "user",
-      avatar: "/logo.svg",
-    },
-    like: 2.8,
-    clone: 1.2,
-  };
 
   const view = (
     <svg

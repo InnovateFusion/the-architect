@@ -27,8 +27,6 @@ export default function DashboardLayout({ children }) {
     }
     const user = await res.json();
     setUser(user);
-    console.log(user);
-    console.log(currentuser);
   };
 
   useEffect(() => {
