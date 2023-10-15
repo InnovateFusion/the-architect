@@ -48,6 +48,9 @@ dependencies:
   equatable: ^2.0.5
   internet_connection_checker: ^1.0.0+1
   dartz: ^0.10.1
+  shared_preferences: ^2.2.2
+  bloc: ^8.1.2
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:

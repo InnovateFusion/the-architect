@@ -11,7 +11,7 @@ import os
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = 1000 * 60 * 60 * 24 * 7 # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 1000 * 60 * 60 * 24 * 7;
 
 class AuthLocalDataSource(ABC):
     
@@ -30,7 +30,9 @@ class AuthLocalDataSourceImpl(AuthLocalDataSource):
             raise CacheException("No user is found exists")
         if not verify_password(auth.password, _user.password):
             raise CacheException("Invalid password")
-        expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+        expire = datetime.datetime.utcnow() + datetime.timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        )
         to_encode = {"exp": expire, "email": _user.email, 'id': _user.id, 'first_name': _user.first_name, 'last_name': _user.last_name}
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         
