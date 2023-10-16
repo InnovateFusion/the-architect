@@ -11,12 +11,12 @@ export default function FeaturesBlocks() {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="py-12 md:py-20">
           {/* Section header */}
-          <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+          <div className="max-w-3xl mx-auto text-center  pb-12 md:pb-20">
             <h2 className="h2 mb-4">Explore the solutions</h2>
             <p className="text-xl text-gray-600">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur excepteur sint occaecat
-              cupidatat.
+              The Architects Platform is a cutting-edge solution designed to
+              address the challenges and enhance the capabilities of architects
+              and designers.
             </p>
           </div>
 
@@ -58,11 +58,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Initial design concept and inspirational designs
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                The application should provide a design concept based on the
+                architect's input on the needs of the client and other
+                constraints like location, budget and also generate inspiration
+                designs.
               </p>
             </div>
 
@@ -99,11 +102,13 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Built in Drawing and Design tool
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Users will have access to built in designing and sketching tools
+                where they can provide their ideas to the Architect to get
+                feedback, suggestion and variations of the design.
               </p>
             </div>
 
@@ -143,11 +148,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Drawing to Render generation
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                The Architect assists in designing the interiors of houses and
+                buildings by providing designs as well as the setup of tools and
+                furnitures with only a prompt without the need to sketch and
+                render everything
               </p>
             </div>
 
@@ -186,11 +194,13 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Interior design generation and furniture generative fill
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                The drawings made on the platform as well as provided from users
+                as images will be rendered into realistic renders within
+                seconds.{" "}
               </p>
             </div>
 
@@ -224,11 +234,13 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Design modification and variation
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                The Architect will assist in shaping and modifying already made
+                designs as well as sketches based on a prompt and also provides
+                a suggestion and variation for the design
               </p>
             </div>
 
@@ -258,11 +270,13 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">
-                Headless CMS
+              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+                Market Research Analysis and Cost Estimation
               </h4>
               <p className="text-gray-600 text-center">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Based on the design and requirement constraints The Architect
+                helps by analyzing the design needs and estimating the cost of
+                construction and suggests more affordable solutions.
               </p>
             </div>
           </div>
