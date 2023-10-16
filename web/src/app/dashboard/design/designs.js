@@ -66,7 +66,14 @@ function DesignList() {
       {posts.length > 0
         ? posts.map((item) => (
             <div className="rounded-lg overflow-hidden mb-8" key={item.id}>
-              <Image src={item.image} alt={item.id} width={512} height={512} />
+              <Link href={`/dashboard/design/${item.id}`}>
+                <Image
+                  src={item.image}
+                  alt={item.id}
+                  width={512}
+                  height={512}
+                />
+              </Link>
             </div>
           ))
         : images.map((item, index) => (

@@ -3,7 +3,7 @@ import React from "react";
 
 function Sidebar() {
   return (
-    <div className="fixed flex h-screen bg-gray-800 w-16 flex-col items-center justify-around pt-14">
+    <div className="fixed hidden sm:flex h-screen bg-gray-800 w-16 flex-col items-center justify-around pt-14">
       <div className="m-5 flex flex-col">
         {[
           {
