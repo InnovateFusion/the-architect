@@ -40,7 +40,7 @@ function List() {
                         index % 2 == 0 ? "full" : "1/2"
                       } overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80`}
                     >
-                      <Link href={`/dashboard/edit`}>
+                      <Link href={`/dashboard/design/${item.id}`}>
                         <Image
                           width={2000}
                           height={2000}

@@ -2,12 +2,19 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Chat({ changeImage }) {
   const [chats, setChats] = useState([]);
   const [message, setMessage] = useState("");
   const [model, setModel] = useState("text_to_image");
+  const [url, setUrl] = useState(
+    `https://the-architect.onrender.com/api/v1/chats`
+  );
   const [currentChat, setCurrentChat] = useState("");
+  const searchParams = useSearchParams();
+
+  const [chatId, setChatId] = useState(searchParams.get("chatId"));
 
   const messagesEndRef = useRef(null);
 
@@ -15,18 +22,22 @@ export default function Chat({ changeImage }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   const handleSend = async () => {
-    setChats([
-      ...chats,
-      JSON.stringify({
-        sender: "user",
-        content: message,
-        logo: "/if.png",
-      }),
-    ]);
+      setMessage("");
+      setChats([
+        ...chats,
+        JSON.stringify({
+          sender: "user",
+          content: message,
+          logo: "/if.png",
+        }),
+      ]);
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    const url = `https://the-architect.onrender.com/api/v1/chats/a2c3a08d-4e6a-4600-9bbe-b1f1e30edb2b/messages`;
+    if (chatId != null)
+      setUrl(
+        `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
+      );
 
     const res = await fetch(url, {
       method: "POST",
@@ -35,7 +46,6 @@ export default function Chat({ changeImage }) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        chat_id: "137504cf-943b-49c6-a218-d36276731f75",
         user_id: userId,
         payload: {
           model: "xsarchitectural-interior-design",
@@ -54,9 +64,17 @@ export default function Chat({ changeImage }) {
     });
     if (res.status == 200) {
       const chat = await res.json();
-      console.log(chat);
-      setChats([...chats, JSON.stringify(chat)]);
-      setMessage("");
+      console.log(chatId)
+      if (chatId != null) {
+        console.log("chat full");
+        console.log(chat);
+        setChats([...chats, JSON.stringify(chat)]);
+      } else {
+        console.log("chat less");
+        console.log(chat);
+        setChats([...chats, ...chat.messages]);
+        setChatId(chat.id);
+      }
       scrollToBottom();
     }
   };
@@ -65,7 +83,7 @@ export default function Chat({ changeImage }) {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    const url = `https://the-architect.onrender.com/api/v1/chats/a2c3a08d-4e6a-4600-9bbe-b1f1e30edb2b`;
+    const url = `https://the-architect.onrender.com/api/v1/chats/${chatId}`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -81,12 +99,17 @@ export default function Chat({ changeImage }) {
   };
 
   useEffect(() => {
-    getChat();
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (chatId != null) {
+      setUrl(
+        `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
+      );
+      getChat();
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, []);
 
   return (
-    <div className="h-[100%] flex flex-col">
+    <div className="h-full flex flex-col">
       <div className=" hidden gap-x-4 p-1">
         <select
           className="select select-primary"
@@ -110,7 +133,7 @@ export default function Chat({ changeImage }) {
           <option value="instruction">Edit my Design</option>
         </select>
       </div>
-      <div className="border  bg-slate-300 overflow-y-auto">
+      <div className="border  bg-slate-300 overflow-y-auto h-[99%]">
         {chats.length > 0 ? (
           chats.map((item, index) => {
             const chat = JSON.parse(item);
@@ -164,6 +187,24 @@ export default function Chat({ changeImage }) {
               </div>
               <div className="chat-bubble">Make it more lighter</div>
             </div>
+            <div className="chat chat-start" ref={messagesEndRef}>
+              <div className="chat-image avatar">
+                <div className="w-12 rounded-full p-3">
+                  <Image src="/logo.svg" width={200} alt="" height={200} />
+                </div>
+              </div>
+              <div className="chat-bubble">
+                <Image src="/logo.svg" width={200} alt="" height={200} />
+              </div>
+            </div>
+            <div className="chat chat-end">
+              <div className="chat-image avatar">
+                <div className="w-12 rounded-full">
+                  <Image src="/if.png" width={200} alt="" height={200} />
+                </div>
+              </div>
+              <div className="chat-bubble">Make it more lighter</div>
+            </div>
           </>
         )}
       </div>
@@ -178,8 +219,10 @@ export default function Chat({ changeImage }) {
               setMessage(e.target.value);
             }}
             value={message}
+            multiple
+            min={2}
           />
-          <button
+          {message != "" && <button
             type="submit"
             className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded mx-5"
             onClick={handleSend}
@@ -188,7 +231,7 @@ export default function Chat({ changeImage }) {
             }}
           >
             Generate
-          </button>
+          </button>}
         </div>
       </div>
     </div>
