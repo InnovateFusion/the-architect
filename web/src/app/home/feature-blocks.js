@@ -63,7 +63,7 @@ export default function FeaturesBlocks() {
               </h4>
               <p className="text-gray-600 text-center">
                 The application should provide a design concept based on the
-                architect's input on the needs of the client and other
+                architect&apos;s input on the needs of the client and other
                 constraints like location, budget and also generate inspiration
                 designs.
               </p>

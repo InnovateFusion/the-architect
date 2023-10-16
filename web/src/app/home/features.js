@@ -49,8 +49,8 @@ export default function Features() {
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
                 <h3 className="h3 mb-3">Powerful suite of tools</h3>
                 <p className="text-xl text-gray-600">
-                  It's an AI-powered platform that empowers professionals and
-                  enthusiasts in the field of architecture and design by
+                  It&apos;s an AI-powered platform that empowers professionals
+                  and enthusiasts in the field of architecture and design by
                   offering a wide range of features and tools.
                 </p>
               </div>
