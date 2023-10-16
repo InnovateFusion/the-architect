@@ -22,7 +22,7 @@ const ExampleComponent = () => {
         </div>
       </div>
       <div className="w-full sm:w-1/2">
-        <Chat changeImage={(link) => handleChangeImage(link)} />
+        <Chat changeImage={(link) => handleChangeImage(link)} mode="text_to_image" image={image}/>
       </div>
     </div>
   );

@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Chat({ changeImage }) {
+export default function Chat({ changeImage, mode, image }) {
   const [chats, setChats] = useState([]);
   const [message, setMessage] = useState("");
-  const [model, setModel] = useState("text_to_image");
+  const [model, setModel] = useState(mode);
   const [url, setUrl] = useState(
     `https://the-architect.onrender.com/api/v1/chats`
   );
@@ -22,15 +22,17 @@ export default function Chat({ changeImage }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   const handleSend = async () => {
-      setMessage("");
-      setChats([
-        ...chats,
-        JSON.stringify({
-          sender: "user",
-          content: message,
-          logo: "/if.png",
-        }),
-      ]);
+    if (mode == "image_to_image") changeImage();
+    setMessage("");
+    setChats((oldArray) => [
+      ...oldArray,
+      JSON.stringify({
+        sender: "user",
+        content: message,
+        logo: "/if.png",
+      }),
+    ]);
+    console.log(chats);
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
@@ -48,8 +50,11 @@ export default function Chat({ changeImage }) {
       body: JSON.stringify({
         user_id: userId,
         payload: {
-          model: "xsarchitectural-interior-design",
+          // model: "xsarchitectural-interior-design",
+          model: "stable-diffusion-v1-5",
           prompt: message,
+          controlnet: "scribble-1.1",
+          image: image.substr(23),
           negative_prompt: "Disfigured, cartoon, blurry",
           width: 512,
           height: 512,
@@ -62,16 +67,13 @@ export default function Chat({ changeImage }) {
         model: model,
       }),
     });
+
     if (res.status == 200) {
       const chat = await res.json();
-      console.log(chatId)
       if (chatId != null) {
-        console.log("chat full");
-        console.log(chat);
-        setChats([...chats, JSON.stringify(chat)]);
+        const x = JSON.stringify(chat);
+        setChats((oldArray) => [...oldArray, x]);
       } else {
-        console.log("chat less");
-        console.log(chat);
         setChats([...chats, ...chat.messages]);
         setChatId(chat.id);
       }
@@ -133,7 +135,7 @@ export default function Chat({ changeImage }) {
           <option value="instruction">Edit my Design</option>
         </select>
       </div>
-      <div className="border  bg-slate-300 overflow-y-auto h-[99%]">
+      <div className="border  bg-slate-300 overflow-y-auto h-[99vh]">
         {chats.length > 0 ? (
           chats.map((item, index) => {
             const chat = JSON.parse(item);
@@ -222,16 +224,18 @@ export default function Chat({ changeImage }) {
             multiple
             min={2}
           />
-          {message != "" && <button
-            type="submit"
-            className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded mx-5"
-            onClick={handleSend}
-            onKeyDown={(e) => {
-              e.key == "Enter" && console.log("hih");
-            }}
-          >
-            Generate
-          </button>}
+          {message != "" && (
+            <button
+              type="submit"
+              className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded mx-5"
+              onClick={handleSend}
+              onKeyDown={(e) => {
+                e.key == "Enter" && console.log("hih");
+              }}
+            >
+              Generate
+            </button>
+          )}
         </div>
       </div>
     </div>
