@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../core/errors/exception.dart';
 
 abstract class UserLocalDataSource {
-  Future<UserModel> getUser();
+  Future<UserModel> getUsers();
   Future<void> cacheUser(UserModel userToCache);
 }
 
@@ -15,12 +15,12 @@ const cachedUserKey = 'CACHED_USER';
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
   final SharedPreferences plugin;
-  final GetImage getImage;
+  final GetImageRemoteDataSource getImage;
 
   UserLocalDataSourceImpl(this.plugin, this.getImage);
 
   @override
-  Future<UserModel> getUser() async {
+  Future<UserModel> getUsers() async {
     final jsonString = plugin.getString(cachedUserKey);
     if (jsonString != null) {
       Map<String, dynamic> jsonMap = json.decode(jsonString);

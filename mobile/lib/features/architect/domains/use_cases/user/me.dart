@@ -5,13 +5,13 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failure.dart';
 
-class ViewUsers implements UseCase<List<User>, NoParams> {
+class Me implements UseCase<User, NoParams> {
   final UserRepository repository;
 
-  const ViewUsers(this.repository);
+  const Me(this.repository);
 
   @override
-  Future<Either<Failure, List<User>>> call(NoParams params) async {
-    return await repository.views();
+  Future<Either<Failure, User>> call(NoParams params) async {
+    return await repository.me();
   }
 }

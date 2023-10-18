@@ -26,7 +26,7 @@ abstract class UserRepository {
 
   Future<Either<Failure, User>> delete(String id);
   Future<Either<Failure, User>> view(String id);
-  Future<Either<Failure, List<User>>> views();
+  Future<Either<Failure, User>> me();
   Future<Either<Failure, User>> follow(String id);
   Future<Either<Failure, User>> unfollow(String id);
   Future<Either<Failure, List<User>>> followers(String id);

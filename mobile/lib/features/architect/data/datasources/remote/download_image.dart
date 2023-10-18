@@ -8,8 +8,8 @@ abstract class GetImageRemoteDataSource {
   Future<String> downloadImage(String url, String id);
 }
 
-class GetImage implements GetImageRemoteDataSource {
-  const GetImage({required this.client});
+class GetImageRemoteDataSourceImpl implements GetImageRemoteDataSource {
+  const GetImageRemoteDataSourceImpl({required this.client});
 
   final Client client;
 

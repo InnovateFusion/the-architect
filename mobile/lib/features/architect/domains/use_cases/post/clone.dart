@@ -1,10 +1,11 @@
 import 'package:architect/core/errors/failure.dart';
 import 'package:architect/features/architect/domains/repositories/post.dart';
-import 'package:architect/features/architect/presentations/widget/post/post.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../core/use_cases/usecase.dart';
+import '../../entities/post.dart';
 
 class ClonePost extends UseCase<Post, Params> {
 

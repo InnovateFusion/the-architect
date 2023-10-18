@@ -4,8 +4,9 @@ import 'package:architect/features/architect/data/models/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthLocalDataSource {
-  Future<void> cacheToken(String token);
+  Future<void> cacheToken(AuthModel token);
   Future<AuthModel> getToken();
+  Future<bool> isValid();
 }
 
 const String authCacheKey = 'auth';
@@ -16,8 +17,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl(this.plugin);
 
   @override
-  Future<void> cacheToken(String token) {
-    return plugin.setString(authCacheKey, token);
+  Future<void> cacheToken(AuthModel token) {
+    return plugin.setString(authCacheKey, json.encode(token.toJson()));
   }
 
   @override
@@ -28,6 +29,21 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       return Future.value(AuthModel.fromJson(jsonMap));
     } else {
       throw CacheException();
+    }
+  }
+
+  @override
+  Future<bool> isValid() async {
+    try {
+      final auth = await getToken();
+      final token = auth.accessToken;
+      final Map<String, dynamic> decodedMap = json
+          .decode(String.fromCharCodes(base64Url.decode(token.split('.')[1])));
+      int expTimestamp = decodedMap['exp'];
+      int currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      return currentTimestamp < expTimestamp;
+    } on CacheException {
+      return false;
     }
   }
 }

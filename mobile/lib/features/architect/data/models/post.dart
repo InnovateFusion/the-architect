@@ -9,7 +9,6 @@ class PostModel extends Post {
     required String firstName,
     required String lastName,
     required DateTime date,
-    required String userImage,
     required String image,
     required bool isLiked,
     required int like,
@@ -24,7 +23,6 @@ class PostModel extends Post {
           firstName: firstName,
           lastName: lastName,
           date: date,
-          userImage: userImage,
           image: image,
           isLiked: isLiked,
           like: like,
@@ -35,21 +33,19 @@ class PostModel extends Post {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      id: json['id'],
-      title: json['title'],
-      content: json['content'],
-      userId: json['userId'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      date: DateTime.parse(json['date']),
-      userImage: json['userImage'],
-      image: json['image'],
-      isLiked: json['isLiked'],
-      like: json['like'],
-      isCloned: json['isCloned'],
-      clone: json['clone'],
-      tags: json['tags'].cast<String>(),
-    );
+        id: json['id'],
+        title: json['title'],
+        content: json['content'],
+        userId: json['userId'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        date: DateTime.parse(json['date']),
+        image: json['image'],
+        isLiked: json['isLiked'],
+        like: json['like'],
+        isCloned: json['isCloned'],
+        clone: json['clone'],
+        tags: json['tags']);
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +57,6 @@ class PostModel extends Post {
       'firstName': firstName,
       'lastName': lastName,
       'date': date.toIso8601String(),
-      'userImage': userImage,
       'image': image,
       'isLiked': isLiked,
       'like': like,

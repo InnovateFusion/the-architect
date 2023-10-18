@@ -5,7 +5,6 @@ class Post extends Equatable {
     required this.id,
     required this.firstName,
     required this.lastName,
-    required this.userImage,
     required this.title,
     required this.content,
     required this.image,
@@ -31,7 +30,6 @@ class Post extends Equatable {
   final List<String> tags;
   final String firstName;
   final String lastName;
-  final String userImage;
 
   @override
   List<Object?> get props => [
@@ -48,6 +46,5 @@ class Post extends Equatable {
         tags,
         firstName,
         lastName,
-        userImage,
       ];
 }

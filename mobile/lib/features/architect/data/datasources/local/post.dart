@@ -12,7 +12,7 @@ abstract class PostLocalDataSource {
 const cachedPostsKey = 'CACHED_POSTS';
 
 class PostLocalDataSourceImpl implements PostLocalDataSource {
-  final GetImage getImage;
+  final GetImageRemoteDataSource getImage;
   final SharedPreferences plugin;
 
   PostLocalDataSourceImpl(this.plugin, this.getImage);

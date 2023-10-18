@@ -8,7 +8,7 @@ import 'package:architect/features/architect/domains/use_cases/user/delete.dart'
     as delete_user;
 import 'package:architect/features/architect/domains/use_cases/user/view.dart'
     as get_user;
-import 'package:architect/features/architect/domains/use_cases/user/views.dart'
+import 'package:architect/features/architect/domains/use_cases/user/me.dart'
     as get_users;
 import 'package:architect/features/architect/domains/use_cases/user/update.dart'
     as update_user;
@@ -34,7 +34,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final create_user.UserCreate createUser;
   final delete_user.DeleteUser deleteUser;
   final get_user.ViewUser getUser;
-  final get_users.ViewUsers getUsers;
+  final get_users.Me getCurrentUser;
   final update_user.UserUpdate updateUser;
   final follow_user.FollowUser followUser;
   final unfollow_user.UnFollowUser unfollowUser;
@@ -45,7 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required this.createUser,
     required this.deleteUser,
     required this.getUser,
-    required this.getUsers,
+    required this.getCurrentUser,
     required this.updateUser,
     required this.followUser,
     required this.unfollowUser,
@@ -120,22 +120,52 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _onGetUsers(
       ViewUsersEvent event, Emitter<UserState> emit) async {
     emit(UserLoading());
-    final result = await getUsers(NoParams());
+    final result = await getCurrentUser(NoParams());
+    result.fold(
+      (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
+      (users) => emit(UserLoaded(user: users)),
+    );
+  }
+
+  Future<void> _onFollowUser(
+      FollowUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final result = await followUser(follow_user.Params(event.id));
+    result.fold(
+      (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
+      (user) => emit(UserUpdated(user: user)),
+    );
+  }
+
+  Future<void> _onUnFollowUser(
+      UnFollowUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final result = await unfollowUser(unfollow_user.Params(event.id));
+    result.fold(
+      (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
+      (user) => emit(UserUpdated(user: user)),
+    );
+  }
+
+  Future<void> _onFollowingUser(
+      FollowingUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final result = await followingUser(following_user.Params(event.id));
     result.fold(
       (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
       (users) => emit(UsersViewsLoaded(users: users)),
     );
   }
-}
 
-Future<void> _onFollowUser(
-    FollowUserEvent event, Emitter<UserState> emit) async {
-  emit(UserLoading());
-  final result = await followUser(follow_user.Params(event.id));
-  result.fold(
-    (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
-    (user) => emit(UserUpdated(user: user)),
-  );
+  Future<void> _onFollowersUser(
+      FollowersUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final result = await followersUser(followers_user.Params(event.id));
+    result.fold(
+      (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
+      (users) => emit(UsersViewsLoaded(users: users)),
+    );
+  }
 }
 
 String _mapFailureToMessage(Failure failure) {

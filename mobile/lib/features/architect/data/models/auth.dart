@@ -11,15 +11,15 @@ class AuthModel extends Auth {
 
   factory AuthModel.fromJson(Map<String, dynamic> json) {
     return AuthModel(
-      accessToken: json['accessToken'],
-      tokenType: json['tokenType'],
+      accessToken: json['access_token'],
+      tokenType: json['token_type'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'accessToken': accessToken,
-      'tokenType': tokenType,
+      'access_token': accessToken,
+      'token_type': tokenType,
     };
   }
 }
