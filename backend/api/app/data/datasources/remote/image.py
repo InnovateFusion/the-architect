@@ -26,6 +26,8 @@ class ImageGeneration:
         if response.status_code != 200:
             raise ServerException('Error getting image')
         imageText = response.json()['image']
+        if imageText is None or imageText == '' or imageText == 'null':
+            raise ServerException('Error getting image')
         image = base64.b64decode(imageText)
         upload_result = upload(image)
         if not upload_result:
