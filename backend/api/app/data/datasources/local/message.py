@@ -29,7 +29,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         }
         
         image_generation = ImageGeneration(requests, upload)
-        response = None
+        response = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         
         if message.model == 'text_to_image':
             url = "https://api.getimg.ai/v1/stable-diffusion/text-to-image"
