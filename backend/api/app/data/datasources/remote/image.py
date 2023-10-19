@@ -20,21 +20,21 @@ class ImageGeneration:
         self.upload = upload
         
     async def get_image(self, url, headers, data):
-        
         headers['Authorization'] = 'Bearer ' + CGET_IMAGE_KEY
         response = requests.post(url, headers=headers, json=data)
-        print(imageText)
+        print(response.status_code, "THIS IS THE RESPONSE")
         if response.status_code != 200:
-            raise ServerException('Error getting image')
+            print(response.json())
+            raise ServerException('Error getting image 1')
         imageText = response.json()['image']
 
         if imageText is None or imageText == '' or imageText == 'null':
-            raise ServerException('Error getting image')
+            raise ServerException('Error getting image 2')
         
         image = base64.b64decode(imageText)
         upload_result = upload(image)
         if not upload_result:
-            raise ServerException('Error uploading image')
+            raise ServerException('Error uploading image 3')
         return upload_result['url']
         
 

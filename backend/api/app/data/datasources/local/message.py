@@ -33,34 +33,36 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         
         if message.model == 'text_to_image':
             url = "https://api.getimg.ai/v1/stable-diffusion/text-to-image"
+            
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except Exception as e:
-                raise CacheException("Error getting image")
+                print(e)
+                raise CacheException("Error getting image text_to_image")
         elif message.model == 'image_to_image':
             url = "https://api.getimg.ai/v1/stable-diffusion/image-to-image"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image image_to_image")
         elif message.model == 'controlNet':
             url = "https://api.getimg.ai/v1/stable-diffusion/controlnet"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image controlNet")
         elif message.model == 'painting':
             url = "https://api.getimg.ai/v1/stable-diffusion/inpaint"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image painting")
         elif message.model == 'instruction':
             url = "https://api.getimg.ai/v1/stable-diffusion/instruct"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image instruction")
             
         message_from_user = MessageEntity(
             id=str(uuid4()),
