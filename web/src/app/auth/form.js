@@ -33,29 +33,30 @@ export function UserAuthForm({ className, ...props }) {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${data.access_token}`,
+              Authorization: `Bearer ${data.access_token}`,
             },
           }
         );
         if (result.status == 200) {
           const user = await result.json();
           localStorage.setItem("userId", user.id);
-        }else{
-          throw new Error("Invalid Token"); 
+        } else {
+          throw new Error("Invalid Token");
         }
         router.push("/dashboard/design");
-      }else{
+      } else {
         throw new Error("Invalid email or password");
       }
       setIsLoading(false);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       setIsLoading(false);
     }
   }
 
-  const token = localStorage.getItem("token");
+  const [token, setToken] = React.useState(null);
   React.useEffect(() => {
+    setToken(localStorage.getItem("token"));
     if (token) {
       router.push("/dashboard/design");
     }
