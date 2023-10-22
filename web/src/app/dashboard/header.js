@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
+  const handleLogout = () => {
+    console.log("logout");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    window.location.reload();
+  };
   return (
     <header className="flex w-full flex-row items-center justify-between bg-gray-800 p-4 z-50 fixed">
       <div className="flex items-center">
@@ -26,7 +32,9 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <button className="text-white hover:text-gray-400">Logout</button>
+      <button className="text-white hover:text-gray-400" onClick={handleLogout}>
+        Logout
+      </button>
     </header>
   );
 };
