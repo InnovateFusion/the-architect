@@ -45,10 +45,10 @@ const ExampleComponent = () => {
 
     const canvasUrl = await getCanvasUrl();
     if (!canvasUrl) {
-      changeImage("");
+      setImage("");
       return;
     }
-    setImage(canvasUrl);
+    setImage(canvasUrl.substr(22));
   };
 
   return (

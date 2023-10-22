@@ -39,7 +39,7 @@ export default function Home() {
       : "";
     const mask = maskImage;
 
-    setImage(init_image);
+    setImage(init_image.substr(23));
     console.log(init_image);
     console.log(mask);
     setMask(mask);
@@ -55,7 +55,7 @@ export default function Home() {
 
   return (
     <div className="h-full sm:flex ">
-      <main className="container mx-auto p-5">
+      <main className="container mx-auto w-full sm:w-1/2 p-4">
         {error && <div>{error}</div>}
 
         <div className="border-hairline max-w-[512px] mx-auto relative">
@@ -96,7 +96,7 @@ export default function Home() {
       <div className="w-full sm:w-1/2">
         <Chat
           changeImage={handleSubmit}
-          mode="inpainting"
+          mode="painting"
           image={image}
           mask={mask}
         />

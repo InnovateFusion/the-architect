@@ -3,18 +3,33 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import TagSelector from "./tags";
 
-export default function Chat({ changeImage, mode, image }) {
-  const [chats, setChats] = useState([]);
+export default function Chat({ changeImage, mode, image, mask }) {
+  const [chats, setChats] = useState([
+    JSON.stringify({
+      sender: "ai",
+      content:
+        "Hi I'm your design assistant. I'm here to help you in your design process. I can help you by providing inspirational designs based on your needs and help youo modify your designs. Here is my design of the day, I hope you like it :).",
+      logo: "/if.png",
+    }),
+    JSON.stringify({
+      sender: "ai",
+      content: "/house.jpg",
+      logo: "/if.png",
+    }),
+  ]);
   const [message, setMessage] = useState("");
   const [model, setModel] = useState(mode);
   const [url, setUrl] = useState(
     `https://the-architect.onrender.com/api/v1/chats`
   );
-  const [currentChat, setCurrentChat] = useState("");
+  const [modalImage, setModalImage] = useState("/house.jpg");
   const searchParams = useSearchParams();
 
   const [chatId, setChatId] = useState(searchParams.get("chatId"));
+
+  const [selectedtags, setSelectedtags] = useState([]);
 
   const messagesEndRef = useRef(null);
 
@@ -22,7 +37,7 @@ export default function Chat({ changeImage, mode, image }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   const handleSend = async () => {
-    if (mode == "image_to_image") changeImage();
+    if (mode != "text_to_image") changeImage();
     setMessage("");
     setChats((oldArray) => [
       ...oldArray,
@@ -50,18 +65,24 @@ export default function Chat({ changeImage, mode, image }) {
       body: JSON.stringify({
         user_id: userId,
         payload: {
-          // model: "xsarchitectural-interior-design",
-          model: "stable-diffusion-v1-5",
+          model:
+            model == "text_to_image"
+              ? "xsarchitectural-interior-design"
+              : model == "painting"
+              ? "stable-diffusion-v1-5-inpainting"
+              : "stable-diffusion-v1-5",
           prompt: message,
           controlnet: "scribble-1.1",
-          image: image.substr(23),
+          image: image,
           negative_prompt: "Disfigured, cartoon, blurry",
+          mask_image: mask ? mask.substr(22) : "",
+          strength: 0.5,
           width: 512,
           height: 512,
           steps: 25,
           guidance: 7.5,
           seed: 0,
-          scheduler: "dpmsolver++",
+          scheduler: model == "painting" ? "ddim" : "dpmsolver++",
           output_format: "jpeg",
         },
         model: model,
@@ -100,6 +121,67 @@ export default function Chat({ changeImage, mode, image }) {
     }
   };
 
+  const [isModalOpen, setModalOpen] = useState(false)
+
+  const openModal = () => {
+    // document.getElementById("my_modal_2").showModal();
+    setModalOpen(true)
+  };
+
+  const closeModal = () => {
+    // document.getElementById("my_modal_2").checked = false;
+    setModalOpen(false)
+  };
+
+  const tags = [
+    "exterior",
+    "facade",
+    "outdoor",
+    "landscape",
+    "architectural facade",
+    "outdoor design",
+    "interior",
+    "indoor",
+    "interior design",
+    "space planning",
+    "furniture design",
+    "decor",
+    "lighting",
+  ];
+
+  const [postTitle, setPostTitle] = useState("");
+  const [postDescription, setPostDescription] = useState("");
+
+  const handlePost = async () => {
+      closeModal();
+      return
+    if (selectedtags.length > 0 && modalImage) {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      const url = `https://the-architect.onrender.com/api/v1/posts`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: userId,
+          image: modalImage,
+          title: postTitle,
+          content: postDescription,
+          tags: selectedtags,
+        }),
+      });
+      if (res.status == 200) {
+        const posts = await res.json();
+        setChats([...posts.messages]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (chatId != null) {
       setUrl(
@@ -108,6 +190,7 @@ export default function Chat({ changeImage, mode, image }) {
       getChat();
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    scrollToBottom();
   }, []);
 
   return (
@@ -151,14 +234,15 @@ export default function Chat({ changeImage, mode, image }) {
                   </div>
                 </div>
                 <div className="chat-bubble">
-                  {chat.sender == "ai" && chat.content ? (
+                  {chat.sender == "ai" && chat.content.substr(0, 2) !== "Hi" ? (
                     <Image
                       src={chat.content}
                       width={200}
                       alt=""
                       height={200}
                       onClick={() => {
-                        changeImage(chat.content);
+                        setModalImage(chat.content);
+                        openModal();
                       }}
                       className="hover:cursor-pointer"
                     />
@@ -171,73 +255,97 @@ export default function Chat({ changeImage, mode, image }) {
           })
         ) : (
           <>
-            <div className="chat chat-start" ref={messagesEndRef}>
-              <div className="chat-image avatar">
-                <div className="w-12 rounded-full p-3">
-                  <Image src="/logo.svg" width={200} alt="" height={200} />
-                </div>
-              </div>
-              <div className="chat-bubble">
-                <Image src="/logo.svg" width={200} alt="" height={200} />
-              </div>
-            </div>
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-12 rounded-full">
-                  <Image src="/if.png" width={200} alt="" height={200} />
-                </div>
-              </div>
-              <div className="chat-bubble">Make it more lighter</div>
-            </div>
-            <div className="chat chat-start" ref={messagesEndRef}>
-              <div className="chat-image avatar">
-                <div className="w-12 rounded-full p-3">
-                  <Image src="/logo.svg" width={200} alt="" height={200} />
-                </div>
-              </div>
-              <div className="chat-bubble">
-                <Image src="/logo.svg" width={200} alt="" height={200} />
-              </div>
-            </div>
-            <div className="chat chat-end">
-              <div className="chat-image avatar">
-                <div className="w-12 rounded-full">
-                  <Image src="/if.png" width={200} alt="" height={200} />
-                </div>
-              </div>
-              <div className="chat-bubble">Make it more lighter</div>
-            </div>
+            
           </>
         )}
       </div>
-
       <div>
         <div className="flex items-center border-2 border-red-700 py-2">
           <input
             type="text"
             placeholder="Type a message..."
-            className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            className="appearance-none bg-transparent border-none w-full text-white-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
             onChange={(e) => {
               setMessage(e.target.value);
             }}
             value={message}
             multiple
             min={2}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && message != "") {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
           />
           {message != "" && (
             <button
               type="submit"
               className="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded mx-5"
               onClick={handleSend}
-              onKeyDown={(e) => {
-                e.key == "Enter" && console.log("hih");
-              }}
             >
               Generate
             </button>
           )}
         </div>
       </div>
+      <dialog id="my_modal_2" className={`modal ${isModalOpen ? "modal-open": ""}`}>
+        <div className="modal-box w-full max-w-5xl">
+          <div className="modal-content flex">
+            <div className="w-1/2 flex p-3">
+              <Image src={modalImage} width={512} height={512} alt="" />
+            </div>
+            <div className="w-1/2 flex p-3 flex-col">
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Title for your design.</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Type here"
+                  className="input input-bordered w-full max-w-xs"
+                  onChange={(e) => setPostTitle(e.target.value)}
+                  value={postTitle}
+                />
+              </div>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">Description</span>
+                </label>
+                <textarea
+                  placeholder="Bio"
+                  className="textarea textarea-bordered textarea-md w-full max-w-xs"
+                  onChange={(e) => setPostDescription(e.target.value)}
+                  value={postDescription}
+                />
+              </div>
+              <div className="form-control w-full max-w-xs">
+                <label className="label">
+                  <span className="label-text">What is your name?</span>
+                </label>
+                <TagSelector
+                  tags={tags}
+                  selectedTags={selectedtags}
+                  setSelectedTags={setSelectedtags}
+                />
+              </div>
+              <button className="btn btn-primary mt-3" onClick={handlePost}>
+                Post Design
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={(e) => {
+              changeImage(modalImage);
+            }}
+          >
+            Use as Reference
+          </button>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 }
