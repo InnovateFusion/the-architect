@@ -1,5 +1,5 @@
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/features/architect/domains/entities/post.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/post.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class PostRepository {

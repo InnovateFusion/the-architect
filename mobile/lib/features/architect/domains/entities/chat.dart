@@ -1,5 +1,6 @@
-import 'package:architect/features/architect/domains/entities/message.dart';
 import 'package:equatable/equatable.dart';
+
+import 'message.dart';
 
 class Chat extends Equatable {
   const Chat({
@@ -7,13 +8,11 @@ class Chat extends Equatable {
     required this.title,
     required this.userId,
     required this.messages,
-    required this.date,
   });
 
   final String id;
   final String title;
   final String userId;
-  final DateTime date;
   final List<Message> messages;
 
   @override
@@ -22,6 +21,5 @@ class Chat extends Equatable {
         title,
         userId,
         messages,
-        date,
       ];
 }

@@ -1,19 +1,19 @@
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/core/use_cases/usecase.dart';
-import 'package:architect/features/architect/domains/entities/chat.dart';
-import 'package:architect/features/architect/domains/repositories/chat.dart';
+import '../../../../../core/errors/failure.dart';
+import '../../../../../core/use_cases/usecase.dart';
+import '../../entities/chat.dart';
+import '../../repositories/chat.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class ViewsChat extends UseCase<Chat, Params> {
-  ViewsChat({
-    required this.repository,
-  });
+class ViewsChat extends UseCase<List<Chat>, Params> {
+  ViewsChat(
+    this.repository,
+  );
 
   final ChatRepository repository;
 
   @override
-  Future<Either<Failure, Chat>> call(Params params) async {
+  Future<Either<Failure, List<Chat>>> call(Params params) async {
     return await repository.views(params.id);
   }
 }

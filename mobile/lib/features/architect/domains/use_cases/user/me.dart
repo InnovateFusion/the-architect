@@ -1,6 +1,6 @@
-import 'package:architect/core/use_cases/usecase.dart';
-import 'package:architect/features/architect/domains/entities/user.dart';
-import 'package:architect/features/architect/domains/repositories/user.dart';
+import '../../../../../core/use_cases/usecase.dart';
+import '../../entities/user.dart';
+import '../../repositories/user.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failure.dart';

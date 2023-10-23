@@ -1,7 +1,9 @@
 import 'dart:convert';
-import 'package:architect/core/errors/exception.dart';
-import 'package:architect/features/architect/data/models/auth.dart';
+
 import 'package:http/http.dart' show Client;
+
+import '../../../../../core/errors/exception.dart';
+import '../../models/auth.dart';
 
 abstract class AuthRemoteDataSource {
   Future<AuthModel> login({

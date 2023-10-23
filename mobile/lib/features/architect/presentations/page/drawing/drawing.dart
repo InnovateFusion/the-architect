@@ -1,4 +1,4 @@
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_page.dart';
+import 'view/drawing_page.dart';
 import 'package:flutter/material.dart';
 
 const Color kCanvasColor = Color.fromARGB(255, 255, 255, 255);

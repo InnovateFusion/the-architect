@@ -1,5 +1,5 @@
-import 'package:architect/core/use_cases/usecase.dart';
-import 'package:architect/features/architect/domains/repositories/post.dart';
+import '../../../../../core/use_cases/usecase.dart';
+import '../../repositories/post.dart';
 
 
 import 'package:dartz/dartz.dart';

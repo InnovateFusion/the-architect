@@ -1,28 +1,28 @@
-import 'package:architect/features/architect/domains/entities/user.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:architect/features/architect/domains/use_cases/user/create.dart'
     as create_user;
 import 'package:architect/features/architect/domains/use_cases/user/delete.dart'
     as delete_user;
-import 'package:architect/features/architect/domains/use_cases/user/view.dart'
-    as get_user;
-import 'package:architect/features/architect/domains/use_cases/user/me.dart'
-    as get_users;
-import 'package:architect/features/architect/domains/use_cases/user/update.dart'
-    as update_user;
 import 'package:architect/features/architect/domains/use_cases/user/follow.dart'
     as follow_user;
-import 'package:architect/features/architect/domains/use_cases/user/unfollow.dart'
-    as unfollow_user;
-import 'package:architect/features/architect/domains/use_cases/user/following.dart'
-    as following_user;
 import 'package:architect/features/architect/domains/use_cases/user/followers.dart'
     as followers_user;
+import 'package:architect/features/architect/domains/use_cases/user/following.dart'
+    as following_user;
+import 'package:architect/features/architect/domains/use_cases/user/me.dart'
+    as get_users;
+import 'package:architect/features/architect/domains/use_cases/user/unfollow.dart'
+    as unfollow_user;
+import 'package:architect/features/architect/domains/use_cases/user/update.dart'
+    as update_user;
+import 'package:architect/features/architect/domains/use_cases/user/view.dart'
+    as get_user;
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/use_cases/usecase.dart';
+import '../../../domains/entities/user.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

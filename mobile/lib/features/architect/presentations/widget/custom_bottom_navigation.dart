@@ -1,9 +1,9 @@
-import 'package:architect/features/architect/presentations/page/chat.dart';
-import 'package:architect/features/architect/presentations/page/drawing/drawing.dart';
-import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:flutter/material.dart';
 
 import '../page/bookmark.dart';
+import '../page/chat.dart';
+import '../page/drawing/drawing.dart';
+import '../page/home.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentNav;

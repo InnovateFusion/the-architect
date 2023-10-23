@@ -1,5 +1,6 @@
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
 import 'package:flutter/material.dart';
+
+import 'drawing_mode.dart';
 
 
 class Sketch {

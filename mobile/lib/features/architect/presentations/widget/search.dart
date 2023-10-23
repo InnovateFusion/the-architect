@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 
-class Search extends StatelessWidget {
-  final VoidCallback onPressed;
+class Search extends StatefulWidget {
+  final Function(String search) onPressed;
 
   const Search({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
+
+  @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  final TextEditingController _searchController = TextEditingController();
+
+  void _handleSearch() {
+    String searchText = _searchController.text;
+    widget.onPressed(searchText);
+    _searchController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +34,33 @@ class Search extends StatelessWidget {
           ),
         ),
         height: 50,
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: Icon(
-                Icons.search,
-                color: Colors.grey,
-                size: 23, // Example icon color
+              padding: const EdgeInsets.only(left: 15),
+              child: GestureDetector(
+                onTap: _handleSearch,
+                child: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                  size: 25, // Example icon color
+                ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: TextField(
-                decoration: InputDecoration(
+                onSubmitted: (value) => _handleSearch(),
+                controller: _searchController,
+                decoration: const InputDecoration(
                   hintText: 'Search',
                   hintStyle: TextStyle(
                     color: Colors.grey, // Example hint text color
                   ),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black, // Example text color
                 ),
               ),

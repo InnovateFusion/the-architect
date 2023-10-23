@@ -1,7 +1,7 @@
-import 'package:architect/features/architect/presentations/page/home.dart';
+import 'home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:architect/features/architect/presentations/bloc/auth/auth_bloc.dart';
-import 'package:architect/injection_container.dart';
+import '../bloc/auth/auth_bloc.dart';
+import '../../../../injection_container.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {

@@ -1,7 +1,8 @@
-import 'package:architect/features/architect/presentations/widget/chat/chat_item.dart';
-import 'package:architect/features/architect/presentations/widget/chat/chat_pompt_tags/pomptTag.dart';
-import 'package:architect/features/architect/presentations/widget/chat/chat_pompt_tags/function.dart';
 import 'package:flutter/material.dart';
+
+import 'chat_item.dart';
+import 'chat_pompt_tags/function.dart';
+import 'chat_pompt_tags/pomptTag.dart';
 
 class ChatSideBar extends StatefulWidget {
   const ChatSideBar({Key? key}) : super(key: key);

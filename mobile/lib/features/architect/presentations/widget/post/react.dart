@@ -22,13 +22,13 @@ class React extends StatelessWidget {
           onTap: onPressed,
           child: icon,
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 10),
         Text(
           text,
           style: const TextStyle(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w300,
             color: Colors.white,
-            fontSize: 14,
+            fontSize: 16,
           ),
         ),
       ],

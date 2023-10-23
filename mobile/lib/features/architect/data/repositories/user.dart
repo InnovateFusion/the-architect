@@ -1,12 +1,12 @@
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/core/network/network_info.dart';
-import 'package:architect/features/architect/data/datasources/local/user.dart';
-import 'package:architect/features/architect/domains/entities/user.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/exception.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/network/network_info.dart';
+import '../../domains/entities/user.dart';
 import '../../domains/repositories/user.dart';
 import '../datasources/local/auth.dart';
+import '../datasources/local/user.dart';
 import '../datasources/remote/user.dart';
 
 class UserRepositoryImpl extends UserRepository {

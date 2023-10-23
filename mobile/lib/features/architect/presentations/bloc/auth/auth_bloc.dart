@@ -1,13 +1,14 @@
-import 'package:architect/core/use_cases/usecase.dart';
-import 'package:architect/features/architect/domains/entities/auth.dart';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:architect/features/architect/domains/use_cases/auth/get_token.dart'
     as get_auth;
 import 'package:architect/features/architect/domains/use_cases/auth/is_auth.dart'
     as check_auth;
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+
 import '../../../../../core/errors/failure.dart';
+import '../../../../../core/use_cases/usecase.dart';
+import '../../../domains/entities/auth.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

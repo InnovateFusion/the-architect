@@ -1,4 +1,4 @@
-import 'package:architect/features/architect/domains/entities/user.dart';
+import '../../domains/entities/user.dart';
 
 class UserModel extends User {
   const UserModel({

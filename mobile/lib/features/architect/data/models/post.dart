@@ -1,4 +1,4 @@
-import 'package:architect/features/architect/domains/entities/post.dart';
+import '../../domains/entities/post.dart';
 
 class PostModel extends Post {
   const PostModel({
@@ -45,7 +45,7 @@ class PostModel extends Post {
         like: json['like'],
         isCloned: json['isCloned'],
         clone: json['clone'],
-        tags: json['tags']);
+        tags: json['tags'] != null ? List<String>.from(json['tags']) : []);
   }
 
   Map<String, dynamic> toJson() {

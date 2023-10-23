@@ -1,12 +1,10 @@
-import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
-import 'package:architect/features/architect/presentations/widget/custom_bottom_navigation.dart';
-import 'package:architect/features/architect/presentations/widget/post/post.dart';
-import 'package:architect/features/architect/presentations/widget/profile_image.dart';
-import 'package:architect/features/architect/presentations/widget/search.dart';
-import 'package:architect/injection_container.dart';
+import '../bloc/post/post_bloc.dart';
+import '../widget/custom_bottom_navigation.dart';
+import '../widget/post/post.dart';
+import '../widget/profile_image.dart';
+import '../widget/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../widget/tag.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,45 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void onSearchPressed() {
-    print('Search');
-  }
-
-  late PostBloc _postBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _postBloc = sl<PostBloc>();
-    _postBloc.add(const AllPosts(tags: [], search: ''));
-  }
-
-  final List<Post> posts = [
-    Post(
-      name: 'John Doe',
-      date: '2 hours ago',
-      isLiked: true,
-      isCloned: false,
-      userImageUrl: 'assets/images/me.jpg',
-      imageUrl: 'assets/images/me.jpg',
-      likes: 10,
-      clones: 5,
-      onLiked: () {},
-      onCloned: () {},
-    ),
-    Post(
-      name: 'Alice Smith',
-      date: '3 hours ago',
-      isLiked: true,
-      isCloned: false,
-      userImageUrl: 'assets/images/me.jpg',
-      imageUrl: 'assets/images/me.jpg',
-      likes: 20,
-      clones: 8,
-      onLiked: () {},
-      onCloned: () {},
-    ),
-  ];
+  var search = '';
+  final List<String> selectedTags = [];
 
   final List<Tag> tags = [
     Tag(
@@ -85,80 +46,75 @@ class _HomePageState extends State<HomePage> {
     // Add more tags as needed
   ];
 
+  void searchPosts(String search) {
+    print('search: $search');
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocProvider(
-        create: (context) =>
-            sl<PostBloc>()..add(const AllPosts(tags: [], search: '')),
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Stack(children: [
-            Container(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                width: double.infinity,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Search(onPressed: onSearchPressed),
-                          const SizedBox(width: 10),
-                          const ProfileImage(
-                              imageUrl: 'assets/images/me.jpg', size: 50.0)
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: tags
-                              .map((tag) => Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: tag,
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Expanded(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Column(children: [
-                              BlocBuilder<PostBloc, PostState>(
-                                  builder: (context, state) {
-                                if (state is PostInitial) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else if (state is PostsViewsLoaded) {
-                                  return BlocBuilder<PostBloc, PostState>(
-                                    builder: (contxt, state) {
-                                      return Text(state.toString());
-                                    },
-                                  );
-                                } else if (state is PostLoading) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else if (state is PostError) {
-                                  return const Center(
-                                      child: Text('Error loading posts'));
-                                } else {
-                                  return Container();
-                                }
-                              })
-                            ])),
-                      ),
-                    ])),
-            const Positioned(
-                bottom: 10,
-                left: 40,
-                right: 40,
-                child: CustomBottomNavigation(
-                    currentNav: 0) // Add custom bottom navigation
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(children: [
+          Container(
+            height: double.infinity,
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Search(onPressed: searchPosts),
+                    const SizedBox(width: 10),
+                    const ProfileImage(
+                        imageUrl: 'assets/images/me.jpg', size: 50.0),
+                  ],
                 ),
-          ]),
-        ),
+                const SizedBox(height: 15),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: tags
+                        .map((tag) => Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: tag,
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                BlocBuilder<PostBloc, PostState>(
+                  builder: (context, state) {
+                    if (state is PostInitial || state is PostLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is PostsViewsLoaded) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: state.posts.length,
+                          itemBuilder: (context, index) {
+                            return Post(post: state.posts[index]);
+                          },
+                        ),
+                      );
+                    } else if (state is PostError) {
+                      return const Center(child: Text('Error loading posts'));
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+              bottom: 10,
+              left: 40,
+              right: 40,
+              child: CustomBottomNavigation(
+                  currentNav: 0) // Add custom bottom navigation
+              ),
+        ]),
       ),
     );
   }

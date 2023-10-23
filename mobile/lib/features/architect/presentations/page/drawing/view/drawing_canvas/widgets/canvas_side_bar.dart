@@ -2,10 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/drawing_mode.dart';
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/models/sketch.dart';
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/widgets/color_palette.dart';
-import 'package:architect/features/architect/presentations/page/drawing/view/drawing_canvas/widgets/icon_box.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Image;
@@ -14,6 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../models/drawing_mode.dart';
+import '../models/sketch.dart';
+import 'color_palette.dart';
+import 'icon_box.dart';
 
 class CanvasSideBar extends HookWidget {
   final ValueNotifier<Color> selectedColor;

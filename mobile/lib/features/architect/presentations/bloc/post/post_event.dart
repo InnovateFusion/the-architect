@@ -20,3 +20,14 @@ final class AllPosts extends PostEvent {
   @override
   List<Object?> get props => [search, tags];
 }
+
+final class ViewsPosts extends PostEvent {
+  const ViewsPosts({
+    required this.userId,
+  });
+
+  final String userId;
+
+  @override
+  List<Object> get props => [userId];
+}

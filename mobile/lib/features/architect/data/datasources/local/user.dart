@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:architect/features/architect/data/datasources/remote/download_image.dart';
-import 'package:architect/features/architect/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/errors/exception.dart';
+import '../../models/user.dart';
+import '../remote/download_image.dart';
 
 abstract class UserLocalDataSource {
   Future<UserModel> getUsers();

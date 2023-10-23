@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class ChatInput extends StatelessWidget {
   const ChatInput({Key? key, required this.onSubmitted}) : super(key: key);
 
-  final void Function(String) onSubmitted;
+  final void Function(BuildContext context, String text) onSubmitted;
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController textController = TextEditingController();
 
     void handleSubmitted(String text) {
-      onSubmitted(text);
+      onSubmitted(context, text);
       textController.clear();
     }
 
@@ -29,7 +29,7 @@ class ChatInput extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-                color: const Color(0xFFB8B9BD),
+                color: const Color.fromARGB(255, 0, 0, 0),
                 borderRadius: BorderRadius.circular(25)),
             child: const Icon(
               Icons.attach_file_outlined,
@@ -54,13 +54,15 @@ class ChatInput extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => handleSubmitted(textController.text),
+            onTap: () => handleSubmitted(
+              textController.text,
+            ),
             child: const Padding(
               padding: EdgeInsets.all(5.0),
               child: Icon(
                 Icons.send_outlined,
                 size: 40,
-                color: Color(0xFFB8B9BD),
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           )

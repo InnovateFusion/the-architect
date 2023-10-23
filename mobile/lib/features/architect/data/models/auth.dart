@@ -1,4 +1,4 @@
-import 'package:architect/features/architect/domains/entities/auth.dart';
+import '../../domains/entities/auth.dart';
 
 class AuthModel extends Auth {
   const AuthModel({

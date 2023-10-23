@@ -1,11 +1,11 @@
-import 'package:architect/core/errors/exception.dart';
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/core/network/network_info.dart';
-import 'package:architect/features/architect/data/datasources/local/auth.dart';
-import 'package:architect/features/architect/data/datasources/remote/auth.dart';
-import 'package:architect/features/architect/data/datasources/remote/user.dart';
-import 'package:architect/features/architect/data/models/auth.dart';
-import 'package:architect/features/architect/domains/repositories/auth.dart';
+import '../../../../core/errors/exception.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/network/network_info.dart';
+import '../datasources/local/auth.dart';
+import '../datasources/remote/auth.dart';
+import '../datasources/remote/user.dart';
+import '../models/auth.dart';
+import '../../domains/repositories/auth.dart';
 import 'package:dartz/dartz.dart';
 
 import '../datasources/local/user.dart';

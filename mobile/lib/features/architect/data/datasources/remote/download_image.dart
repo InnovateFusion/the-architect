@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:architect/core/errors/exception.dart';
 import 'package:http/http.dart' show Client;
 import 'package:path_provider/path_provider.dart';
+
+import '../../../../../core/errors/exception.dart';
 
 abstract class GetImageRemoteDataSource {
   Future<String> downloadImage(String url, String id);

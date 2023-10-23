@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:architect/core/errors/exception.dart';
-import 'package:architect/features/architect/data/datasources/remote/download_image.dart';
-import 'package:architect/features/architect/data/models/post.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../../core/errors/exception.dart';
+import '../../models/post.dart';
+import '../remote/download_image.dart';
 
 abstract class PostLocalDataSource {
   Future<List<PostModel>> getPosts();

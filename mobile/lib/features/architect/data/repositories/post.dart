@@ -1,10 +1,10 @@
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/features/architect/domains/entities/post.dart';
-import 'package:architect/features/architect/domains/repositories/post.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/exception.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../../core/network/network_info.dart';
+import '../../domains/entities/post.dart';
+import '../../domains/repositories/post.dart';
 import '../datasources/remote/post.dart';
 
 class PostRepositoryImpl extends PostRepository {
@@ -22,7 +22,7 @@ class PostRepositoryImpl extends PostRepository {
     if (await networkInfo.isConnected) {
       try {
         String token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1NDEyMzcyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9.zmNKEcv9WYhEhe9J5ydYTsVkaF63oKBifrSPwQLXXoE';
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1NzMzOTg0LCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9.DpM49mp_43PEbosdxTSiQtSRBAzzxZlGNEi_TSYoyWU';
         final posts = await remoteDataSource.allPosts(search, tags, token);
         return Right(posts);
       } on ServerException {
@@ -93,8 +93,18 @@ class PostRepositoryImpl extends PostRepository {
   }
 
   @override
-  Future<Either<Failure, List<Post>>> views(String userId) {
-    // TODO: implement views
-    throw UnimplementedError();
+  Future<Either<Failure, List<Post>>> views(String userId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
+        final posts = await remoteDataSource.viewsPost(userId, token);
+        return Right(posts);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 }

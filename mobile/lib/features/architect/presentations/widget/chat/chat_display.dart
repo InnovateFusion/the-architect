@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../../page/chat.dart';
 
 class ChatDisplay extends StatefulWidget {
-  const ChatDisplay({Key? key, required this.messages}) : super(key: key);
+  const ChatDisplay({
+    Key? key,
+    required this.messages,
+  }) : super(key: key);
 
   final List<Message> messages;
 
@@ -51,7 +54,11 @@ class ChatMessage extends StatelessWidget {
   final String text;
   final bool isSentByMe;
 
-  const ChatMessage({super.key, required this.text, required this.isSentByMe});
+  const ChatMessage({
+    super.key,
+    required this.text,
+    required this.isSentByMe,
+  });
 
   @override
   Widget build(BuildContext context) {

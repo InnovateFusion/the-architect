@@ -1,7 +1,7 @@
-import 'package:architect/features/architect/presentations/widget/custom_bottom_navigation.dart';
-import 'package:architect/features/architect/presentations/widget/gallery_item.dart';
-import 'package:architect/features/architect/presentations/widget/profile_image.dart';
 import 'package:flutter/material.dart';
+
+import '../widget/custom_bottom_navigation.dart';
+import '../widget/profile_image.dart';
 
 class BookMark extends StatelessWidget {
   const BookMark({Key? key}) : super(key: key);
@@ -55,34 +55,7 @@ class BookMark extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Column(
-                            children: [
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                            ],
-                          )),
-                          Expanded(
-                              child: Column(
-                            children: [
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                              GalleryItem(half: true),
-                              GalleryItem(half: false),
-                            ],
-                          )),
-                        ],
+                        children: [],
                       ),
                     ),
                   ),

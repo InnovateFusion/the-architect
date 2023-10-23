@@ -1,11 +1,10 @@
-import 'package:architect/core/errors/failure.dart';
-import 'package:architect/features/architect/domains/entities/auth.dart';
-import 'package:architect/features/architect/domains/repositories/auth.dart';
-
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/errors/failure.dart';
 import '../../../../../core/use_cases/usecase.dart';
+import '../../entities/auth.dart';
+import '../../repositories/auth.dart';
 
 class GetToken extends UseCase<Auth, Params> {
   final AuthRepository repository;

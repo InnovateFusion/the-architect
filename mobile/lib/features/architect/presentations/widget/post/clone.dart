@@ -14,18 +14,18 @@ class Clone extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 45,
-      width: 45,
+      height: 55,
+      width: 55,
       decoration: BoxDecoration(
         color: color.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(22.5),
+        borderRadius: BorderRadius.circular(27.5),
       ),
       child: InkWell(
         onTap: onPressed,
-        child: Icon(
+        child: const Icon(
           Icons.cyclone,
-          color: color,
-          size: 20,
+          color: Colors.white,
+          size: 30,
         ),
       ),
     );

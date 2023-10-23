@@ -1,4 +1,4 @@
-import 'package:architect/features/architect/domains/entities/user.dart';
+import '../entities/user.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
