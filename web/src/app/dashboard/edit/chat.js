@@ -18,6 +18,17 @@ export default function Chat({ changeImage, mode, image, mask }) {
       content: "/house.jpg",
       logo: "/if.png",
     }),
+    JSON.stringify({
+      sender: "user",
+      content:
+        "Hi I'm your design assistant. I'm here to help you in your design process. I can help you by providing inspirational designs based on your needs and help youo modify your designs. Here is my design of the day, I hope you like it :).",
+      logo: "/if.png",
+    }),
+    JSON.stringify({
+      sender: "user",
+      content: "/house.jpg",
+      logo: "/if.png",
+    }),
   ]);
   const [message, setMessage] = useState("");
   const [model, setModel] = useState(mode);
@@ -121,16 +132,16 @@ export default function Chat({ changeImage, mode, image, mask }) {
     }
   };
 
-  const [isModalOpen, setModalOpen] = useState(false)
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
     // document.getElementById("my_modal_2").showModal();
-    setModalOpen(true)
+    setModalOpen(true);
   };
 
   const closeModal = () => {
     // document.getElementById("my_modal_2").checked = false;
-    setModalOpen(false)
+    setModalOpen(false);
   };
 
   const tags = [
@@ -153,8 +164,8 @@ export default function Chat({ changeImage, mode, image, mask }) {
   const [postDescription, setPostDescription] = useState("");
 
   const handlePost = async () => {
-      closeModal();
-      return
+    closeModal();
+    return;
     if (selectedtags.length > 0 && modalImage) {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
@@ -218,45 +229,89 @@ export default function Chat({ changeImage, mode, image, mask }) {
           <option value="instruction">Edit my Design</option>
         </select>
       </div>
-      <div className="border  bg-slate-300 overflow-y-auto h-[99vh]">
+      <div className="border mx-auto w-full space-y-4 bg-slate-300 overflow-y-auto h-[99vh]">
         {chats.length > 0 ? (
           chats.map((item, index) => {
             const chat = JSON.parse(item);
             return (
-              <div
-                className={`chat chat-${chat.sender == "ai" ? "start" : "end"}`}
-                ref={messagesEndRef}
-                key={index}
-              >
-                <div className="chat-image avatar">
-                  <div className="w-12 rounded-full p-1">
-                    <Image src="/logo.svg" width={200} alt="" height={200} />
+              <>
+                {chat.sender == "user" ? (
+                  <div
+                    className="flex justify-end"
+                    ref={messagesEndRef}
+                    key={chat.id}
+                  >
+                    <div className="flex w-10/12 flex-row-reverse">
+                      {/* <div className="w-12 rounded-full p-1">
+                        <Image src="/if.png" width={200} alt="" height={200} />
+                      </div> */}
+                      <div className="mr-4" />
+                      <div className="relative max-w-xl rounded-xl rounded-tr-none bg-blue-600 px-4 py-2">
+                        <span className="text-sm font-medium text-white">
+                          {chat.content.substr(0, 1) == "/" ||
+                          chat.content.substr(0, 4) == "http" ? (
+                            <Image
+                              src={chat.content}
+                              width={200}
+                              alt=""
+                              height={200}
+                              onClick={() => {
+                                setModalImage(chat.content);
+                                openModal();
+                              }}
+                              className="hover:cursor-pointer"
+                            />
+                          ) : (
+                            chat.content
+                          )}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="chat-bubble">
-                  {chat.sender == "ai" && chat.content.substr(0, 2) !== "Hi" ? (
-                    <Image
-                      src={chat.content}
-                      width={200}
-                      alt=""
-                      height={200}
-                      onClick={() => {
-                        setModalImage(chat.content);
-                        openModal();
-                      }}
-                      className="hover:cursor-pointer"
-                    />
-                  ) : (
-                    chat.content
-                  )}
-                </div>
-              </div>
+                ) : (
+                  <div
+                    className="flex justify-start"
+                    ref={messagesEndRef}
+                    key={chat.id}
+                  >
+                    <div className="flex w-10/12">
+                      {/* <div className="w-12 rounded-full p-1">
+                        <Image
+                          src="/logo.svg"
+                          width={200}
+                          alt=""
+                          height={200}
+                        />
+                      </div> */}
+                      <div className="mr-4" />
+                      <div className="relative max-w-xl rounded-xl rounded-tl-none bg-slate-900 px-4 py-2">
+                        <span className="text-sm font-medium text-heading">
+                          {chat.content.substr(0, 1) == "/" ||
+                          chat.content.substr(0, 4) == "http" ? (
+                            <Image
+                              src={chat.content}
+                              width={200}
+                              alt=""
+                              height={200}
+                              onClick={() => {
+                                setModalImage(chat.content);
+                                openModal();
+                              }}
+                              className="hover:cursor-pointer"
+                            />
+                          ) : (
+                            chat.content
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
             );
           })
         ) : (
-          <>
-            
-          </>
+          <></>
         )}
       </div>
       <div>
@@ -289,7 +344,10 @@ export default function Chat({ changeImage, mode, image, mask }) {
           )}
         </div>
       </div>
-      <dialog id="my_modal_2" className={`modal ${isModalOpen ? "modal-open": ""}`}>
+      <dialog
+        id="my_modal_2"
+        className={`modal ${isModalOpen ? "modal-open" : ""}`}
+      >
         <div className="modal-box w-full max-w-5xl">
           <div className="modal-content flex">
             <div className="w-1/2 flex p-3">
@@ -321,7 +379,7 @@ export default function Chat({ changeImage, mode, image, mask }) {
               </div>
               <div className="form-control w-full max-w-xs">
                 <label className="label">
-                  <span className="label-text">What is your name?</span>
+                  <span className="label-text">Select some tags.</span>
                 </label>
                 <TagSelector
                   tags={tags}
