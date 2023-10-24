@@ -9,7 +9,7 @@ export default function Hero() {
         aria-hidden="true"
       >
         <svg
-          width="1360"
+          width="1260"
           height="578"
           viewBox="0 0 1360 578"
           xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@ export default function Hero() {
             thumbWidth={768}
             thumbHeight={432}
             thumbAlt="Modal video thumbnail"
-            video="/videos/video.mp4"
+            video="https://youtu.be/8-76q0IxwJE?si=gCjYeOUTMM0QzZ3f"
             videoWidth={1920}
             videoHeight={1080}
           />

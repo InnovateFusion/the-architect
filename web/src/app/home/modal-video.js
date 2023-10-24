@@ -150,7 +150,7 @@ export default function ModalVideo({
           >
             <div className="max-w-6xl mx-auto h-full flex items-center">
               <Dialog.Panel className="w-full max-h-full aspect-video bg-black overflow-hidden">
-                <video
+                {/* <video
                   ref={videoRef}
                   width={videoWidth}
                   height={videoHeight}
@@ -159,7 +159,16 @@ export default function ModalVideo({
                 >
                   <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
-                </video>
+                </video> */}
+                <iframe
+                  width="853"
+                  height="480"
+                  src="https://www.youtube.com/embed/8-76q0IxwJE"
+                  title="The Architect - Generative AI For Africa Hackathon by Innovate Fussion"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                />
               </Dialog.Panel>
             </div>
           </Transition.Child>
