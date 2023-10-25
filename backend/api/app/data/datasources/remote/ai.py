@@ -6,7 +6,6 @@ import requests
 import io
 from cloudinary.uploader import upload
 import base64
-from PIL import Image
 from core.errors.exceptions import ServerException
 
 CAPI_KEY=os.getenv("CLD_API_KEY")
