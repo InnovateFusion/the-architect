@@ -2,7 +2,7 @@ from uuid import uuid4
 from datetime import datetime
 from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
-from app.data.datasources.remote.image import ImageGeneration
+from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
 from app.domain.entities.message import Message, MessageEntity
 from core.errors.exceptions import CacheException
@@ -30,87 +30,123 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             "content-type": "application/json"
         }
         
-        userImage = ''
-        image_generation = ImageGeneration(requests, upload)
+        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
+        if not existing_chat:
+            raise CacheException("Chat does not exist")
+        
+        ai_generation = AiGeneration(requests, upload)
         response = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        userImage = ''
+        chatResponse = ''
+        analysis = {'title': '', 'detail': ''}
+        threeD = { 'status': '', 'url': ''}
+        aiMessageID = str(uuid4())
         
         if message.model == 'text_to_image':
             url = f"${baseUrl}/text-to-image"
             try:
-                response = await image_generation.get_image(url, headers, message.payload)
+                response = await ai_generation.get_image(url, headers, message.payload)
             except Exception as e:
                 raise CacheException("Error getting image")
         elif message.model == 'image_to_image':
             url = f"${baseUrl}/image-to-image"
             try:
-                response = await image_generation.get_image(url, headers, message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.get_image(url, headers, message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'controlNet':
             url = f"${baseUrl}/controlnet"
             try:
-                response = await image_generation.get_image(url, headers, message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.get_image(url, headers, message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'painting':
             url = f"${baseUrl}/inpaint"
             try:
-                response = await image_generation.get_image(url, headers, message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.get_image(url, headers, message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'instruction':
             url = f"${baseUrl}/instruct"
             try:
-                response = await image_generation.get_image(url, headers, message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.get_image(url, headers, message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'image_variant':
             try:
-                response = await image_generation.image_variant(message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.image_variant(message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image from variant")
         elif message.model == 'image_from_text':
             try:
-                response = await image_generation.create_from_text(message.payload)
+                response = await ai_generation.create_from_text(message.payload)
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image from text")
         elif message.model == 'edit_image':
             try:
-                response = await image_generation.create_from_image(message.payload)
-                userImage = await image_generation.upload_image(message.payload['image'])
+                response = await ai_generation.image_variant(message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
-                raise CacheException("Error getting image")
+                raise CacheException("Error getting image edit")
+        elif message.model == 'chatbot':
+            try:
+                chatResponse = await ai_generation.chatbot(message.payload)
+            except:
+                raise CacheException("Chatbot error")
+        elif message.model == 'analysis':
+            try:
+                analysis = await ai_generation.analysis(message.payload)
+            except:
+                raise CacheException("Analysis error")
+        elif message.model == 'text_to_3D':
+            try:
+                threeD = await ai_generation.text_to_threeD(chat_id, aiMessageID, message.payload)
+            except:
+                raise CacheException("3D error from text")
+        elif message.model == 'image_to_3D':
+            try:
+                threeD = await ai_generation.image_to_threeD(chat_id, aiMessageID, message.payload)
+            except:
+                raise CacheException("3D error")
         else:
             raise CacheException("Model not found")
                 
         message_from_user = MessageEntity(
             id=str(uuid4()),
-            content=message.payload['prompt'],
+            content= {
+                'prompt': message.payload['prompt'],
+                'imageUser': userImage,
+                'imageAI': '',
+                'model': message.model,
+                'analysis': {},
+                '3D': {},
+                'chat': ''
+            },
             sender='user',
-            userImage=userImage,
             date=date
         )
-        
-        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
-        if not existing_chat:
-            raise CacheException("Chat does not exist")
         
         new_chat = [i for i in  existing_chat.messages]
         new_chat.append(message_from_user.to_json())
         
         message_from_ai = MessageEntity(
-            id=str(uuid4()),
-            content=response,
+            id=aiMessageID,
+            content= {
+                'prompt': '',
+                'imageUser': '',
+                'imageAI': response,
+                'model': message.model,
+                'analysis': analysis,
+                '3D': threeD,
+                'chat': chatResponse
+            },
             sender='ai',
-            userImage='',
             date=date
-        )
-        
+        )  
         new_chat.append(message_from_ai.to_json())
         
         existing_chat.messages = new_chat

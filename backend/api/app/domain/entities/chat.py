@@ -1,13 +1,20 @@
 import json
 from dataclasses import dataclass
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict
 from app.domain.entities.message import Message
 from app.domain.entities import BaseEntity
 
 class Chat(BaseModel):
     id: Optional[str]
     messages: List[Message]
+    
+class Notify(BaseModel):
+    status: str
+    generationTime: str
+    id: str
+    output: List[str]
+    meta: Dict 
 
 @dataclass
 class ChatEntity(BaseEntity):

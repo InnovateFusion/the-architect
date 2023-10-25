@@ -145,9 +145,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
 
     async def view_posts(self, user_id) -> List[PostEntity]:
         posts = self.db.query(PostModel).filter(PostModel.user_id == user_id).all()
-        if not posts:
-            raise CacheException("No posts found for this user")
-
+        
         post_entities = []
         for post in posts:
             user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
@@ -270,9 +268,6 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             )
 
         posts = query.all()
-
-        if not posts:
-            raise CacheException("No posts found")
 
         post_entities = []
         for post in posts:

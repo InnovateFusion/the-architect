@@ -8,6 +8,8 @@ from app.data.repositories.chat import ChatRepositoryImpl
 from app.domain.use_cases.chat.create import CreateChat, Params as CreateChatParams
 from app.domain.use_cases.chat.view import ViewChat, Params as ViewChatParams
 from app.domain.use_cases.chat.views import ViewChats, Params as ViewChatsParams
+from app.domain.use_cases.chat.delete import DeleteChat, Params as DeleteChatParams
+from app.domain.use_cases.chat.notify import Notify, Params as NotifyParams
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
 from sqlalchemy.orm.session import Session
@@ -68,3 +70,35 @@ async def view_chat(
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
+    
+@router.delete("/chats/{chat_id}", response_model=ChatResponse)
+async def delete_chat(
+    chat_id: str,
+    repository: ChatRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    delete_chat_use_case = DeleteChat(repository)
+    params = DeleteChatParams(chat_id=chat_id)
+    result = await delete_chat_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=400, detail=result.get().error_message)
+    
+    
+@router.post("/chats/{chat_id}/notify/{notify_id}", response_model=ChatResponse)
+async def notify(
+    chat_id: str,
+    notify_id: str,
+    notify: Notify,
+    repository: ChatRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
+):
+    notify_use_case = Notify(repository)
+    params = NotifyParams(chat_id=chat_id, notify_id=notify_id, notify=notify)
+    result = await notify_use_case(params)
+    if result.is_right():
+        return result.get()
+    else:
+        raise HTTPException(status_code=400, detail=result.get().error_message)
+

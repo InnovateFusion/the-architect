@@ -128,8 +128,6 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
     
     async def view_users(self) -> List[UserEntity]:
         users = self.db.query(UserModel).all()
-        if users is None:
-            raise CacheException("Users not found")
         return [
             UserEntity(
                 id=user.id,
