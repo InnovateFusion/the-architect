@@ -196,12 +196,12 @@ class ProfilePage extends StatelessWidget {
                                     i++)
                                   if (i % 2 == 0)
                                     GalleryItem(
-                                      half: true,
+                                      half: false,
                                       post: state.posts[i],
                                     )
                                   else
                                     GalleryItem(
-                                      half: false,
+                                      half: true,
                                       post: state.posts[i],
                                     ),
                               ],

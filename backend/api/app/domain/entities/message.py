@@ -13,6 +13,7 @@ class MessageEntity(BaseEntity):
     id: str
     sender: str
     content: str
+    userImage: str
     date: str
     
     @classmethod
@@ -21,6 +22,7 @@ class MessageEntity(BaseEntity):
             id=data.get('id'),
             sender=data.get('sender'),
             content=data.get('content'),
+            userImage = data.get('userImage'),
             date=data.get('date')
         )
     
@@ -29,6 +31,7 @@ class MessageEntity(BaseEntity):
             'id': self.id,
             'sender': self.sender,
             'content': self.content,
+            'userImage': self.userImage,
             'date': str(self.date)
         }
     

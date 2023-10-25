@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 
-class ChatInput extends StatelessWidget {
-  const ChatInput({Key? key, required this.onSubmitted}) : super(key: key);
+import '../../page/drawing/drawing.dart';
 
+class ChatInput extends StatelessWidget {
+  const ChatInput({
+    Key? key,
+    required this.model,
+    required this.onSubmitted,
+    required this.onImagePick,
+    required this.onControNet,
+  }) : super(key: key);
+
+  final String model;
   final void Function(BuildContext context, String text) onSubmitted;
+  final void Function() onImagePick;
+  final Future<void> Function(String image) onControNet;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +36,31 @@ class ChatInput extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 0, 0, 0),
-                borderRadius: BorderRadius.circular(25)),
-            child: const Icon(
-              Icons.attach_file_outlined,
-              color: Colors.white,
-              size: 30,
+          GestureDetector(
+            onTap: model == 'image_to_image'
+                ? onImagePick
+                : () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Draw(),
+                      ),
+                    );
+                    if (result != null) {
+                      onControNet(result);
+                    }
+                  },
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  borderRadius: BorderRadius.circular(25)),
+              child: const Icon(
+                Icons.attach_file_outlined,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ),
           const SizedBox(

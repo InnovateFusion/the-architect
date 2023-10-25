@@ -12,6 +12,9 @@ from app.domain.entities.chat import ChatEntity
 from app.domain.entities.message import Message, MessageEntity
 from core.errors.exceptions import CacheException
 
+import os
+baseUrl = os.getenv("BASE_URL")
+
 class ChatLocalDataSource(ABC):
     @abstractmethod
     async def get_chat(self, chat_id: str) -> ChatEntity:
@@ -63,13 +66,6 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         
         if 'prompt' not in message.payload:
             raise CacheException("No prompt found")
-            
-        message_from_user = MessageEntity(
-            id=str(uuid4()),
-            content=message.payload['prompt'],
-            sender='user',
-            date=date
-        )
         
         headers = {
             "accept": "application/json",
@@ -78,42 +74,74 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         
         image_generation = ImageGeneration(requests, upload)
         response = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        userImage = ''
         
         if message.model == 'text_to_image':
-            url = "https://api.getimg.ai/v1/stable-diffusion/text-to-image"
+            url = f"${baseUrl}/text-to-image"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except Exception as e:
                 raise CacheException("Error getting image")
         elif message.model == 'image_to_image':
-            url = "https://api.getimg.ai/v1/stable-diffusion/image-to-image"
+            url = f"${baseUrl}/image-to-image"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'controlNet':
-            url = "https://api.getimg.ai/v1/stable-diffusion/controlnet"
+            url = f"${baseUrl}/controlnet"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'painting':
-            url = "https://api.getimg.ai/v1/stable-diffusion/inpaint"
+            url = f"${baseUrl}/inpaint"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'instruction':
-            url = "https://api.getimg.ai/v1/stable-diffusion/instruct"
+            url = f"${baseUrl}/instruct"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
+        elif message.model == 'image_variant':
+            try:
+                response = await image_generation.image_variant(message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
+            except:
+                raise CacheException("Error getting image")
+        elif message.model == 'image_from_text':
+            try:
+                response = await image_generation.create_from_text(message.payload)
+            except:
+                raise CacheException("Error getting image")
+        elif message.model == 'edit_image':
+            try:
+                response = await image_generation.create_from_image(message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
+            except:
+                raise CacheException("Error getting image")
+        else:
+            raise CacheException("Model not found")
         
         exits_user = self.db.query(UserModel).filter(UserModel.id == message.user_id).first()
         
         if not exits_user:
             raise CacheException("No user found")
+        
+        message_from_user = MessageEntity(
+            id=str(uuid4()),
+            content=message.payload['prompt'],
+            sender='user',
+            userImage=userImage,
+            date=date
+        )
         
         chat = ChatModel(
             id=str(uuid4()),
@@ -125,10 +153,10 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         message_from_ai = MessageEntity(
             id=str(uuid4()),
             content=response,
+            userImage=userImage,
             sender='ai',
             date=date
-        )
-        
+        )    
         
         chat.add_message(message_from_ai.to_json())
         

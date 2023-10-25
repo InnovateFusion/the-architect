@@ -10,7 +10,10 @@ import 'drawing_canvas/models/sketch.dart';
 import 'drawing_canvas/widgets/canvas_side_bar.dart';
 
 class DrawingPage extends HookWidget {
-  const DrawingPage({Key? key}) : super(key: key);
+  const DrawingPage({
+    Key? key,
+  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

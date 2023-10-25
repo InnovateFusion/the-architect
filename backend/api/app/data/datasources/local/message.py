@@ -8,6 +8,8 @@ from app.domain.entities.message import Message, MessageEntity
 from core.errors.exceptions import CacheException
 import requests
 from cloudinary.uploader import upload
+import os
+baseUrl = os.getenv("BASE_URL")
 
 class MessageLocalDataSource(ABC):
     @abstractmethod
@@ -28,46 +30,69 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             "content-type": "application/json"
         }
         
+        userImage = ''
         image_generation = ImageGeneration(requests, upload)
         response = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         
         if message.model == 'text_to_image':
-            url = "https://api.getimg.ai/v1/stable-diffusion/text-to-image"
-            
+            url = f"${baseUrl}/text-to-image"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
             except Exception as e:
-                print(e)
-                raise CacheException("Error getting image text_to_image")
+                raise CacheException("Error getting image")
         elif message.model == 'image_to_image':
-            url = "https://api.getimg.ai/v1/stable-diffusion/image-to-image"
+            url = f"${baseUrl}/image-to-image"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
-                raise CacheException("Error getting image image_to_image")
+                raise CacheException("Error getting image")
         elif message.model == 'controlNet':
-            url = "https://api.getimg.ai/v1/stable-diffusion/controlnet"
+            url = f"${baseUrl}/controlnet"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
-                raise CacheException("Error getting image controlNet")
+                raise CacheException("Error getting image")
         elif message.model == 'painting':
-            url = "https://api.getimg.ai/v1/stable-diffusion/inpaint"
+            url = f"${baseUrl}/inpaint"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
-                raise CacheException("Error getting image painting")
+                raise CacheException("Error getting image")
         elif message.model == 'instruction':
-            url = "https://api.getimg.ai/v1/stable-diffusion/instruct"
+            url = f"${baseUrl}/instruct"
             try:
                 response = await image_generation.get_image(url, headers, message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
             except:
-                raise CacheException("Error getting image instruction")
-            
+                raise CacheException("Error getting image")
+        elif message.model == 'image_variant':
+            try:
+                response = await image_generation.image_variant(message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
+            except:
+                raise CacheException("Error getting image")
+        elif message.model == 'image_from_text':
+            try:
+                response = await image_generation.create_from_text(message.payload)
+            except:
+                raise CacheException("Error getting image")
+        elif message.model == 'edit_image':
+            try:
+                response = await image_generation.create_from_image(message.payload)
+                userImage = await image_generation.upload_image(message.payload['image'])
+            except:
+                raise CacheException("Error getting image")
+        else:
+            raise CacheException("Model not found")
+                
         message_from_user = MessageEntity(
             id=str(uuid4()),
             content=message.payload['prompt'],
             sender='user',
+            userImage=userImage,
             date=date
         )
         
@@ -82,6 +107,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             id=str(uuid4()),
             content=response,
             sender='ai',
+            userImage='',
             date=date
         )
         
@@ -92,6 +118,3 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         self.db.commit()
         
         return message_from_ai
-    
-
-

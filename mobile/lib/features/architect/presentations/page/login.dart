@@ -1,7 +1,6 @@
 import 'home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
-import '../../../../injection_container.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -73,33 +72,30 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext cnt) {
-    return BlocProvider<AuthBloc>(
-      create: (_) => sl<AuthBloc>(),
-      child: Scaffold(
-        body: SafeArea(
-          child: BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthLogged || state is Authenticated) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state is AuthInitial) {
-                return input(context);
-              } else if (state is AuthLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is AuthError) {
-                return Center(child: Text(state.message));
-              } else {
-                return Container();
-              }
-            },
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthLogged || state is Authenticated) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is AuthInitial) {
+              return input(context);
+            } else if (state is AuthLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is AuthError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Container();
+            }
+          },
         ),
       ),
     );

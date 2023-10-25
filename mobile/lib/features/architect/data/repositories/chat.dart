@@ -62,7 +62,6 @@ class ChatRepositoryImpl extends ChatRepository {
         final chats = await remoteDataSource.viewChats(userId, token);
         return Right(chats);
       } on ServerException {
-        print('ServerException');
         return Left(ServerFailure());
       }
     } else {
@@ -81,7 +80,11 @@ class ChatRepositoryImpl extends ChatRepository {
         String token =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
         final chat = await remoteDataSource.message(
-            model: model, payload: payload, chatId: chatId, token: token, userId: userId);
+            model: model,
+            payload: payload,
+            chatId: chatId,
+            token: token,
+            userId: userId);
         return Right(chat);
       } on ServerException {
         return Left(ServerFailure());

@@ -7,15 +7,20 @@ import '../page/history.dart';
 import 'profile_image.dart';
 
 class CustomDrawer extends StatefulWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({
+    Key? key,
+    required this.onSelect,
+  }) : super(key: key);
+
+  final Function(String select) onSelect;
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  late String current = "";
   late TypeBloc _select;
-  late String current;
 
   @override
   void initState() {
@@ -27,8 +32,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
         setState(() {
           current = event.model.name;
         });
-      } else {
-        current = "text_to_image";
       }
     });
   }
@@ -38,6 +41,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       current = index;
     });
     _select.add(SetType(model: index));
+    widget.onSelect(index);
   }
 
   @override
@@ -113,7 +117,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         },
                       ),
                       title: const Text(
-                        "Image o Image",
+                        "Image to Image",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

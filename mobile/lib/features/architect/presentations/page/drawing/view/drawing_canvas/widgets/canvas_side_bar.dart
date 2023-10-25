@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../models/drawing_mode.dart';
 import '../models/sketch.dart';
@@ -365,7 +366,9 @@ class CanvasSideBar extends HookWidget {
                 onTap: () async {
                   Uint8List? pngBytes = await getBytes();
                   if (pngBytes != null) {
-                    saveFile(pngBytes, 'png');
+                    () {
+                      saveFile(pngBytes, context);
+                    }();
                   }
                 },
                 child: Container(
@@ -382,7 +385,19 @@ class CanvasSideBar extends HookWidget {
     );
   }
 
-  Future<void> saveFile(Uint8List bytes, String extension) async {}
+  Future<void> saveFile(Uint8List bytes, BuildContext context) async {
+    final cacheDirectory = await getTemporaryDirectory();
+
+    final uniqueFileName = DateTime.now().toString();
+    final filePath = '${cacheDirectory.path}/$uniqueFileName.png';
+
+    final file = File(filePath);
+    await file.writeAsBytes(bytes);
+
+    () {
+      Navigator.pop(context, filePath);
+    }();
+  }
 
   Future<ui.Image> get _getImage async {
     final completer = Completer<ui.Image>();

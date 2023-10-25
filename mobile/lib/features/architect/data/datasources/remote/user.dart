@@ -228,12 +228,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         'Authorization': 'Bearer $token',
       },
     );
-
-
-    print('response: ${response.body}');
-    print('response: ${response.statusCode}');
-
     if (response.statusCode == 200) {
+      
       return UserModel.fromJson(json.decode(response.body));
     } else {
       throw ServerException();

@@ -1,10 +1,12 @@
-import 'package:architect/features/architect/presentations/bloc/chat/chat_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
+import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
 import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'features/architect/presentations/bloc/auth/auth_bloc.dart';
+import 'features/architect/presentations/bloc/type/type_bloc.dart';
 import 'features/architect/presentations/page/login.dart';
 import 'injection_container.dart' as di;
 
@@ -32,13 +34,14 @@ class MyApp extends StatelessWidget {
               const AllPosts(tags: [], search: ''),
             ),
         ),
-        BlocProvider(
-          create: (context) => sl<ChatBloc>()
-            ..add(
-              const ChatViewsEvent(
-                userId: '35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a',
-              ),
-            ),
+        BlocProvider<AuthBloc>(
+          create: (context) => sl<AuthBloc>(),
+        ),
+        BlocProvider<UserBloc>(
+          create: (context) => sl<UserBloc>(),
+        ),
+        BlocProvider<TypeBloc>(
+          create: (context) => sl<TypeBloc>()..add(GetType()),
         )
       ],
       child: MaterialApp(

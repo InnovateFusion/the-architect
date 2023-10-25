@@ -16,6 +16,7 @@ class MessageResponse(BaseModel):
     id: Optional[str]
     sender: str
     content: str
+    userImage: str
     date: datetime
     
 router = APIRouter()

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../page/chat.dart';
@@ -28,6 +30,12 @@ void _showImageInFull(BuildContext context, String text) {
 }
 
 class _ChatDisplayState extends State<ChatDisplay> {
+  void onDeleted() {
+    setState(() {
+      widget.messages.removeAt(0);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -41,6 +49,8 @@ class _ChatDisplayState extends State<ChatDisplay> {
         itemBuilder: (_, int index) {
           final message = widget.messages[index];
           return ChatMessage(
+            onDeleted: onDeleted,
+            isPicked: message.isPicked,
             text: message.text,
             isSentByMe: message.isSentByMe,
           );
@@ -53,9 +63,13 @@ class _ChatDisplayState extends State<ChatDisplay> {
 class ChatMessage extends StatelessWidget {
   final String text;
   final bool isSentByMe;
+  final bool isPicked;
+  final VoidCallback onDeleted;
 
   const ChatMessage({
     super.key,
+    required this.onDeleted,
+    required this.isPicked,
     required this.text,
     required this.isSentByMe,
   });
@@ -74,12 +88,18 @@ class ChatMessage extends StatelessWidget {
     final alignment =
         isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
 
+    ColorFilter colorFilter = ColorFilter.mode(
+      Colors.black.withOpacity(0.5), // Adjust the opacity to control darkness
+      BlendMode.darken, // You can use other BlendModes as well
+    );
+
+    print("The text is $text");
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Column(
         crossAxisAlignment: alignment,
         children: <Widget>[
-          if (isSentByMe)
+          if (isSentByMe && !isPicked)
             Container(
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -89,6 +109,40 @@ class ChatMessage extends StatelessWidget {
               child: Text(
                 text,
                 style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          if (isSentByMe && isPicked)
+            GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                height: 400,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: ColorFiltered(
+                          colorFilter: colorFilter,
+                          child: Image.file(
+                            File(text),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          iconSize: 50,
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          icon: const Icon(Icons.cancel),
+                          onPressed: onDeleted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           if (!isSentByMe)

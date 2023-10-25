@@ -41,21 +41,20 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     required String token,
   }) async {
     final response = await client.post(
-        Uri.parse("https://the-architect.onrender.com/api/v1/chats"),
+        Uri.parse("https://the-architect.onrender.com/api/v1/chats/"),
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
         },
         body: jsonEncode({
           'payload': payload,
-          'userId': userId,
+          'user_id': userId,
           'model': model,
         }));
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       return ChatModel.fromJson(jsonData);
     } else {
-      print("The error ${response.body} ${response.statusCode} ");
       throw ServerException();
     }
   }
@@ -122,9 +121,11 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           'model': model,
         }));
     if (response.statusCode == 200) {
+      print('${response.body} ${response.statusCode}');
       final jsonData = json.decode(response.body);
       return MessageModel.fromJson(jsonData);
     } else {
+      print('${response.body} ${response.statusCode}');
       throw ServerException();
     }
   }
