@@ -91,8 +91,7 @@ async def notify(
     chat_id: str,
     notify_id: str,
     notify: Notify,
-    repository: ChatRepository = Depends(get_repository),
-    current_user: User = Depends(get_current_user)
+    repository: ChatRepository = Depends(get_repository)
 ):
     notify_use_case = Notify(repository)
     params = NotifyParams(chat_id=chat_id, notify_id=notify_id, notify=notify)
