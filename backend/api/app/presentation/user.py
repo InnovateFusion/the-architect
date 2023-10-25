@@ -27,6 +27,7 @@ class UserResponse(BaseModel):
     bio: str
     email: str
     country: str
+    image: Optional[str]
     followers: Optional[int]
     following: Optional[int]
 

@@ -30,6 +30,7 @@ class PostEntity(BaseEntity):
     image: Optional[str]
     firstName: Optional[str]
     lastName: Optional[str]
+    userImage: Optional[str]
     title: str
     content: str
     date: datetime.datetime
@@ -49,6 +50,7 @@ class PostEntity(BaseEntity):
             lastName=data.get('lastName'),
             title=data.get('title'),
             content=data.get('content'),
+            userImage=data.get('userImage'),
             date=data.get('date'),
             like=data.get('like'),
             clone=data.get('clone'), 
@@ -67,6 +69,7 @@ class PostEntity(BaseEntity):
             'title': self.title,
             'content': self.content,
             'date': self.date,
+            'userImage': self.userImage,
             'like': self.like,
             'clone': self.clone,
             'isLiked': self.isLiked,

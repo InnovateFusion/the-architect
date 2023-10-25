@@ -27,6 +27,7 @@ class PostResponse(BaseModel):
     title: str
     content: str
     date: datetime
+    userImage: Optional[str]
     like: int
     clone: int
     isLiked: bool

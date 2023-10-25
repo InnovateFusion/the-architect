@@ -100,6 +100,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'analysis':
             try:
                 analysis = await ai_generation.analysis(message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Analysis error")
         elif message.model == 'text_to_3D':
@@ -110,6 +111,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'image_to_3D':
             try:
                 threeD = await ai_generation.image_to_threeD(chat_id, aiMessageID, message.payload)
+                userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("3D error")
         else:
