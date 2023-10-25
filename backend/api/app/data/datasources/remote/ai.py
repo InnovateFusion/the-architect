@@ -153,7 +153,7 @@ class AiGeneration:
             "guidance_scale":5,
             "steps":64,
             "frame_size":256,
-            "webhook": f"https://the-architect.onrender.com/chats/{chat_id}/notify/{id}",
+            "webhook": f"https://the-architect.onrender.com/api/v1/chats/{chat_id}/notify/{id}",
             "track_id": id
         })
         response = requests.post(
@@ -178,7 +178,7 @@ class AiGeneration:
             "steps":64,
             "frame_size":256,
             "output_type":"gif",
-            "webhook": f"https://the-architect.onrender.com/chats/{chat_id}/notify/{id}",
+            "webhook": f"https://the-architect.onrender.com/api/v1/chats/{chat_id}/notify/{id}",
             "track_id": id
         })
         response = requests.post(

@@ -39,7 +39,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         userImage = ''
         chatResponse = ''
         analysis = {'title': '', 'detail': ''}
-        threeD = { 'status': '', 'url': ''}
+        threeD = { 'status': '', 'fetch_result': ''}
         aiMessageID = str(uuid4())
         
         if message.model == 'text_to_image':
