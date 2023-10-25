@@ -10,11 +10,11 @@ class Chat(BaseModel):
     messages: List[Message]
     
 class Notify(BaseModel):
-    status: str
-    generationTime: str
-    id: str
-    output: List[str]
-    meta: Dict 
+    status: Optional[str]
+    generationTime: Optional[str]
+    id: Optional[str]
+    output: Optional[List[str]] 
+    meta: Optional[Dict[str, str]]
 
 @dataclass
 class ChatEntity(BaseEntity):
