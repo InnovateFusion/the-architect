@@ -1,6 +1,6 @@
 from datetime import datetime
 from fastapi import HTTPException, APIRouter, Depends
-from typing import List, Optional
+from typing import Optional, Dict
 from app.data.datasources.local.message import MessageLocalDataSourceImpl
 from app.domain.entities.message import Message
 from app.domain.entities.user import User
@@ -15,7 +15,7 @@ from pydantic import BaseModel
 class MessageResponse(BaseModel):
     id: Optional[str]
     sender: str
-    content: str
+    content: Dict
     date: datetime
     
 router = APIRouter()

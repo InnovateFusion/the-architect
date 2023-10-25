@@ -130,6 +130,7 @@ class AiGeneration:
             data=json.dumps(asticaAPI_payload),
             headers={ 'Content-Type': 'application/json', },
             timeout=60)
+        print(response.status_code, response.json())
         if 'status' in response:
             if response['status'] == 'error':
                 return ServerException('Error getting analysis')
@@ -139,7 +140,7 @@ class AiGeneration:
                         'detail': response['caption_GPTS'],
                         'title': response['caption']['text']
                     }             
-            raise ServerException('Error getting analysis')
+        raise ServerException('Error getting analysis')
     
     async def image_to_threeD(self, chat_id, id, data): 
         image_data = base64.b64decode(data['image'])
