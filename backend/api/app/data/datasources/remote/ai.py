@@ -14,7 +14,6 @@ CGET_IMAGE_KEY = os.getenv("GET_IMAGE_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 asticaAPI_key = os.getenv("ASTICA_API_KEY")
 CGET_3D_KEY = os.getenv("GET_3D_KEY")
-
 cloudinary.config( 
     cloud_name = "dtghsmx0s", api_key = CAPI_KEY, api_secret = CAPI_SECRET)
 
@@ -117,20 +116,23 @@ class AiGeneration:
             raise ServerException('Error getting chatbot response')
     
     async def analysis(self, data):
+        print(data)
         asticaAPI_payload = {
             'tkn': asticaAPI_key,
             'modelVersion': '2.1_full',
             'visionParams': 'gpt,describe',
             "gpt_prompt": data['prompt'],
-            "gpt_length": '150',
-            'input': data['image'],
+            "gpt_length": '100',
+            'input': data['image']
         }
+        print(asticaAPI_payload)
         response = requests.post(
             'https://vision.astica.ai/describe', 
             data=json.dumps(asticaAPI_payload),
             headers={ 'Content-Type': 'application/json', },
             timeout=60)
         print(response.status_code, response.json())
+        response = response.json()
         if 'status' in response:
             if response['status'] == 'error':
                 return ServerException('Error getting analysis')
@@ -151,7 +153,7 @@ class AiGeneration:
             "guidance_scale":5,
             "steps":64,
             "frame_size":256,
-            "webhook": f"https://the-architect.onrender.com/chats{chat_id}/notify/{id}",
+            "webhook": f"https://the-architect.onrender.com/chats/{chat_id}/notify/{id}",
             "track_id": id
         })
         response = requests.post(
@@ -176,7 +178,7 @@ class AiGeneration:
             "steps":64,
             "frame_size":256,
             "output_type":"gif",
-            "webhook": f"https://the-architect.onrender.com/chats{chat_id}/notify/{id}",
+            "webhook": f"https://the-architect.onrender.com/chats/{chat_id}/notify/{id}",
             "track_id": id
         })
         response = requests.post(
