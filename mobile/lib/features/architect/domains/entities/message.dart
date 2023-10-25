@@ -11,7 +11,7 @@ class Message extends Equatable {
   final String id;
   final String sender;
   final DateTime date;
-  final String content;
+  final Map<String, dynamic> content;
 
   @override
   List<Object?> get props => [

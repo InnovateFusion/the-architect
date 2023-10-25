@@ -1,12 +1,12 @@
 import '../../domains/entities/message.dart';
 
 class MessageModel extends Message {
-  const MessageModel({
-    required String id,
-    required String sender,
-    required DateTime date,
-    required String content,
-  }) : super(
+  const MessageModel(
+      {required String id,
+      required String sender,
+      required DateTime date,
+      required Map<String, dynamic> content})
+      : super(
           id: id,
           sender: sender,
           date: date,

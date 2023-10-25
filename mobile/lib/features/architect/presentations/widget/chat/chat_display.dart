@@ -16,13 +16,13 @@ class ChatDisplay extends StatefulWidget {
   State<ChatDisplay> createState() => _ChatDisplayState();
 }
 
-void _showImageInFull(BuildContext context, String text) {
+void _showImageInFull(BuildContext context, String image) {
   showDialog(
     context: context,
     useSafeArea: true,
     builder: (_) => Dialog(
       child: Image.network(
-        text,
+        image,
         fit: BoxFit.contain,
       ),
     ),
@@ -50,8 +50,7 @@ class _ChatDisplayState extends State<ChatDisplay> {
           final message = widget.messages[index];
           return ChatMessage(
             onDeleted: onDeleted,
-            isPicked: message.isPicked,
-            text: message.text,
+            content: message,
             isSentByMe: message.isSentByMe,
           );
         },
@@ -61,18 +60,30 @@ class _ChatDisplayState extends State<ChatDisplay> {
 }
 
 class ChatMessage extends StatelessWidget {
-  final String text;
+  final Message content;
   final bool isSentByMe;
-  final bool isPicked;
   final VoidCallback onDeleted;
 
   const ChatMessage({
     super.key,
     required this.onDeleted,
-    required this.isPicked,
-    required this.text,
+    required this.content,
     required this.isSentByMe,
   });
+
+  String capitalize(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
+  String capitalizeAll(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input.split(' ').map((e) => capitalize(e)).join(' ');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,29 +100,53 @@ class ChatMessage extends StatelessWidget {
         isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
 
     ColorFilter colorFilter = ColorFilter.mode(
-      Colors.black.withOpacity(0.5), // Adjust the opacity to control darkness
-      BlendMode.darken, // You can use other BlendModes as well
+      Colors.black.withOpacity(0.5),
+      BlendMode.darken,
     );
-
-    print("The text is $text");
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Column(
         crossAxisAlignment: alignment,
         children: <Widget>[
-          if (isSentByMe && !isPicked)
+          if (isSentByMe && !content.isPicked)
+            if (content.imageUser.isEmpty)
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: borderRadius,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  content.prompt,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+          if (content.imageUser.isNotEmpty)
             Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: borderRadius,
-              ),
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                text,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          if (isSentByMe && isPicked)
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: borderRadius,
+                ),
+                child: Column(
+                  children: [
+                    Image.network(
+                      content.imageUser,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        capitalize(content.prompt),
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    )
+                  ],
+                )),
+          if (isSentByMe && content.isPicked)
             GestureDetector(
               child: Container(
                 padding: const EdgeInsets.all(10.0),
@@ -125,7 +160,7 @@ class ChatMessage extends StatelessWidget {
                         child: ColorFiltered(
                           colorFilter: colorFilter,
                           child: Image.file(
-                            File(text),
+                            File(content.imageUser),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -145,20 +180,70 @@ class ChatMessage extends StatelessWidget {
                 ),
               ),
             ),
-          if (!isSentByMe)
+          if (!isSentByMe && content.imageAI.isNotEmpty)
             GestureDetector(
-              onDoubleTap: () => _showImageInFull(context, text),
+              onDoubleTap: () => _showImageInFull(context, content.imageAI),
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.network(
-                    text,
+                    content.imageAI,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
+          if (!isSentByMe && content.chat.isNotEmpty)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: borderRadius,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                content.chat,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+          if (!isSentByMe &&
+              content.analysis.containsKey('title') &&
+              content.analysis['title'].isNotEmpty &&
+              content.analysis.containsKey('detail') &&
+              content.analysis['detail'].isNotEmpty)
+            Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: borderRadius,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        capitalizeAll(content.analysis['title']),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      content.analysis['detail'],
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    )
+                  ],
+                )),
         ],
       ),
     );

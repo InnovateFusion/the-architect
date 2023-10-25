@@ -17,11 +17,27 @@ import '../widget/chat/chat_input.dart';
 import '../widget/profile_image.dart';
 
 class Message {
-  final String text;
+  final String prompt;
   final bool isSentByMe;
   final bool isPicked;
-  Message(
-      {required this.text, required this.isSentByMe, this.isPicked = false});
+  final String imageUser;
+  final String imageAI;
+  final String model;
+  final Map<String, dynamic> analysis;
+  final Map<String, dynamic> threeD;
+  final String chat;
+
+  Message({
+    required this.prompt,
+    required this.isSentByMe,
+    required this.imageUser,
+    required this.imageAI,
+    required this.model,
+    required this.analysis,
+    required this.threeD,
+    required this.chat,
+    required this.isPicked,
+  });
 }
 
 class Chat extends StatefulWidget {
@@ -49,7 +65,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   List<Message> messages = [];
   String? chatId;
-  late String model;
+  String model = 'text_to_image';
   late TypeBloc _select;
   late String base64ImageForImageToImage;
   late String base64ImageForControlNet;
@@ -70,11 +86,32 @@ class _ChatState extends State<Chat> {
 
     if (widget.messages != null) {
       for (var message in widget.messages!) {
-        messages.add(Message(
-            text: message.content,
-            isSentByMe: message.sender == 'user' ? true : false));
+        if (message.sender == 'ai') {
+          final Message element = Message(
+              prompt: message.content['prompt'] ?? '',
+              isSentByMe: false,
+              imageUser: message.content['imageUser'] ?? '',
+              imageAI: message.content['imageAI'] ?? '',
+              model: message.content['model'] ?? '',
+              analysis: message.content['analysis'] ?? {},
+              threeD: message.content['3D'] ?? {},
+              chat: message.content['chat'] ?? '',
+              isPicked: false);
+          messages.insert(0, element);
+        } else {
+          final Message element = Message(
+              prompt: message.content['prompt'] ?? '',
+              isSentByMe: true,
+              imageUser: message.content['imageUser'] ?? '',
+              imageAI: message.content['imageAI'] ?? '',
+              model: message.content['model'] ?? '',
+              analysis: message.content['analysis'] ?? {},
+              threeD: message.content['3D'] ?? {},
+              chat: message.content['chat'] ?? '',
+              isPicked: false);
+          messages.insert(0, element);
+        }
       }
-      messages = messages.reversed.toList();
     } else {
       messages = [];
       chatId = widget.chatId;
@@ -115,9 +152,7 @@ class _ChatState extends State<Chat> {
       } else {
         payload['image'] = base64ImageForImageToImage;
       }
-    }
-
-    if (model == 'controlNet') {
+    } else if (model == 'controlNet') {
       payload["controlnet"] = "canny-1.1";
       payload["image"] = base64ImageForControlNet;
     }
@@ -143,13 +178,37 @@ class _ChatState extends State<Chat> {
       ));
     }
     setState(() {
-      messages.insert(0, Message(text: text, isSentByMe: true));
+      messages.insert(
+        0,
+        Message(
+            prompt: text,
+            isSentByMe: true,
+            imageUser: '',
+            imageAI: '',
+            model: model,
+            analysis: {},
+            threeD: {},
+            chat: '',
+            isPicked: false),
+      );
     });
   }
 
-  void reveiveMessage(String text) {
+  void reveiveMessage(Map<String, dynamic> json) {
     setState(() {
-      messages.insert(0, Message(text: text, isSentByMe: false));
+      messages.insert(
+        0,
+        Message(
+            prompt: json['prompt'],
+            isSentByMe: false,
+            imageUser: json['imageUser'],
+            imageAI: json['imageAI'],
+            model: json['model'],
+            analysis: json['analysis'],
+            threeD: json['3D'],
+            chat: json['chat'],
+            isPicked: false),
+      );
     });
   }
 
@@ -169,12 +228,18 @@ class _ChatState extends State<Chat> {
             messages.removeAt(0);
           }
           messages.insert(
-              0,
-              Message(
-                  text: pickedImage.path, isSentByMe: true, isPicked: true));
-        } else {
-          messages.add(Message(
-              text: pickedImage.path, isSentByMe: true, isPicked: true));
+            0,
+            Message(
+                prompt: '',
+                isSentByMe: true,
+                imageUser: pickedImage.path,
+                imageAI: '',
+                model: model,
+                analysis: {},
+                threeD: {},
+                chat: '',
+                isPicked: true),
+          );
         }
       });
       base64ImageForImageToImage = await imageToBase64(pickedImage.path);
@@ -185,7 +250,18 @@ class _ChatState extends State<Chat> {
     if (imagePath.isEmpty) return;
     setState(() {
       messages.insert(
-          0, Message(text: imagePath, isSentByMe: true, isPicked: true));
+        0,
+        Message(
+            prompt: '',
+            isSentByMe: true,
+            imageUser: imagePath,
+            imageAI: '',
+            model: model,
+            analysis: {},
+            threeD: {},
+            chat: '',
+            isPicked: true),
+      );
     });
 
     base64ImageForControlNet = await imageToBase64(imagePath);
