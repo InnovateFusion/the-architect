@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }) {
   };
 
   useEffect(() => {
-    getPosts();
+    // getPosts();
   }, []);
 
   return (

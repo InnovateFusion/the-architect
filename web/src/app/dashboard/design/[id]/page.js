@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const DesignView = ({ params }) => {
   const router = useRouter();
@@ -42,9 +43,11 @@ const DesignView = ({ params }) => {
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <img
+          <Image
             src={design.image}
             alt={design.title}
+            width={512}
+            height={512}
             className="w-full h-auto"
           />
         </div>
@@ -52,9 +55,11 @@ const DesignView = ({ params }) => {
           <h1 className="text-3xl font-bold mb-4">{design.title}</h1>
           <p className="text-gray-600 mb-4">{design.content}</p>
           <div className="flex items-center mb-4">
-            <img
+            <Image
               src={`https://i.pravatar.cc/32?u=${design.userId}`}
               alt={design.firstName}
+              width={512}
+              height={512}
               className="rounded-full mr-2"
             />
             <span>{`${design.firstName} ${design.lastName}`}</span>

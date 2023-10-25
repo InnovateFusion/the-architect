@@ -3,7 +3,7 @@ import React from "react";
 
 function Sidebar() {
   return (
-    <div className="fixed hidden sm:flex h-screen bg-gray-800 w-16 flex-col items-center justify-around pt-14">
+    <div className="fixed hidden sm:flex h-screen w-16 flex-col items-center justify-around pt-14">
       <div className="m-5 flex flex-col">
         {[
           {
@@ -109,7 +109,7 @@ function Sidebar() {
         ].map((item, index) => {
           return (
             <Link
-              className="flex text-white hover:text-gray-300 focus:outline-none m-5"
+              className="flex  hover:text-gray-600 focus:outline-none m-5"
               key={index}
               href={item.link}
             >

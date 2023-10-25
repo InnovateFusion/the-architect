@@ -100,7 +100,7 @@ export default function ModalVideo({
             </svg>
           </div>
           <button
-            className="absolute top-full flex items-center transform -translate-y-1/2 bg-white rounded-full font-medium group p-4 shadow-lg"
+            className="absolute top-full flex items-center transform -translate-y-1/2 bg-white dark:text-black rounded-full font-medium group p-4 shadow-lg"
             onClick={() => {
               setModalOpen(true);
             }}

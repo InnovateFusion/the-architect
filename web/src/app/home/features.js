@@ -69,7 +69,7 @@ export default function Features() {
                   }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">
+                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
                       Virtual Architectural Design Assistant
                     </div>
                     <div className="text-gray-600">
@@ -77,7 +77,7 @@ export default function Features() {
                       concepts, offering feedback, and suggesting alternatives.
                     </div>
                   </div>
-                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
+                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
                     <svg
                       className="w-3 h-3 fill-current"
                       viewBox="0 0 12 12"
@@ -100,7 +100,7 @@ export default function Features() {
                   }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">
+                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
                       Creativity Enhancement
                     </div>
                     <div className="text-gray-600">
@@ -109,7 +109,7 @@ export default function Features() {
                       conversational feedback.
                     </div>
                   </div>
-                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
+                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
                     <svg
                       className="w-3 h-3 fill-current"
                       viewBox="0 0 12 12"
@@ -135,7 +135,7 @@ export default function Features() {
                   }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">
+                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
                       Market Research Trend Analysis and Cost Estimation
                     </div>
                     <div className="text-gray-600">
@@ -144,7 +144,7 @@ export default function Features() {
                       budgets for architectural projects.
                     </div>
                   </div>
-                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
+                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
                     <svg
                       className="w-3 h-3 fill-current"
                       viewBox="0 0 12 12"

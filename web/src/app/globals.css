@@ -287,4 +287,22 @@ html {
     }
 }
 
+@layer base {
+  :root {
+    --gray-1: #666;
+    --gray-2: #d6d6d6;
+    --gray-3: #f4f4f4;
+    --background-color: #fff;
+    --foreground: #000;
+  }
+
+  .dark {
+    --background-color: #161c24;
+    --gray-3: #232323;
+    --gray-2: #303030;
+    --gray-1: #606060;
+    --foreground: #fff;
+  }
+}
+
 @tailwind utilities;

@@ -1,5 +1,7 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
+import ThemeToggle from "@/components/theme-toggle";
 
 const Header = () => {
   const handleLogout = () => {
@@ -9,7 +11,7 @@ const Header = () => {
     window.location.reload();
   };
   return (
-    <header className="flex w-full flex-row items-center justify-between bg-gray-800 p-4 z-50 fixed">
+    <header className="flex w-full flex-row items-center justify-between p-4 z-50 fixed">
       <div className="flex items-center">
         <Image
           width={40}
@@ -22,7 +24,7 @@ const Header = () => {
       <nav>
         <ul className="flex items-center">
           <li className="mr-6">
-            <Link href="/">Home</Link>
+            <Link href="/home">Home</Link>
           </li>
           <li className="mr-6">
             <Link href="/about">About</Link>
@@ -32,9 +34,15 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <button className="text-white hover:text-gray-400" onClick={handleLogout}>
-        Logout
-      </button>
+      <div className="flex flex-wrap gap-5">
+        <ThemeToggle />
+        <button
+          className=" hover:text-gray-400"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
     </header>
   );
 };

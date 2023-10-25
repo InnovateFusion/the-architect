@@ -18,17 +18,6 @@ export default function Chat({ changeImage, mode, image, mask }) {
       content: "/house.jpg",
       logo: "/if.png",
     }),
-    JSON.stringify({
-      sender: "user",
-      content:
-        "Hi I'm your design assistant. I'm here to help you in your design process. I can help you by providing inspirational designs based on your needs and help youo modify your designs. Here is my design of the day, I hope you like it :).",
-      logo: "/if.png",
-    }),
-    JSON.stringify({
-      sender: "user",
-      content: "/house.jpg",
-      logo: "/if.png",
-    }),
   ]);
   const [message, setMessage] = useState("");
   const [model, setModel] = useState(mode);
