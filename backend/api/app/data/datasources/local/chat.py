@@ -88,34 +88,34 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         chat_id = str(uuid4())
         
         if message.model == 'text_to_image':
-            url = f"${baseUrl}/text-to-image"
+            url = f"{baseUrl}/text-to-image"
             try:
                 response = await ai_generation.get_image(url, headers, message.payload)
             except Exception as e:
                 raise CacheException("Error getting image")
         elif message.model == 'image_to_image':
-            url = f"${baseUrl}/image-to-image"
+            url = f"{baseUrl}/image-to-image"
             try:
                 response = await ai_generation.get_image(url, headers, message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'controlNet':
-            url = f"${baseUrl}/controlnet"
+            url = f"{baseUrl}/controlnet"
             try:
                 response = await ai_generation.get_image(url, headers, message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'painting':
-            url = f"${baseUrl}/inpaint"
+            url = f"{baseUrl}/inpaint"
             try:
                 response = await ai_generation.get_image(url, headers, message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("Error getting image")
         elif message.model == 'instruction':
-            url = f"${baseUrl}/instruct"
+            url = f"{baseUrl}/instruct"
             try:
                 response = await ai_generation.get_image(url, headers, message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
