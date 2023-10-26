@@ -40,19 +40,23 @@ def get_repository(db: Session = Depends(get_db)):
     post_local_datasource = PostLocalDataSourceImpl(db=db)
     return PostRepositoryImpl(post_local_datasource)
 
+
 @router.get("/posts/all", response_model=List[PostResponse])
 async def all_posts(
+    skip: int = Query(0, description="Number of items to skip"),
+    limit: int = Query(10, description="Number of items to return per page"),
     tags: List[str] = Query([]),
     search_word: str = "",
     repository: PostRepository = Depends(get_repository)
 ):
     all_posts_use_case = AllPost(repository)
-    params = AllPostParams(tags=tags, search_word=search_word)
+    params = AllPostParams(tags=tags, search_word=search_word, skip=skip, limit=limit)
     result = await all_posts_use_case(params)
     if result.is_right():
         return result.get()
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
+
 
 @router.post("/posts/", response_model=PostResponse)
 async def create_post(

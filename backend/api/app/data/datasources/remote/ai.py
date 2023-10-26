@@ -1,3 +1,4 @@
+import replicate
 import json
 import os
 import cloudinary
@@ -144,53 +145,42 @@ class AiGeneration:
                     }             
         raise ServerException('Error getting analysis')
     
-    async def image_to_threeD(self, chat_id, id, data): 
-        image_data = base64.b64decode(data['image'])
-        image  = io.BytesIO(image_data).read()
-        payload = json.dumps({
-            "key": CGET_3D_KEY,
-            "image": image, 
-            "guidance_scale":5,
-            "steps":64,
-            "frame_size":256,
-            "webhook": f"https://the-architect.onrender.com/api/v1/chats/{chat_id}/notify/{id}",
-            "track_id": id
-        })
-        response = requests.post(
-            'https://stablediffusionapi.com/api/v3/img_to_3d', 
-            data=payload,
-            headers={ 'Content-Type': 'application/json', },
-            timeout=60
-        )
-        if response.status_code != 200:
-            raise ServerException('Error getting 3D')
-        response = response.json()
-        return {
-            'status': response['status'],
-            "fetch_result": response['fetch_result']
-        }
+    async def image_to_threeD(self, data): 
+        output = replicate.run(
+            "cjwbw/shap-e:5957069d5c509126a73c7cb68abcddbb985aeefa4d318e7c63ec1352ce6da68c",
+            input={
+                "prompt": data['prompt'],
+                "batch_size": 1,
+                "render_mode": "nerf",
+                "render_size": 256,
+                "guidance_scale": 15,
+                 "image": data['image']
+                }
+            )
+        if output:
+            image_data = requests.get(output[0]).content
+            upload_result = upload(image_data)
+            if upload_result is None:
+                raise ServerException('Error uploading image')
+            return upload_result["url"]
+        raise ServerException('Error uploading image')      
         
-    async def text_to_threeD(self, chat_id, id, data):
-        payload = json.dumps({
-            "key": CGET_3D_KEY,
-            "prompt": data['prompt'],
-            "guidance_scale":20,
-            "steps":64,
-            "frame_size":256,
-            "output_type":"gif",
-            "webhook": f"https://the-architect.onrender.com/api/v1/chats/{chat_id}/notify/{id}",
-            "track_id": id
-        })
-        response = requests.post(
-            'https://stablediffusionapi.com/api/v3/txt_to_3d', 
-            data=payload,
-            headers={ 'Content-Type': 'application/json' },
-            timeout=60
-        )
-        if response.status_code != 200:
-            raise ServerException('Error getting 3D')
-        response = response.json()
-        return {
-            'status': response['status'],
-            "fetch_result": response['fetch_result'],
-        }
+    async def text_to_threeD(self, data):
+        output = replicate.run(
+            "cjwbw/shap-e:5957069d5c509126a73c7cb68abcddbb985aeefa4d318e7c63ec1352ce6da68c",
+            input={
+                "prompt": data['prompt'],
+                "batch_size": 1,
+                "render_mode": "nerf",
+                "render_size": 256,
+                "guidance_scale": 15
+                }
+            )
+        if output:
+            image_data = requests.get(output[0]).content
+            upload_result = upload(image_data)
+            if upload_result is None:
+                raise ServerException('Error uploading image')
+            return upload_result["url"]
+        raise ServerException('Error uploading image')
+        

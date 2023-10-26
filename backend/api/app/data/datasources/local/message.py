@@ -39,7 +39,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         userImage = ''
         chatResponse = ''
         analysis = {'title': '', 'detail': ''}
-        threeD = { 'status': '', 'fetch_result': ''}
+        threeD = ''
         aiMessageID = str(uuid4())
         
         if message.model == 'text_to_image':
@@ -105,12 +105,13 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
                 raise CacheException("Analysis error")
         elif message.model == 'text_to_3D':
             try:
-                threeD = await ai_generation.text_to_threeD(chat_id, aiMessageID, message.payload)
-            except:
+                threeD = await ai_generation.text_to_threeD(message.payload)
+            except Exception as e:
+                print("The error ---------------------- ", e)
                 raise CacheException("3D error from text")
         elif message.model == 'image_to_3D':
             try:
-                threeD = await ai_generation.image_to_threeD(chat_id, aiMessageID, message.payload)
+                threeD = await ai_generation.image_to_threeD(message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("3D error")
@@ -143,7 +144,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
                 'imageAI': response,
                 'model': message.model,
                 'analysis': analysis,
-                '3D': threeD,
+                '3D':  { 'status': 'success', 'fetch_result': threeD},
                 'chat': chatResponse
             },
             sender='ai',

@@ -67,3 +67,4 @@ final class MakeChatLoaded extends ChatState {
   List<Object> get props => [message];
 }
 
+

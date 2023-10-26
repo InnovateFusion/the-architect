@@ -74,9 +74,9 @@ class PostRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
         
-    async def all_posts(self, tags: list, search_word: str) -> Either[Failure, Iterable[PostEntity]]:
+    async def all_posts(self, tags: list, search_word: str, skip: int, limit: int) -> Either[Failure, Iterable[PostEntity]]:
         try:
-            posts = await self.post_local_datasource.all_posts(tags, search_word)
+            posts = await self.post_local_datasource.all_posts(tags, search_word, skip, limit)
             return Either.right(posts)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))

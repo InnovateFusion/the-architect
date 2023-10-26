@@ -83,7 +83,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         userImage = ''
         chatResponse = ''
         analysis = {'title': '', 'detail': ''}
-        threeD = { 'status': '', 'fetch_result': ''}
+        threeD = ""
         aiMessageID = str(uuid4())
         chat_id = str(uuid4())
         
@@ -151,12 +151,12 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 raise CacheException("Analysis error")
         elif message.model == 'text_to_3D':
             try:
-                threeD = await ai_generation.text_to_threeD(chat_id, aiMessageID, message.payload)
+                threeD = await ai_generation.text_to_threeD(message.payload)
             except:
                 raise CacheException("3D error from text")
         elif message.model == 'image_to_3D':
             try:
-                threeD = await ai_generation.image_to_threeD(chat_id, aiMessageID, message.payload)
+                threeD = await ai_generation.image_to_threeD(message.payload)
                 userImage = await ai_generation.upload_image(message.payload['image'])
             except:
                 raise CacheException("3D error")
@@ -171,7 +171,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 'imageAI': '',
                 'model': message.model,
                 'analysis': {},
-                '3D': {},
+                '3D': '',
                 'chat': ''
             },
             sender='user',
@@ -193,7 +193,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 'imageAI': response,
                 'model': message.model,
                 'analysis': analysis,
-                '3D': threeD,
+                '3D':  { 'status': 'success', 'fetch_result': threeD},
                 'chat': chatResponse
             },
             sender='ai',
@@ -231,7 +231,6 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
         if not existing_chat:
             raise CacheException("Chat does not exist")
-        print(notify, notify.payload)
         try:
             for message in existing_chat.messages:
                 if message.id == notify_id:
@@ -239,7 +238,6 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                     message.content['3D']['fetch_result'] = notify.output[0]
                     break            
         except Exception as e:
-            print(e)
             raise CacheException("Error getting 3D")
         
         self.db.add(existing_chat)

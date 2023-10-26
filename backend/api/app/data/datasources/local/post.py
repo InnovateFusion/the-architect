@@ -15,7 +15,7 @@ class PostLocalDataSource(ABC):
         pass
     
     @abstractmethod
-    async def all_posts(self,  tags: List[str], search_word: str) -> List[PostEntity]:
+    async def all_posts(self,  tags: List[str], search_word: str, skip: int, limit: int) -> List[PostEntity]:
         pass
     
     @abstractmethod
@@ -263,7 +263,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             tags=post.tags
         )
 
-    async def all_posts(self, tags: List[str], search_word: str) -> List[PostEntity]:
+    async def all_posts(self, tags: List[str], search_word: str, skip: int, limit: int) -> List[PostEntity]:
         query = self.db.query(PostModel)
         if search_word:
             query = query.filter(
@@ -273,7 +273,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
                 )
             )
 
-        posts = query.all()
+        posts = posts = query.offset(skip).limit(limit).all()
 
         post_entities = []
         for post in posts:

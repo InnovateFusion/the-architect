@@ -1,10 +1,14 @@
+import 'package:architect/features/architect/domains/entities/post.dart'
+    as post;
+import 'package:architect/features/architect/presentations/widget/post/post.dart';
+import 'package:architect/injection_container.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import '../bloc/post/post_bloc.dart';
 import '../widget/custom_bottom_navigation.dart';
-import '../widget/post/post.dart';
 import '../widget/profile_image.dart';
 import '../widget/search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widget/tag.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,39 +19,113 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var search = '';
-  final List<String> selectedTags = [];
+  late PostBloc postBloc;
+  final List<post.Post> posts = [];
+  final List<post.Post> filteredPosts = [];
+  final TextEditingController searchController = TextEditingController();
 
-  final List<Tag> tags = [
-    Tag(
-        text: 'Explore',
-        color: Colors.black,
-        textColor: const Color(0xFFE1DBDB),
-        textSize: 13,
-        onPressed: () {}),
-    Tag(
-        text: 'Interior',
-        color: const Color.fromARGB(255, 255, 255, 255),
-        textColor: Colors.black,
-        textSize: 13,
-        onPressed: () {}),
-    Tag(
-        text: 'Exterior',
-        color: const Color.fromARGB(255, 255, 255, 255),
-        textColor: Colors.black,
-        textSize: 13,
-        onPressed: () {}),
-    Tag(
-        text: 'Floor',
-        color: const Color.fromARGB(255, 255, 255, 255),
-        textColor: Colors.black,
-        textSize: 13,
-        onPressed: () {}),
-    // Add more tags as needed
+  final List<String> xTags = [
+    'Explore',
+    'Interior',
+    'Exterior',
+    'Architecture',
+    'Design',
   ];
 
+  final List<String> selectedTags = [
+    'Explore',
+  ];
+
+  List<Tag> tags = [];
+
+  @override
+  void initState() {
+    super.initState();
+    postBloc = sl<PostBloc>();
+    postBloc.add(
+      const AllPosts(),
+    );
+    postBloc.stream.listen((event) {
+      if (event is PostsViewsLoaded) {
+        setState(() {
+          posts.addAll(event.posts);
+        });
+      }
+    });
+
+    for (final tag in xTags) {
+      if (selectedTags.contains(tag)) {
+        tags.add(
+          Tag(
+            text: tag,
+            isSelected: true,
+            onPressed: onSelectedTag,
+          ),
+        );
+      } else {
+        tags.add(
+          Tag(
+            text: tag,
+            isSelected: false,
+            onPressed: onSelectedTag,
+          ),
+        );
+      }
+    }
+  }
+
+  void onSelectedTag(String tag) {
+    if (selectedTags.contains(tag)) {
+      setState(() {
+        selectedTags.remove(tag);
+        for (int i = 0; i < tags.length; i++) {
+          if (tags[i].text == tag) {
+            tags[i] = Tag(
+              text: tag,
+              isSelected: false,
+              onPressed: onSelectedTag,
+            );
+          }
+        }
+      });
+    } else {
+      setState(() {
+        for (int i = 0; i < tags.length; i++) {
+          if (tags[i].text == tag) {
+            tags[i] = Tag(
+              text: tag,
+              isSelected: true,
+              onPressed: onSelectedTag,
+            );
+          }
+        }
+        selectedTags.add(tag);
+      });
+    }
+    for (final post in posts) {
+      int count = 0;
+      for (final tag in selectedTags) {
+        if (post.tags.contains(tag.toLowerCase())) {
+          count++;
+        }
+      }
+      if (count == selectedTags.length) {
+        setState(() {
+          filteredPosts.add(post);
+        });
+      }
+    }
+  }
+
   void searchPosts(String search) {
-    print('search: $search');
+    selectedTags.clear();
+    setState(() {
+      filteredPosts.clear();
+      filteredPosts.addAll(posts
+          .where(
+              (post) => post.title.toLowerCase().contains(search.toLowerCase()))
+          .toList());
+    });
   }
 
   @override
@@ -65,7 +143,10 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Search(onPressed: searchPosts),
+                    Search(
+                      searchController: searchController,
+                      onChanged: searchPosts,
+                    ),
                     const SizedBox(width: 10),
                     const ProfileImage(
                         imageUrl: 'assets/images/me.jpg', size: 50.0),
@@ -76,32 +157,51 @@ class _HomePageState extends State<HomePage> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: tags
-                        .map((tag) => Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: tag,
+                        .map((tag) => GestureDetector(
+                              onTap: () => onSelectedTag(tag.text),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: tag,
+                              ),
                             ))
                         .toList(),
                   ),
                 ),
                 const SizedBox(height: 15),
-                BlocBuilder<PostBloc, PostState>(
-                  builder: (context, state) {
-                    if (state is PostInitial || state is PostLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is PostsViewsLoaded) {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: state.posts.length,
-                          itemBuilder: (context, index) {
-                            return Post(post: state.posts[index]);
+                StreamBuilder(
+                  stream: postBloc.stream,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Object> snapshot) {
+                    if (snapshot.hasData) {
+                      final event = snapshot.data;
+                      if (posts.isNotEmpty &&
+                          (event is PostLoading || event is PostInitial)) {
+                        return listPosts();
+                      } else if (event is PostsViewsLoaded) {
+                        posts.clear();
+                        filteredPosts.clear();
+                        posts.addAll(event.posts);
+                        return listPosts();
+                      } else if (event is PostError) {
+                        return Expanded(
+                            child: Center(child: Text(event.message)));
+                      }
+                    }
+                    return Expanded(
+                      child: Center(
+                        child: SpinKitWave(
+                          itemBuilder: (BuildContext context, int index) {
+                            return DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: index.isEven
+                                    ? const Color.fromARGB(255, 0, 0, 0)
+                                    : Colors.grey,
+                              ),
+                            );
                           },
                         ),
-                      );
-                    } else if (state is PostError) {
-                      return const Center(child: Text('Error loading posts'));
-                    } else {
-                      return Container();
-                    }
+                      ),
+                    );
                   },
                 ),
               ],
@@ -115,6 +215,22 @@ class _HomePageState extends State<HomePage> {
                   currentNav: 0) // Add custom bottom navigation
               ),
         ]),
+      ),
+    );
+  }
+
+  Expanded listPosts() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: searchController.text.isNotEmpty || selectedTags.isNotEmpty
+            ? filteredPosts.length
+            : posts.length,
+        itemBuilder: (context, index) {
+          return Post(
+              post: searchController.text.isNotEmpty || selectedTags.isNotEmpty
+                  ? filteredPosts[index]
+                  : posts[index]);
+        },
       ),
     );
   }

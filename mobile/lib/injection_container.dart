@@ -28,6 +28,7 @@ import 'features/architect/domains/repositories/user.dart';
 import 'features/architect/domains/use_cases/auth/get_token.dart';
 import 'features/architect/domains/use_cases/auth/is_auth.dart';
 import 'features/architect/domains/use_cases/chat/create.dart';
+import 'features/architect/domains/use_cases/chat/delete.dart';
 import 'features/architect/domains/use_cases/chat/message.dart';
 import 'features/architect/domains/use_cases/chat/view.dart';
 import 'features/architect/domains/use_cases/chat/views.dart';
@@ -65,6 +66,7 @@ Future<void> init() async {
         chatView: sl(),
         chatViews: sl(),
         chatMessage: sl(),
+        chatDelete: sl(),
       ));
 
   // Post
@@ -102,6 +104,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ViewChat(sl()));
   sl.registerLazySingleton(() => ViewsChat(sl()));
   sl.registerLazySingleton(() => MakeChat(sl()));
+  sl.registerLazySingleton(() => DeleteChat(sl()));
 
   // Post
   sl.registerLazySingleton(() => AllPost(sl()));

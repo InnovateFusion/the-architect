@@ -19,5 +19,6 @@ abstract class ChatRepository {
 
   Future<Either<Failure, Chat>> view(String id);
   Future<Either<Failure, List<Chat>>> views(String userId);
+  Future<Either<Failure, Chat>> delete(String id);
 
 }

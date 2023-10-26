@@ -93,4 +93,20 @@ class ChatRepositoryImpl extends ChatRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Chat>> delete(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String token =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
+        final chat = await remoteDataSource.delete(id, token);
+        return Right(chat);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(CacheFailure());
+    }
+  }
 }

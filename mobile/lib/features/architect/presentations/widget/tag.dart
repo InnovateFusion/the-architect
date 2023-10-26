@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 
 class Tag extends StatelessWidget {
   final String text;
-  final Color color;
-  final Color textColor;
-  final double textSize;
-  final VoidCallback onPressed;
+  final bool isSelected;
+  final Function(String word) onPressed;
 
   const Tag({
     super.key,
+    required this.isSelected,
     required this.text,
-    required this.color,
-    required this.textColor,
     required this.onPressed,
-    required this.textSize,
   });
 
   @override
@@ -21,19 +17,23 @@ class Tag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color: color,
+        color: isSelected
+            ? Colors.black
+            : const Color.fromARGB(255, 255, 255, 255),
         border: Border.all(
-          color: Colors.black,
+          color: isSelected
+              ? const Color.fromARGB(255, 255, 255, 255)
+              : Colors.black,
         ),
         borderRadius: BorderRadius.circular(20),
       ),
       child: InkWell(
-        onTap: onPressed,
+        onTap: () => onPressed(text),
         child: Text(
           text,
           style: TextStyle(
-            color: textColor,
-            fontSize: textSize,
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize: 13,
           ),
         ),
       ),

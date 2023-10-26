@@ -35,7 +35,7 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
         ...
 
     @abstractmethod
-    async def all_posts(self, tags: List[str], search_word: str) -> Either[Failure, Iterable[PostEntity]]:
+    async def all_posts(self, tags: List[str], search_word: str, skip: int, limit: int) -> Either[Failure, Iterable[PostEntity]]:
         ...
 
 class BaseReadOnlyRepository(ABC):

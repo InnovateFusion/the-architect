@@ -180,15 +180,26 @@ class ChatMessage extends StatelessWidget {
                 ),
               ),
             ),
-          if (!isSentByMe && content.imageAI.isNotEmpty)
+          if (!isSentByMe &&
+              (content.imageAI.isNotEmpty ||
+                  (content.threeD.containsKey('fetch_result') &&
+                      content.threeD['fetch_result'].isNotEmpty)))
             GestureDetector(
-              onDoubleTap: () => _showImageInFull(context, content.imageAI),
+              onDoubleTap: () => {
+                _showImageInFull(
+                    context,
+                    content.imageAI.isNotEmpty
+                        ? content.imageAI
+                        : content.threeD['fetch_result'])
+              },
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image.network(
-                    content.imageAI,
+                    content.imageAI.isNotEmpty
+                        ? content.imageAI
+                        : content.threeD['fetch_result'],
                     fit: BoxFit.cover,
                   ),
                 ),

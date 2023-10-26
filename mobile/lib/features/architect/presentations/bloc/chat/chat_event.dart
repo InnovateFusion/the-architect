@@ -61,3 +61,14 @@ final class MakeChatEvent extends ChatEvent {
   @override
   List<Object> get props => [payload, chatId, model, userId];
 }
+
+final class ChatDeleteEvent extends ChatEvent {
+  const ChatDeleteEvent({
+    required this.id,
+  });
+
+  final String id;
+
+  @override
+  List<Object> get props => [id];
+}

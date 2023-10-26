@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
-  final Function(String search) onPressed;
+  final TextEditingController searchController;
+  final Function(String) onChanged;
 
   const Search({
     Key? key,
-    required this.onPressed,
+    required this.searchController,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -13,14 +15,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  final TextEditingController _searchController = TextEditingController();
-
-  void _handleSearch() {
-    String searchText = _searchController.text;
-    widget.onPressed(searchText);
-    _searchController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -37,22 +31,21 @@ class _SearchState extends State<Search> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: GestureDetector(
-                onTap: _handleSearch,
-                child: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                  size: 25, // Example icon color
-                ),
+            const Padding(
+              padding: EdgeInsets.only(left: 15),
+              child: Icon(
+                Icons.search,
+                color: Colors.grey,
+                size: 25, // Example icon color
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
-                onSubmitted: (value) => _handleSearch(),
-                controller: _searchController,
+                controller: widget.searchController,
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
                 decoration: const InputDecoration(
                   hintText: 'Search',
                   hintStyle: TextStyle(

@@ -16,6 +16,7 @@ abstract class ChatRemoteDataSource {
 
   Future<ChatModel> viewChat(String id, String token);
   Future<List<ChatModel>> viewChats(String userId, String token);
+  Future<ChatModel> delete(String id, String token);
 
   Future<MessageModel> message({
     required Map<String, dynamic> payload,
@@ -126,6 +127,23 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       return MessageModel.fromJson(jsonData);
     } else {
       print('${response.body} ${response.statusCode}');
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<ChatModel> delete(String id, String token) async {
+    final response = await client.delete(
+      Uri.parse("https://the-architect.onrender.com/api/v1/chats/$id"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return ChatModel.fromJson(jsonData);
+    } else {
       throw ServerException();
     }
   }

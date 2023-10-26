@@ -6,6 +6,8 @@ import 'package:architect/features/architect/domains/use_cases/chat/view.dart'
     as chat_view;
 import 'package:architect/features/architect/domains/use_cases/chat/views.dart'
     as chat_views;
+import 'package:architect/features/architect/domains/use_cases/chat/delete.dart'
+    as chat_delete;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -25,17 +27,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.chatViews,
     required this.chatCreate,
     required this.chatMessage,
+    required this.chatDelete,
   }) : super(ChatInitial()) {
     on<ChatViewEvent>(_onChatView);
     on<ChatViewsEvent>(_onChatViews);
     on<ChatCreateEvent>(_onChatCreate);
     on<MakeChatEvent>(_onChatMessage);
+    on<ChatDeleteEvent>(_onChatDelete);
   }
 
   final chat_create.CreateChat chatCreate;
   final chat_view.ViewChat chatView;
   final chat_views.ViewsChat chatViews;
   final chat_message.MakeChat chatMessage;
+  final chat_delete.DeleteChat chatDelete;
 
   Future<void> _onChatView(ChatViewEvent event, Emitter<ChatState> emit) async {
     emit(ChatLoading());
@@ -93,6 +98,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       failureOrMessage.fold(
         (failure) => ChatError(message: _mapFailureToMessage(failure)),
         (message) => MakeChatLoaded(message: message),
+      ),
+    );
+  }
+
+  Future<void> _onChatDelete(
+      ChatDeleteEvent event, Emitter<ChatState> emit) async {
+    emit(ChatLoading());
+    final failureOrChat = await chatDelete(chat_delete.Params(
+      id: event.id,
+    ));
+    emit(
+      failureOrChat.fold(
+        (failure) => ChatError(message: _mapFailureToMessage(failure)),
+        (chat) => ChatViewLoaded(chat: chat),
       ),
     );
   }
