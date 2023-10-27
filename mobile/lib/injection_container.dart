@@ -25,6 +25,7 @@ import 'features/architect/domains/repositories/chat.dart';
 import 'features/architect/domains/repositories/post.dart';
 import 'features/architect/domains/repositories/type.dart';
 import 'features/architect/domains/repositories/user.dart';
+import 'features/architect/domains/use_cases/auth/delete.dart';
 import 'features/architect/domains/use_cases/auth/get_token.dart';
 import 'features/architect/domains/use_cases/auth/is_auth.dart';
 import 'features/architect/domains/use_cases/chat/create.dart';
@@ -92,6 +93,7 @@ Future<void> init() async {
   sl.registerFactory(() => AuthBloc(
         checkAuth: sl(),
         getToken: sl(),
+        deleteAuth: sl(),
       ));
 
   // Use cases
@@ -124,6 +126,7 @@ Future<void> init() async {
   // Auth
   sl.registerLazySingleton(() => GetToken(sl()));
   sl.registerLazySingleton(() => CheckAuth(sl()));
+  sl.registerLazySingleton(() => DeleteAuth(sl()));
 
   // Repository
   // Type
