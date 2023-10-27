@@ -60,7 +60,7 @@ export function UserAuthForm({ className, ...props }) {
     if (token) {
       router.push("/dashboard/design");
     }
-  }, [token]);
+  }, [token, router]);
 
   return (
     <>

@@ -33,13 +33,13 @@ export default function AuthenticationPage() {
                 alt="Authentication"
                 className="block w-[80%]"
               />
-              {/* <Image
+              <Image
                 src="/house.jpg"
                 width={1280}
                 height={843}
                 alt="Authentication"
                 className="hidden dark:block"
-              /> */}
+              />
             </div>
           </div>
 
