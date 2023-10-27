@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 function List() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
   const getPosts = async () => {
     const userId = localStorage.getItem("userId");
@@ -26,14 +26,18 @@ function List() {
     getPosts();
   }, []);
 
+  if(data?.length == 0){
+    return <div className="text-center p-10">No Posts Yet</div>
+  }
+
   return (
     <div>
       <div className="">
         <div className="mx-auto px-4 py-16 sm:px-6 sm:py-6 lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight ">My Designs</h2>
           <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 py-6 px-2">
-            {data.length > 0
-              ? data.map((item, index) => (
+            {data?.length > 0
+              ? data?.map((item, index) => (
                   <div className="group relative" key={item.id}>
                     <div
                       className={`aspectw-${

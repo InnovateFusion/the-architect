@@ -31,7 +31,7 @@ function Chat2({ size, chat, handleDelete }) {
         <div className="flex gap-x-2">
           {chat?.id && (
             <button
-              onClick={(e) => router.push(`/test/edit?chatId=${chat.id}`)}
+              onClick={(e) => router.push(`/dashboard/edit?chatId=${chat.id}`)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Go to Chat
@@ -42,7 +42,7 @@ function Chat2({ size, chat, handleDelete }) {
               onClick={(e) => setIsOpen(true)}
               className={cn(
                 "w-9 h-9 flex justify-center items-center cursor-pointer p-2 hover:bg-gray-2 rounded-lg transition-colors my-2 hover:bg-red-600",
-                pathname === "/test/profile" ? "bg-gray-2" : ""
+                pathname === "/dashboard/profile" ? "bg-gray-2" : ""
               )}
             >
               <Trash size={40} />

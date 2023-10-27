@@ -1,4 +1,24 @@
-import { Brush, Delete, DraftingCompass, DraftingCompassIcon, Home, Link, Link2, Loader, Menu, Moon, Pen, Plus, PlusCircle, Settings, Sun, Users } from "lucide-react";
+import {
+  Brush,
+  Delete,
+  DraftingCompass,
+  DraftingCompassIcon,
+  Home,
+  Link,
+  Link2,
+  FolderOpenDot,
+  ClipboardSignature,
+  Loader,
+  Menu,
+  Moon,
+  Pen,
+  Plus,
+  PlusCircle,
+  BookHeart,
+  Settings,
+  Sun,
+  Users,
+} from "lucide-react";
 
 export const Icons = {
   home: Home,
@@ -15,5 +35,8 @@ export const Icons = {
   brush: Brush,
   drafting: DraftingCompass,
   drafting2: DraftingCompassIcon,
-  delete: Delete
+  delete: Delete,
+  clip: ClipboardSignature,
+  folder: FolderOpenDot,
+  mine: BookHeart,
 };

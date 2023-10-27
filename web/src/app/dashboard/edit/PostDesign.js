@@ -6,13 +6,14 @@ import Image from "next/image";
 import DesignView from "../designs/DesignView";
 
 export function PostDesign({ image, open, handleOpen }) {
-  console.log(image);
+  // console.log(image);
   const [postTitle, setPostTitle] = React.useState("");
   const [postDescription, setPostDescription] = React.useState("");
   const [selectedtags, setSelectedtags] = React.useState([]);
 
   const handlePost = async () => {
     if (selectedtags.length > 0 && image) {
+      handleOpen();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
 
@@ -37,7 +38,6 @@ export function PostDesign({ image, open, handleOpen }) {
         setPostTitle("");
         setPostDescription("");
         setSelectedtags([]);
-        handleOpen();
       }
     }
   };

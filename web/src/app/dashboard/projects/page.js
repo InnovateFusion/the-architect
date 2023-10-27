@@ -15,7 +15,7 @@ function Projects() {
   const router = useRouter();
   const handleDelete = async (id) => {
     setChats(chats.filter((i) => i.id != id));
-    setChat("")
+    setChat("");
     const token = localStorage.getItem("token");
     const url = `https://the-architect.onrender.com/api/v1/chats/${chat.id}`;
     const res = fetch(url, {
@@ -28,7 +28,7 @@ function Projects() {
     if (res.status == 200) {
       const posts = await res.json();
     }
-    router.refresh("/test/projects");
+    router.refresh("/dashboard/projects");
   };
   useEffect(() => {
     const fetchUser = async () => {
@@ -69,7 +69,7 @@ function Projects() {
             <button
               onClick={(e) => {
                 setSize("2/5");
-                router.push(`/test/edit`);
+                router.push(`/dashboard/edit`);
                 setChat("");
               }}
               variant="gradient"
@@ -89,7 +89,7 @@ function Projects() {
                 key={chat.id}
                 onClick={(e) => {
                   setSize("2/5");
-                  // router.push(`/test/edit?chatId=${chat.id}`);
+                  // router.push(`/dashboard/edit?chatId=${chat.id}`);
                   setChat(chat);
                 }}
               >

@@ -11,43 +11,33 @@ export const dashboardConfig = {
   sidebarNav: [
     {
       title: "Home",
-      href: "/home",
-      icon: "users",
-    },
-    {
-      title: "Test",
-      href: "/test",
+      href: "/dashboard",
       icon: "home",
     },
     {
       title: "Designs",
-      href: "/test/designs",
-      icon: "brush",
+      href: "/dashboard/designs",
+      icon: "clip",
     },
     {
       title: "Projects",
-      href: "/test/projects",
-      icon: "draw",
-    },
-    {
-      title: "Draw",
-      href: "/test/draw",
-      icon: "drafting",
+      href: "/dashboard/projects",
+      icon: "folder",
     },
     {
       title: "Edit",
-      href: "/test/edit",
+      href: "/dashboard/edit",
       icon: "brush",
     },
     {
-      title: "My Designs",
-      href: "/test/my",
+      title: "Draw",
+      href: "/dashboard/draw",
       icon: "drafting",
     },
     {
-      title: "Profile",
-      href: "/test/profile",
-      icon: "brush",
+      title: "My Designs",
+      href: "/dashboard/my",
+      icon: "mine",
     },
   ],
 };
@@ -82,10 +72,10 @@ export default function Nav() {
       <div className="w-full flex-row justify-end gap-y-2">
         <ThemeToggle />
         <Link
-          href={"/test/profile"}
+          href={"/dashboard/profile"}
           className={cn(
             "w-9 h-9 flex justify-center items-center cursor-pointer p-2 hover:bg-gray-2 rounded-lg transition-colors my-2",
-            pathname === "/test/profile" ? "bg-gray-2" : ""
+            pathname === "/dashboard/profile" ? "bg-gray-2" : ""
           )}
         >
           <User size={40} />

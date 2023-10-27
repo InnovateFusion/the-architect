@@ -48,7 +48,7 @@ function DesignCard({ post }) {
   return (
     <>
       <div className="border-2 dark:border-gray-600 border-gray-300 max-w-xs container  rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
-        <Link href={{ pathname: `/test/design/${post.id}` }}>
+        <Link href={{ pathname: `/dashboard/design/${post.id}` }}>
           <Image
             className="w-full cursor-pointer rounded-t-xl"
             src={post.image}
@@ -68,7 +68,7 @@ function DesignCard({ post }) {
               alt={post?.firstName}
               priority
             />
-            <Link href={`/test/profile/${post.userId}`}>
+            <Link href={`/dashboard/profile/${post.userId}`}>
               <h2 className="font-bold cursor-pointer">
                 {Capitalize(post.firstName)} {Capitalize(post.lastName)}
               </h2>

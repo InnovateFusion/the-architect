@@ -42,6 +42,18 @@ export const initialMessage = [
 
 export const models = [
   { code: "text_to_image", name: "Interior Design" },
+  { code: "image_from_text", name: "Exterior Design" },
+  { code: "chatbot", name: "Lets talk about Architecture" },
+  { code: "text_to_3D", name: "Imagine the 3D" },
+  { code: "analysis", name: "Analyze my Design" },
+  // { code: "image_variant", name: "Design Variation" },
+  // { code: "image_to_image", name: "Reference this" },
+  // { code: "instruction", name: "Fix my Design" },
+  // { code: "edit_image", name: "Edit my Design" },
+];
+
+export const models2 = [
+  { code: "text_to_image", name: "Interior Design" },
   { code: "image_to_image", name: "Reference this" },
   { code: "controlNet", name: "Drawing to Design" },
   { code: "painting", name: "Design Modification" },
@@ -52,5 +64,5 @@ export const models = [
   { code: "chatbot", name: "Lets talk about Architecture" },
   { code: "analysis", name: "Analyze my Design" },
   { code: "text_to_3D", name: "Imagine the 3D" },
-  { code: "image_to_3D", name: "Design to 3D" },
+  // { code: "image_to_3D", name: "Design to 3D" },
 ];

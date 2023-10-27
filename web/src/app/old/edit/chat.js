@@ -332,7 +332,6 @@ export default function Chat({ changeImage, mode, image, mask }) {
               setMessage(e.target.value);
             }}
             value={message}
-            multiple
             min={2}
             onKeyDown={(e) => {
               if (e.key === "Enter" && message != "") {

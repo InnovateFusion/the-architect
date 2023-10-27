@@ -15,22 +15,7 @@ function Tag({ tag, selected, onClick }) {
     );
 }
 
-export default function TagList({selectedTags, setSelectedTags }) {
-    const tags = [
-      "exterior",
-      "facade",
-      "outdoor",
-      "landscape",
-      "architectural facade",
-      "outdoor design",
-      "interior",
-      "indoor",
-      "interior design",
-      "space planning",
-      "furniture design",
-      "decor",
-      "lighting",
-    ];
+export default function TagList({ tags, selectedTags, setSelectedTags }) {
     function handleTagClick(tag) {
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter((t) => t !== tag));

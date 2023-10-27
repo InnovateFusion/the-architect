@@ -1,50 +1,12 @@
-"use client"
-import Image from "next/image";
 import Link from "next/link";
-import ThemeToggle from "@/components/theme-toggle";
-import { useRouter } from "next/navigation";
-
+import MobileNav from "./mobilenav";
 const Header = () => {
-  const router = useRouter()
-  const handleLogout = () => {
-    console.log("logout");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    router.push("/auth/signin")
-  };
   return (
-    <header className="flex w-full flex-row items-center justify-between p-4 z-50 fixed">
-      <div className="flex items-center">
-        <Image
-          width={40}
-          height={40}
-          src="/logo.svg"
-          alt="Logo"
-          className="h-8 mr-4"
-        />
-      </div>
-      <nav>
-        <ul className="flex items-center">
-          <li className="mr-6">
-            <Link href="/home">Home</Link>
-          </li>
-          <li className="mr-6">
-            <Link href="/about">About</Link>
-          </li>
-          <li>
-            <Link href="/contact">Contact</Link>
-          </li>
-        </ul>
-      </nav>
-      <div className="flex flex-wrap gap-5">
-        <ThemeToggle />
-        <button
-          className=" hover:text-gray-400"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
+    <header className="shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-sm flex flex-row justify-between md:justify-center items-center max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold leading-tight">
+        <Link href="/home">My Dashboard</Link>
+      </h1>
+      <MobileNav />
     </header>
   );
 };
