@@ -1,17 +1,21 @@
 import 'dart:io';
+
 import 'package:architect/features/architect/presentations/page/chat.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatMessage extends StatelessWidget {
   final Message content;
   final bool isSentByMe;
   final VoidCallback onDeleted;
+  final List<Message> messages;
 
   const ChatMessage({
     super.key,
     required this.onDeleted,
     required this.content,
     required this.isSentByMe,
+    required this.messages,
   });
 
   void _showImageInFull(BuildContext context, String image) {
@@ -59,50 +63,31 @@ class ChatMessage extends StatelessWidget {
       Colors.black.withOpacity(0.5),
       BlendMode.darken,
     );
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Column(
         crossAxisAlignment: alignment,
         children: <Widget>[
-          if (isSentByMe && !content.isPicked)
-            if (content.imageUser.isEmpty)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: borderRadius,
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  content.prompt,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-          if (content.imageUser.isNotEmpty)
+          if (isSentByMe && content.imageUser.isEmpty && !content.isPicked)
             Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: borderRadius,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: borderRadius,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                content.prompt,
+                style: const TextStyle(
+                  color: Colors.white,
                 ),
-                child: Column(
-                  children: [
-                    Image.network(
-                      content.imageUser,
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        capitalize(content.prompt),
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    )
-                  ],
-                )),
-          if (isSentByMe && content.isPicked)
+                textAlign: TextAlign.right,
+              ),
+            ),
+          if (isSentByMe &&
+              content.imageUser.isNotEmpty &&
+              content.isPicked &&
+              content.prompt.isEmpty)
             GestureDetector(
               child: Container(
                 padding: const EdgeInsets.all(10.0),
@@ -136,6 +121,104 @@ class ChatMessage extends StatelessWidget {
                 ),
               ),
             ),
+          if (isSentByMe &&
+              content.imageUser.isNotEmpty &&
+              content.isPicked &&
+              content.prompt.isNotEmpty)
+            ClipRRect(
+              borderRadius: borderRadius,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: borderRadius,
+                ),
+                child: Column(
+                  children: [
+                    Image.file(
+                      File(content.imageUser),
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        capitalize(content.prompt),
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          if (isSentByMe &&
+              content.imageUser.isNotEmpty &&
+              !content.isPicked &&
+              content.chat.isEmpty &&
+              content.prompt.isNotEmpty)
+            ClipRRect(
+              borderRadius: borderRadius,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: borderRadius,
+                ),
+                child: Column(
+                  children: [
+                    Image.network(
+                      content.imageUser,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        capitalize(content.prompt),
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          if (isSentByMe &&
+              content.imageUser.isNotEmpty &&
+              !content.isPicked &&
+              content.chat.isNotEmpty &&
+              content.prompt.isNotEmpty)
+            ClipRRect(
+              borderRadius: borderRadius,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: borderRadius,
+                ),
+                child: Column(
+                  children: [
+                    Image.file(
+                      File(content.imageUser),
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        capitalize(content.prompt),
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    )
+                  ],
+                ),
+              ),
+            ),
           if (!isSentByMe &&
               (content.imageAI.isNotEmpty ||
                   (content.threeD.containsKey('fetch_result') &&
@@ -148,16 +231,13 @@ class ChatMessage extends StatelessWidget {
                         ? content.imageAI
                         : content.threeD['fetch_result'])
               },
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Image.network(
-                    content.imageAI.isNotEmpty
-                        ? content.imageAI
-                        : content.threeD['fetch_result'],
-                    fit: BoxFit.cover,
-                  ),
+              child: ClipRRect(
+                borderRadius: borderRadius,
+                child: Image.network(
+                  content.imageAI.isNotEmpty
+                      ? content.imageAI
+                      : content.threeD['fetch_result'],
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -179,38 +259,60 @@ class ChatMessage extends StatelessWidget {
               content.analysis.containsKey('detail') &&
               content.analysis['detail'].isNotEmpty)
             Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: borderRadius,
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        capitalizeAll(content.analysis['title']),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      content.analysis['detail'],
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: borderRadius,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      capitalizeAll(content.analysis['title']),
                       style: const TextStyle(
                         color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      textAlign: TextAlign.justify,
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(
-                      height: 5,
-                    )
-                  ],
-                )),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    content.analysis['detail'],
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  )
+                ],
+              ),
+            ),
+
+
+
+
+          if (messages[0] == content && content.prompt.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SpinKitThreeBounce(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: index.isEven
+                            ? const Color.fromARGB(255, 0, 0, 0)
+                            : Colors.grey,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
         ],
       ),
     );

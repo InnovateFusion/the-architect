@@ -141,6 +141,7 @@ Future<void> init() async {
     () => ChatRepositoryImpl(
       remoteDataSource: sl(),
       networkInfo: sl(),
+      authLocalDataSource: sl(),
     ),
   );
 
@@ -149,6 +150,7 @@ Future<void> init() async {
     () => PostRepositoryImpl(
       remoteDataSource: sl(),
       networkInfo: sl(),
+      authLocalDataSource: sl(),
     ),
   );
 

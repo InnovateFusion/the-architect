@@ -5,25 +5,27 @@ import '../../../../core/errors/failure.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domains/entities/post.dart';
 import '../../domains/repositories/post.dart';
+import '../datasources/local/auth.dart';
 import '../datasources/remote/post.dart';
 
 class PostRepositoryImpl extends PostRepository {
   PostRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
+    required this.authLocalDataSource,
   });
 
   final PostRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
+  final AuthLocalDataSource authLocalDataSource;
 
   @override
   Future<Either<Failure, List<Post>>> all(
       {List<String>? tags, String? search}) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1NzMzOTg0LCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9.DpM49mp_43PEbosdxTSiQtSRBAzzxZlGNEi_TSYoyWU';
-        final posts = await remoteDataSource.allPosts(search, tags, token);
+      final auth = await authLocalDataSource.getToken();;
+        final posts = await remoteDataSource.allPosts(search, tags, auth.accessToken);
         return Right(posts);
       } on ServerException {
         return Left(ServerFailure());
@@ -96,9 +98,8 @@ class PostRepositoryImpl extends PostRepository {
   Future<Either<Failure, List<Post>>> views(String userId) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
-        final posts = await remoteDataSource.viewsPost(userId, token);
+        final auth = await authLocalDataSource.getToken();
+        final posts = await remoteDataSource.viewsPost(userId, auth.accessToken);
         return Right(posts);
       } on ServerException {
         return Left(ServerFailure());

@@ -82,6 +82,7 @@ class _ChatState extends State<Chat> {
   late TypeBloc _select;
   late String base64ImageForImageToImage;
   late String base64ImageForControlNet;
+  late String base64ImageForVariant;
 
   @override
   void initState() {
@@ -158,8 +159,13 @@ class _ChatState extends State<Chat> {
     };
 
     if (text.isEmpty) return;
+    if (model == 'analysis') {
+      payload['text'] = '${payload['text']}.';
+    }
 
-    if (model == 'image_to_image') {
+    if (model == 'image_to_image' ||
+        model == 'image_variant' ||
+        model == 'analysis') {
       if ((messages.isNotEmpty && !messages[0].isPicked) || messages.isEmpty) {
         return;
       } else {
@@ -191,19 +197,49 @@ class _ChatState extends State<Chat> {
       ));
     }
     setState(() {
-      messages.insert(
-        0,
-        Message(
-            prompt: text,
-            isSentByMe: true,
-            imageUser: '',
-            imageAI: '',
-            model: model,
-            analysis: {},
-            threeD: {},
-            chat: '',
-            isPicked: false),
-      );
+      if (messages.isNotEmpty) {
+        if (!messages[0].isPicked) {
+          messages.insert(
+            0,
+            Message(
+                prompt: text,
+                isSentByMe: true,
+                imageUser: '',
+                imageAI: '',
+                model: model,
+                analysis: {},
+                threeD: {},
+                chat: '',
+                isPicked: false),
+          );
+        } else {
+          final Message element = Message(
+              prompt: text,
+              isSentByMe: true,
+              imageUser: messages[0].imageUser,
+              imageAI: '',
+              model: model,
+              analysis: {},
+              threeD: {},
+              chat: 'x',
+              isPicked: false);
+          messages[0] = element;
+        }
+      } else {
+        messages.insert(
+          0,
+          Message(
+              prompt: text,
+              isSentByMe: true,
+              imageUser: '',
+              imageAI: '',
+              model: model,
+              analysis: {},
+              threeD: {},
+              chat: '',
+              isPicked: false),
+        );
+      }
     });
   }
 
@@ -292,6 +328,9 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    print('messages: $model');
+    print('messages: $messages');
     return SafeArea(
       child: MultiBlocProvider(
         providers: [
@@ -396,6 +435,24 @@ class _ChatState extends State<Chat> {
                                   reveiveMessage(
                                       state.chat.messages[i].content);
                                 }
+                              }
+                            } else if (state is ChatError) {
+                              if (messages.isNotEmpty &&
+                                  messages[0].isSentByMe) {
+                                setState(() {
+                                  messages.insert(
+                                      0,
+                                      Message(
+                                          prompt: '',
+                                          isSentByMe: false,
+                                          imageUser: '',
+                                          imageAI: '',
+                                          model: model,
+                                          analysis: {},
+                                          threeD: {},
+                                          chat: 'Something went wrong',
+                                          isPicked: false));
+                                });
                               }
                             }
                           },

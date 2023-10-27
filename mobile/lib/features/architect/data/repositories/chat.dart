@@ -6,24 +6,27 @@ import '../../../../core/network/network_info.dart';
 import '../../domains/entities/chat.dart';
 import '../../domains/entities/message.dart';
 import '../../domains/repositories/chat.dart';
+import '../datasources/local/auth.dart';
 import '../datasources/remote/chat.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
   final ChatRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
+  final AuthLocalDataSource authLocalDataSource;
+
   ChatRepositoryImpl({
     required this.networkInfo,
     required this.remoteDataSource,
+    required this.authLocalDataSource,
   });
 
   @override
   Future<Either<Failure, Chat>> view(String id) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
-        final chat = await remoteDataSource.viewChat(id, token);
+        final auth = await authLocalDataSource.getToken();
+        final chat = await remoteDataSource.viewChat(id, auth.accessToken);
         return Right(chat);
       } on ServerException {
         return Left(ServerFailure());
@@ -39,13 +42,18 @@ class ChatRepositoryImpl extends ChatRepository {
       required String userId,
       required String model}) async {
     if (await networkInfo.isConnected) {
-      String token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
+      final auth = await authLocalDataSource.getToken();
       try {
         final chat = await remoteDataSource.create(
-            model: model, payload: payload, userId: userId, token: token);
+            model: model,
+            payload: payload,
+            userId: userId,
+            token: auth.accessToken);
+        print('chat $chat');
+
         return Right(chat);
       } on ServerException {
+        print('err');
         return Left(ServerFailure());
       }
     } else {
@@ -57,9 +65,9 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<Either<Failure, List<Chat>>> views(String userId) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
-        final chats = await remoteDataSource.viewChats(userId, token);
+        final auth = await authLocalDataSource.getToken();
+        final chats =
+            await remoteDataSource.viewChats(userId, auth.accessToken);
         return Right(chats);
       } on ServerException {
         return Left(ServerFailure());
@@ -77,16 +85,17 @@ class ChatRepositoryImpl extends ChatRepository {
       required String model}) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
+        final auth = await authLocalDataSource.getToken();
         final chat = await remoteDataSource.message(
             model: model,
             payload: payload,
             chatId: chatId,
-            token: token,
+            token: auth.accessToken,
             userId: userId);
+        print('chat $chat');
         return Right(chat);
       } on ServerException {
+        print(' eorrrrrrrrrr       ');
         return Left(ServerFailure());
       }
     } else {
@@ -98,9 +107,8 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<Either<Failure, Chat>> delete(String id) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3OTg1OTUwNTEyLCJlbWFpbCI6ImRldkBiaXNyYXQudGVjaCIsImlkIjoiMzVhNzBmZGYtN2Q3ZC00ZjJmLWE5N2MtNWUxZWViNWJjMzNhIiwiZmlyc3RfbmFtZSI6ImJpc3JhdCIsImxhc3RfbmFtZSI6ImtlYmVyZSJ9._7f9ZvPC28c04P6rt_Pt60KRHUANR3hN5eQYPpuVSfY";
-        final chat = await remoteDataSource.delete(id, token);
+        final auth = await authLocalDataSource.getToken();
+        final chat = await remoteDataSource.delete(id, auth.accessToken);
         return Right(chat);
       } on ServerException {
         return Left(ServerFailure());

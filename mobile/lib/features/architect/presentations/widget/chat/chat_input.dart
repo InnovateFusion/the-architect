@@ -37,7 +37,9 @@ class ChatInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: model == 'image_to_image'
+            onTap: model == 'image_to_image' ||
+                    model == "image_variant" ||
+                    model == "analysis"
                 ? onImagePick
                 : () async {
                     final result = await Navigator.push(
@@ -92,6 +94,9 @@ class ChatInput extends StatelessWidget {
               ),
             ),
           )
+          
+          
+
         ],
       ),
     );

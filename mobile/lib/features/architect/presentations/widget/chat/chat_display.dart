@@ -76,6 +76,7 @@ class _ChatDisplayState extends State<ChatDisplay> {
               itemBuilder: (_, int index) {
                 final message = widget.messages[index];
                 return ChatMessage(
+                  messages: widget.messages,
                   onDeleted: onDeleted,
                   content: message,
                   isSentByMe: message.isSentByMe,

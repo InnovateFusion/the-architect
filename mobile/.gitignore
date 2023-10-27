@@ -32,6 +32,15 @@ migrate_working_dir/
 .pub/
 /build/
 
+vscode/*
+android/*
+ios/*
+
+/vscode/*
+/android/*
+/ios/*
+
+
 # Symbolication related
 app.*.symbols
 
@@ -43,25 +52,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/.vscode
-/.idea
-/.dart_tool
-/android
-/build
-/ios
-/linux
-/macos
-/web
-/windows
-.flutter-plugins-dependencies
-.metadata
-.flutter-plugins
+analysis_options.yaml
+android/
+ios/
+mobile.iml
 pubspec.lock
-
-
-
-
-
-
-
-
+pubspec.yaml

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:architect/features/architect/domains/entities/post.dart'
     as post;
 import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:architect/features/architect/presentations/widget/post/post.dart';
 import 'package:architect/injection_container.dart';
+import 'package:flutter/material.dart';
 
 import '../../domains/entities/user.dart';
 import '../bloc/post/post_bloc.dart';
@@ -51,10 +51,6 @@ class _HomePageState extends State<HomePage> {
     'Design',
   ];
 
-  final List<String> selectedTags = [
-    'Explore',
-  ];
-
   List<Tag> tags = [];
 
   @override
@@ -71,6 +67,18 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
+    final List<String> xTags = [
+      'Explore',
+      'Interior',
+      'Exterior',
+      'Architecture',
+      'Design',
+    ];
+
+    final List<String> selectedTags = [
+      'Explore',
+    ];
+
     postBloc = sl<PostBloc>();
     postBloc.add(const AllPosts());
     postBloc.stream.listen((event) {
@@ -80,7 +88,29 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
+
+    for (final tag in xTags) {
+      if (selectedTags.contains(tag)) {
+        tags.add(
+          Tag(
+            text: tag,
+            isSelected: true,
+            onPressed: onSelectedTag,
+          ),
+        );
+      } else {
+        tags.add(
+          Tag(
+            text: tag,
+            isSelected: false,
+            onPressed: onSelectedTag,
+          ),
+        );
+      }
+    }
   }
+
+  void onSelectedTag(String tag) {}
 
   void searchPosts(String search) {
     setState(() {
