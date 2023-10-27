@@ -28,7 +28,11 @@ class React extends StatelessWidget {
           style: const TextStyle(
             fontWeight: FontWeight.w300,
             color: Colors.white,
+<<<<<<< HEAD
             fontSize: 16,
+=======
+            fontSize: 20,
+>>>>>>> ccf8b2c (:boom: add new feature)
           ),
         ),
       ],
