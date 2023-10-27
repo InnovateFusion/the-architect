@@ -20,10 +20,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-image-zooom": "^1.2.0",
     "react-sketch-canvas": "^6.2.0",
     "sharp": "^0.32.6",
-    "tailwindcss-animate": "^1.0.6",
+    "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.6",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
