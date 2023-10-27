@@ -8,7 +8,8 @@ import '../../models/auth.dart';
 abstract class AuthLocalDataSource {
   Future<void> cacheToken(AuthModel token);
   Future<AuthModel> getToken();
-  Future<bool> isValid();
+  Future<AuthModel> isValid();
+  Future<void> deleteToken();
 }
 
 const String authCacheKey = 'auth';
@@ -35,17 +36,22 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<bool> isValid() async {
-    try {
+  Future<AuthModel> isValid() async {
       final auth = await getToken();
       final token = auth.accessToken;
       final Map<String, dynamic> decodedMap = json
           .decode(String.fromCharCodes(base64Url.decode(token.split('.')[1])));
       int expTimestamp = decodedMap['exp'];
       int currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-      return currentTimestamp < expTimestamp;
-    } on CacheException {
-      return false;
-    }
+      if (expTimestamp > currentTimestamp) {
+        return auth;
+      } else {
+        throw CacheException();
+      }
+  }
+
+  @override
+  Future<void> deleteToken() {
+    return plugin.remove(authCacheKey);
   }
 }

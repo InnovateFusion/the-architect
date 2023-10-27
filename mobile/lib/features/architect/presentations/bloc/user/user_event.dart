@@ -128,3 +128,5 @@ final class FollowersUserEvent extends UserEvent {
   @override
   List<Object?> get props => [id];
 }
+
+final class CurrentUserEvent extends UserEvent {}

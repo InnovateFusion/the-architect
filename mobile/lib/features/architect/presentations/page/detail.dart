@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../domains/entities/post.dart';
+import '../../domains/entities/user.dart';
 import '../widget/post/post_info.dart';
 import '../widget/post/react.dart';
 
 class DetailPage extends StatelessWidget {
+  final User user;
   const DetailPage({
+    required this.user,
     Key? key,
     required this.post,
   }) : super(key: key);
@@ -52,11 +55,12 @@ class DetailPage extends StatelessWidget {
                           top: 10,
                           right: 10,
                           child: PostInfo(
-                              id: post.id,
-                              name:
-                                  '${capitalize(post.firstName)} ${capitalize(post.lastName)}',
-                              date: DateFormat('MMM d y').format(post.date),
-                              imageUrl: 'assets/images/me.jpg'),
+                            id: post.id,
+                            name:
+                                '${capitalize(post.firstName)} ${capitalize(post.lastName)}',
+                            date: DateFormat('MMM d y').format(post.date),
+                            imageUrl: post.userImage,
+                          ),
                         ),
                         Positioned(
                           bottom: 10,

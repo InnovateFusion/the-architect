@@ -1,74 +1,45 @@
 import 'package:flutter/material.dart';
 
+import '../../../domains/entities/user.dart';
+import '../../page/history.dart';
+
 class ChatItem extends StatelessWidget {
-  final int index;
   final bool isSelected;
-  final Function(int) onTap;
+  final Function(int choice) onTap;
   final Icon icon;
   final String title;
-  final Widget body;
+  final int index;
+  final User user;
 
   const ChatItem({
     Key? key,
-    required this.title,
     required this.index,
+    required this.title,
     required this.isSelected,
     required this.onTap,
     required this.icon,
-    required this.body,
-  }) : super(key: key);
+    required this.user,
 
-  void showPopUp(BuildContext context, String text, {Widget? body}) {
-    showDialog(
-      context: context,
-      useSafeArea: true,
-      builder: (_) => Dialog(
-          child: Expanded(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          height: 400,
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: body ??
-                      const Text(
-                        "No body",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                ),
-              ]),
-        ),
-      )),
-    );
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onTap(index);
-        showPopUp(context, title, body: body);
+        if (index == 0) {
+          onTap(index);
+        } else if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => History(
+                user: user
+              ),
+            ),
+          );
+        } else {
+          onTap(index);
+        }
       },
       child: Container(
         width: 40,

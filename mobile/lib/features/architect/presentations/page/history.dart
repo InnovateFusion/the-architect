@@ -2,15 +2,21 @@ import 'package:architect/features/architect/domains/entities/chat.dart';
 import 'package:architect/features/architect/domains/entities/message.dart';
 import 'package:architect/features/architect/presentations/page/chat.dart'
     as chat;
+import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
+import '../../domains/entities/user.dart';
 import '../bloc/chat/chat_bloc.dart';
 
 class History extends StatefulWidget {
-  const History({Key? key}) : super(key: key);
+  const History({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
+
+  final User user;
 
   @override
   State<History> createState() => _HistoryState();
@@ -27,8 +33,8 @@ class _HistoryState extends State<History> {
     super.initState();
     chatBloc = sl<ChatBloc>();
     chatBloc.add(
-      const ChatViewsEvent(
-        userId: '35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a',
+      ChatViewsEvent(
+        userId: widget.user.id,
       ),
     );
     chatBloc.stream.listen((event) {
@@ -86,8 +92,9 @@ class _HistoryState extends State<History> {
       context,
       MaterialPageRoute(
         builder: (context) => chat.Chat(
+
           chatId: id,
-          userId: userId,
+          user: widget.user,
           messages: messages,
         ),
       ),
@@ -179,21 +186,7 @@ class _HistoryState extends State<History> {
                     return Expanded(child: Center(child: Text(event.message)));
                   }
                 }
-                return Expanded(
-                  child: Center(
-                    child: SpinKitWave(
-                      itemBuilder: (BuildContext context, int index) {
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: index.isEven
-                                ? const Color.fromARGB(255, 0, 0, 0)
-                                : Colors.grey,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
+                return const LoadingIndicator();
               },
             )
           ],

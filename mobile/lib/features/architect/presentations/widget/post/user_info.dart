@@ -28,7 +28,6 @@ class UserInfo extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-<<<<<<< HEAD
               onTap: () {
                 Navigator.push(
                   context,
@@ -39,10 +38,6 @@ class UserInfo extends StatelessWidget {
                   ),
                 );
               },
-=======
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage())),
->>>>>>> ccf8b2c (:boom: add new feature)
               child: ProfileImage(imageUrl: imageUrl, size: 45)),
           const SizedBox(width: 10),
           Column(

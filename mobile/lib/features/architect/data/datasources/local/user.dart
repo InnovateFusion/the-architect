@@ -24,9 +24,6 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     final jsonString = plugin.getString(cachedUserKey);
     if (jsonString != null) {
       Map<String, dynamic> jsonMap = json.decode(jsonString);
-      String pathUser =
-          await getImage.downloadImage(jsonMap['image'], jsonMap['id']);
-      jsonMap['image'] = pathUser;
       return Future.value(UserModel.fromJson(jsonMap));
     } else {
       throw CacheException();
@@ -34,7 +31,14 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<void> cacheUser(UserModel userToCache) {
-    return plugin.setString(cachedUserKey, json.encode(userToCache.toJson()));
+  Future<void> cacheUser(UserModel userToCache) async {
+    final jsonMap = userToCache.toJson();
+
+    String pathUser =
+        await getImage.downloadImage(jsonMap['image'], jsonMap['id']);
+    jsonMap['image'] = pathUser;
+
+    plugin.setString(cachedUserKey, json.encode(jsonMap));
+    return Future.value();
   }
 }

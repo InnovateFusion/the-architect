@@ -15,6 +15,7 @@ class PostModel extends Post {
     required bool isCloned,
     required int clone,
     required List<String> tags,
+    required String userImage,
   }) : super(
           id: id,
           title: title,
@@ -29,6 +30,8 @@ class PostModel extends Post {
           isCloned: isCloned,
           clone: clone,
           tags: tags,
+          userImage: userImage,
+
         );
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -44,6 +47,7 @@ class PostModel extends Post {
         isLiked: json['isLiked'],
         like: json['like'],
         isCloned: json['isCloned'],
+        userImage: json['userImage'],
         clone: json['clone'],
         tags: json['tags'] != null ? List<String>.from(json['tags']) : []);
   }
@@ -61,6 +65,7 @@ class PostModel extends Post {
       'isLiked': isLiked,
       'like': like,
       'isCloned': isCloned,
+      'userImage': userImage,
       'clone': clone,
       'tags': tags,
     };

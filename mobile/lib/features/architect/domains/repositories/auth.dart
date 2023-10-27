@@ -9,5 +9,6 @@ abstract class AuthRepository {
     required String password,
   });
 
-  Future<Either<Failure, bool>> checkAuth();
+  Future<Either<Failure, Auth>> checkAuth();
+  Future<Either<Failure, void>> deleteAuth();
 }

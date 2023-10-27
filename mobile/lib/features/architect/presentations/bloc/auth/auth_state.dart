@@ -14,7 +14,15 @@ final class AuthLoading extends AuthState {}
 
 final class AuthLoggedOut extends AuthState {}
 
-final class Authenticated extends AuthState {}
+final class Authenticated extends AuthState {
+  const Authenticated({required this.auth});
+
+  final Auth auth;
+
+  @override
+  List<Object?> get props => [auth];
+
+}
 
 final class AuthError extends AuthState {
   const AuthError({required this.message});

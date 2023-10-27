@@ -85,6 +85,7 @@ flutter:
   assets:
    - assets/images/me.jpg
    - assets/images/logo.png
+   - assets/images/user.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

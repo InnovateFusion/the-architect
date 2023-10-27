@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../domains/entities/post.dart';
+import '../../domains/entities/user.dart';
 import '../page/detail.dart';
 
 class GalleryItem extends StatelessWidget {
-  const GalleryItem({Key? key, required this.half, required this.post})
-      : super(key: key);
+  const GalleryItem({
+    Key? key,
+    required this.half,
+    required this.post,
+    required this.user,
+  }) : super(key: key);
   final bool half;
   final Post post;
+  final User user;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,6 +32,7 @@ class GalleryItem extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => DetailPage(
+                            user: user,
                             post: post,
                           )));
             },

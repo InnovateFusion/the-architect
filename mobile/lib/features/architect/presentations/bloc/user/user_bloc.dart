@@ -16,6 +16,7 @@ import 'package:architect/features/architect/domains/use_cases/user/update.dart'
     as update_user;
 import 'package:architect/features/architect/domains/use_cases/user/view.dart'
     as get_user;
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

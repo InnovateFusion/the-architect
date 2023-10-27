@@ -1,17 +1,65 @@
+import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart';
+import '../../domains/entities/user.dart';
 import '../bloc/post/post_bloc.dart';
+import '../bloc/user/user_bloc.dart';
 import '../widget/gallery_item.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({
     Key? key,
     required this.userId,
   }) : super(key: key);
 
   final String userId;
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late User fetchedUser = const User(
+      id: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      image: '',
+      followers: 0,
+      following: 0,
+      bio: '',
+      country: '');
+  late UserBloc userBloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    userBloc = sl<UserBloc>();
+    userBloc.add(ViewUserEvent(id: widget.userId));
+
+    userBloc.stream.listen((event) {
+      if (event is UserLoaded) {
+        fetchedUser = event.user;
+      }
+    });
+  }
+
+  String capitalize(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
+  String capitalizeAll(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input.split(' ').map((e) => capitalize(e)).join(' ');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +69,7 @@ class ProfilePage extends StatelessWidget {
       child: BlocProvider(
         create: (context) => sl<PostBloc>()
           ..add(
-            ViewsPosts(userId: userId),
+            ViewsPosts(userId: widget.userId),
           ),
         child: Scaffold(
           backgroundColor: Colors.white,
@@ -32,7 +80,10 @@ class ProfilePage extends StatelessWidget {
               child:
                   BlocBuilder<PostBloc, PostState>(builder: (context, state) {
                 if (state is PostInitial || state is PostLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const SizedBox(
+                    height: 700,
+                    child: LoadingIndicator(),
+                  );
                 } else if (state is PostsViewsLoaded) {
                   return Column(
                     children: [
@@ -71,29 +122,36 @@ class ProfilePage extends StatelessWidget {
                               ),
                               height: 100,
                               width: 100,
-                              child: const ClipRRect(
-                                borderRadius: BorderRadius.all(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(50),
                                 ),
-                                child: Image(
-                                  image: AssetImage("assets/images/me.jpg"),
-                                  fit: BoxFit.cover,
-                                ),
+                                child: fetchedUser.image.isNotEmpty
+                                    ? Image(
+                                        image: NetworkImage(fetchedUser.image),
+                                        fit: BoxFit.fill,
+                                      )
+                                    : const Image(
+                                        image: AssetImage(
+                                            "assets/images/user.png"),
+                                        fit: BoxFit.fill,
+                                      ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const Text(
-                        "Sara William",
-                        style: TextStyle(
+                      Text(
+                        capitalizeAll(
+                            "${fetchedUser.firstName} ${fetchedUser.lastName}"),
+                        style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const Text(
-                        "Embrace the glorious mess that you are",
-                        style: TextStyle(
+                      Text(
+                        capitalizeAll(fetchedUser.bio),
+                        style: const TextStyle(
                           color: Color(0xFF9F9C9E),
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -101,19 +159,19 @@ class ProfilePage extends StatelessWidget {
                         softWrap: true,
                       ),
                       const SizedBox(height: 20),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Column(
                             children: [
                               Text(
-                                "144 K",
-                                style: TextStyle(
+                                fetchedUser.followers.toString(),
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 "Followers",
                                 style: TextStyle(
                                   color: Color(0xFF9F9C9E),
@@ -123,17 +181,17 @@ class ProfilePage extends StatelessWidget {
                               )
                             ],
                           ),
-                          SizedBox(width: 40),
+                          const SizedBox(width: 40),
                           Column(
                             children: [
                               Text(
-                                "574",
-                                style: TextStyle(
+                                fetchedUser.following.toString(),
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 "Following",
                                 style: TextStyle(
                                   color: Color(0xFF9F9C9E),
@@ -143,17 +201,17 @@ class ProfilePage extends StatelessWidget {
                               )
                             ],
                           ),
-                          SizedBox(width: 40),
+                          const SizedBox(width: 40),
                           Column(
                             children: [
                               Text(
-                                "139",
-                                style: TextStyle(
+                                state.posts.length.toString(),
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 "Posts",
                                 style: TextStyle(
                                   color: Color(0xFF9F9C9E),
@@ -177,11 +235,13 @@ class ProfilePage extends StatelessWidget {
                                     i++)
                                   if (i % 2 == 0)
                                     GalleryItem(
+                                      user: fetchedUser,
                                       half: false,
                                       post: state.posts[i],
                                     )
                                   else
                                     GalleryItem(
+                                      user: fetchedUser,
                                       half: true,
                                       post: state.posts[i],
                                     ),
@@ -196,12 +256,14 @@ class ProfilePage extends StatelessWidget {
                                     i++)
                                   if (i % 2 == 0)
                                     GalleryItem(
-                                      half: false,
+                                      user: fetchedUser,
+                                      half: true,
                                       post: state.posts[i],
                                     )
                                   else
                                     GalleryItem(
-                                      half: true,
+                                      user: fetchedUser,
+                                      half: false,
                                       post: state.posts[i],
                                     ),
                               ],

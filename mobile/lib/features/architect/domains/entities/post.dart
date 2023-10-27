@@ -15,6 +15,7 @@ class Post extends Equatable {
     required this.isLiked,
     required this.isCloned,
     required this.tags,
+    required this.userImage,
   });
 
   final String id;
@@ -30,6 +31,7 @@ class Post extends Equatable {
   final List<String> tags;
   final String firstName;
   final String lastName;
+  final String userImage;
 
   @override
   List<Object?> get props => [
@@ -46,5 +48,6 @@ class Post extends Equatable {
         tags,
         firstName,
         lastName,
+        userImage,
       ];
 }

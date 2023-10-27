@@ -125,12 +125,19 @@ class UserRepositoryImpl extends UserRepository {
       try {
         final token = await authLocalDataSource.getToken();
         final remoteUsers = await remoteDataSource.meUser(token.accessToken);
-        return Right(remoteUsers);
+        await localDataSource.cacheUser(remoteUsers);
+        final response = await localDataSource.getUsers();
+        return Right(response);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
-      return Left(CacheFailure());
+      try {
+        final user = await localDataSource.getUsers();
+        return Right(user);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 

@@ -2,6 +2,8 @@ import 'package:architect/features/architect/domains/use_cases/auth/get_token.da
     as get_auth;
 import 'package:architect/features/architect/domains/use_cases/auth/is_auth.dart'
     as check_auth;
+import 'package:architect/features/architect/domains/use_cases/auth/delete.dart'
+    as delete_auth;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -19,13 +21,16 @@ const String CACHE_FAILURE_MESSAGE = 'Something went wrong, please try again';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final get_auth.GetToken getToken;
   final check_auth.CheckAuth checkAuth;
+  final delete_auth.DeleteAuth deleteAuth;
 
   AuthBloc({
     required this.getToken,
     required this.checkAuth,
+    required this.deleteAuth,
   }) : super(AuthInitial()) {
     on<AuthLoginEvent>(_onGetToken);
     on<AuthCheckEvent>(_onCheckAuth);
+    on<AuthLogoutEvent>(_onLogout);
     add(AuthCheckEvent());
   }
 
@@ -43,9 +48,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ));
     emit(
       failureOrAuth.fold(
-        (failure) => AuthError(message: _mapFailureToMessage(failure)),
-        (auth) => AuthLogged(auth: auth),
-      ),
+          (failure) => AuthError(message: _mapFailureToMessage(failure)),
+          (auth) => Authenticated(auth: auth)),
     );
   }
 
@@ -56,7 +60,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       failureOrAuth.fold(
         (failure) => AuthInitial(),
-        (auth) => Authenticated(),
+        (auth) => Authenticated(
+          auth: auth,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onLogout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final failureOrAuth = await deleteAuth(NoParams());
+    emit(
+      failureOrAuth.fold(
+        (failure) => AuthError(message: _mapFailureToMessage(failure)),
+        (auth) => AuthLoggedOut(),
       ),
     );
   }

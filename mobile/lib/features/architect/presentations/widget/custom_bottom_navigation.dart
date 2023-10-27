@@ -1,15 +1,20 @@
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:flutter/material.dart';
 
+import '../../domains/entities/user.dart';
 import '../page/bookmark.dart';
 import '../page/chat.dart';
 import '../page/drawing/drawing.dart';
-import '../page/home.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentNav;
+  final User user;
 
-  const CustomBottomNavigation({Key? key, this.currentNav = 0})
-      : super(key: key);
+  const CustomBottomNavigation({
+    Key? key,
+    required this.user,
+    this.currentNav = 0,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,8 +46,12 @@ class CustomBottomNavigation extends StatelessWidget {
                 color: Color(0xFFA2A09D),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
               },
             ),
           if (currentNav == 1)
@@ -65,8 +74,12 @@ class CustomBottomNavigation extends StatelessWidget {
                 color: Color(0xFFA2A09D),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Chat()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Chat(
+                              user: user,
+                            )));
               },
             ),
           if (currentNav == 2)
@@ -113,8 +126,14 @@ class CustomBottomNavigation extends StatelessWidget {
                 color: Color(0xFFA2A09D),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const BookMark()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookMark(
+                      user: user,
+                    ),
+                  ),
+                );
               },
             ),
         ],

@@ -4,17 +4,17 @@ import 'dart:io';
 import 'package:architect/features/architect/domains/entities/message.dart'
     as message;
 import 'package:architect/features/architect/presentations/bloc/chat/chat_bloc.dart';
+import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_display.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_side_bar.dart';
-import 'package:architect/features/architect/presentations/widget/drawer.dart';
 import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../domains/entities/user.dart';
 import '../bloc/type/type_bloc.dart';
 import '../widget/chat/chat_input.dart';
-import '../widget/profile_image.dart';
 
 class Message {
   final String prompt;
@@ -40,23 +40,36 @@ class Message {
   });
 }
 
+List<String> modelsX = [
+  "new_chat",
+  "history",
+  "text_to_image",
+  "image_to_image",
+  "controlNet",
+  "painting",
+  "image_variant",
+  "text_to_3D",
+  "chatbot",
+  "analysis",
+];
+
 class Chat extends StatefulWidget {
-  const Chat({
-    Key? key,
-    this.messages,
-    this.chatId,
-    this.userId,
-    this.contollerImage,
-    this.paintingImage,
-    this.maskImage,
-  }) : super(key: key);
+  const Chat(
+      {Key? key,
+      this.messages,
+      this.chatId,
+      this.contollerImage,
+      this.paintingImage,
+      this.maskImage,
+      required this.user})
+      : super(key: key);
 
   final List<message.Message>? messages;
   final String? chatId;
-  final String? userId;
   final String? contollerImage;
   final String? paintingImage;
   final String? maskImage;
+  final User user;
 
   @override
   State<Chat> createState() => _ChatState();
@@ -165,14 +178,14 @@ class _ChatState extends State<Chat> {
 
     if (chatId != null) {
       BlocProvider.of<ChatBloc>(context).add(MakeChatEvent(
-        userId: widget.userId ?? "35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a",
+        userId: widget.user.id,
         payload: payload,
         chatId: chatId!,
         model: model,
       ));
     } else {
       BlocProvider.of<ChatBloc>(context).add(ChatCreateEvent(
-        userId: "35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a",
+        userId: widget.user.id,
         payload: payload,
         model: model,
       ));
@@ -212,8 +225,17 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  void selectedDesign(String select) {
-    model = select;
+  void selectedDesign(int index) {
+    if (index == 0) {
+      setState(() {
+        messages.clear();
+        chatId = null;
+      });
+    } else {
+      final String select = modelsX[index];
+      _select.add(SetType(model: select));
+      model = select;
+    }
   }
 
   Future<void> _pickImage() async {
@@ -277,18 +299,12 @@ class _ChatState extends State<Chat> {
             create: (context) => _select,
           ),
           BlocProvider<ChatBloc>(
-              create: (context) => sl<ChatBloc>()
-                ..add(const ChatViewEvent(
-                    id: '35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a'))),
+              create: (context) =>
+                  sl<ChatBloc>()..add(ChatViewEvent(id: widget.user.id))),
         ],
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: Colors.white,
-          drawer: Drawer(
-            child: CustomDrawer(
-              onSelect: selectedDesign,
-            ),
-          ),
           body: BlocBuilder<TypeBloc, TypeState>(builder: (ctx, state) {
             if (state is TypeLoaded) {
               model = state.model.name;
@@ -314,11 +330,9 @@ class _ChatState extends State<Chat> {
                             height: 40,
                             width: 40,
                             child: GestureDetector(
-                              onTap: () {
-                                scaffoldKey.currentState!.openDrawer();
-                              },
+                              onTap: () {},
                               child: const Icon(
-                                Icons.menu,
+                                Icons.arrow_back_ios_new,
                                 color: Colors.white,
                                 size: 30,
                               ),
@@ -335,16 +349,40 @@ class _ChatState extends State<Chat> {
                         ],
                       ),
                       const SizedBox(width: 10),
-                      const ProfileImage(
-                          imageUrl: 'assets/images/me.jpg', size: 50.0),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Setting(
+                              user: widget.user,
+                            ),
+                          ),
+                        ),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(File(widget.user.image)),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 15),
                   Expanded(
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        const ChatSideBar(),
+                        ChatSideBar(
+                          user: widget.user,
+                          selectedModel: model,
+                          onModelChanged: selectedDesign,
+                        ),
                         BlocListener<ChatBloc, ChatState>(
                           listener: (context, state) {
                             if (state is MakeChatLoaded) {

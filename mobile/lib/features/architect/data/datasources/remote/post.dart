@@ -34,19 +34,11 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       },
     );
     if (response.statusCode == 200) {
-<<<<<<< HEAD
-=======
-      print(json.decode(response.body));
->>>>>>> ccf8b2c (:boom: add new feature)
       final List<dynamic> postsJson = json.decode(response.body);
       final List<PostModel> posts = [];
       for (final post in postsJson) {
         posts.add(PostModel.fromJson(post));
       }
-<<<<<<< HEAD
-
-=======
->>>>>>> ccf8b2c (:boom: add new feature)
       return posts;
     } else {
       throw ServerException();

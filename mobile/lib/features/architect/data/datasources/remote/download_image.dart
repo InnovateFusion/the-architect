@@ -24,6 +24,7 @@ class GetImageRemoteDataSourceImpl implements GetImageRemoteDataSource {
         await file.delete();
       }
       await file.writeAsBytes(response.bodyBytes);
+      
       return file.path;
     } else {
       throw ServerException();

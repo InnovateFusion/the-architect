@@ -1,3 +1,5 @@
+import 'package:architect/features/architect/domains/entities/auth.dart';
+
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/network_info.dart';
@@ -30,8 +32,14 @@ class AuthRepositoryImpl extends AuthRepository {
     required String email,
     required String password,
   }) async {
-    final isValidToken = await authLocalDataSource.isValid();
-    if (isValidToken == false && await networkInfo.isConnected) {
+    late bool authisValid;
+    try {
+      await authLocalDataSource.isValid();
+      authisValid = true;
+    } on CacheException {
+      authisValid = false;
+    }
+    if (!authisValid && await networkInfo.isConnected) {
       try {
         final remoteAuth = await remoteDataSource.login(
           email: email,
@@ -49,8 +57,7 @@ class AuthRepositoryImpl extends AuthRepository {
       }
     } else {
       try {
-        final localAuth = await authLocalDataSource.getToken();
-        return Right(localAuth);
+        return Right(await authLocalDataSource.getToken());
       } on CacheException {
         return Left(CacheFailure());
       }
@@ -58,8 +65,22 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> checkAuth() async {
-    final isValidToken = await authLocalDataSource.isValid();
-    return Right(isValidToken);
+  Future<Either<Failure, Auth>> checkAuth() async {
+    try {
+      final isValidToken = await authLocalDataSource.isValid();
+      return Right(isValidToken);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAuth() async {
+    try {
+      await authLocalDataSource.deleteToken();
+      return const Right(null);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
+
 import 'home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
@@ -73,13 +75,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext cnt) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthLogged || state is Authenticated) {
+            if (state is Authenticated) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             }
           },
@@ -88,7 +91,7 @@ class _LoginState extends State<Login> {
               return input(context);
             } else if (state is AuthLoading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingIndicator(),
               );
             } else if (state is AuthError) {
               return Center(child: Text(state.message));
@@ -103,18 +106,20 @@ class _LoginState extends State<Login> {
 
   SingleChildScrollView input(BuildContext context) {
     return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: Padding(
         padding: const EdgeInsets.all(50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 48),
-            Image.asset('assets/images/logo.png', width: 150),
-            const SizedBox(height: 32),
+            const SizedBox(height: 100),
+            Center(child: Image.asset('assets/images/logo.png', width: 155)),
+            const SizedBox(height: 24),
             const Text(
               'Login',
               style: TextStyle(
-                fontSize: 32,
+                fontFamily: 'Roboto',
+                fontSize: 38,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -130,7 +135,7 @@ class _LoginState extends State<Login> {
                     : 'Invalid email',
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 25),
             TextField(
               controller: _passwordController,
               obscureText: _isObscure,
@@ -154,10 +159,21 @@ class _LoginState extends State<Login> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
                 onPressed: () {
                   _onLoginButtonPressed(context);
                 },
-                child: const Text('Login'),
+                child: const Text('Login',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 18,
+                    )),
               ),
             ),
           ],

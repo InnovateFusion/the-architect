@@ -6,12 +6,15 @@ import 'package:architect/features/architect/presentations/widget/post/user_info
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../domains/entities/user.dart';
 import '../../page/detail.dart';
 
 class Post extends StatefulWidget {
   final post_entity.Post post;
+  final User user;
 
-  const Post({Key? key, required this.post}) : super(key: key);
+  const Post({Key? key, required this.post, required this.user})
+      : super(key: key);
 
   @override
   State<Post> createState() => _PostState();
@@ -35,13 +38,13 @@ class _PostState extends State<Post> {
           height: 400,
           child: Stack(
             children: [
-<<<<<<< HEAD
               GestureDetector(
                 onDoubleTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailPage(
+                                user: widget.user,
                                 post: widget.post,
                               )));
                 },
@@ -51,13 +54,6 @@ class _PostState extends State<Post> {
                   width: double.infinity,
                   height: double.infinity,
                 ),
-=======
-              Image.network(
-                widget.imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
->>>>>>> ccf8b2c (:boom: add new feature)
               ),
               Positioned(
                 top: 10,
@@ -66,7 +62,7 @@ class _PostState extends State<Post> {
                   name:
                       '${capitalize(widget.post.firstName)} ${capitalize(widget.post.lastName)}',
                   date: DateFormat('MMM d y').format(widget.post.date),
-                  imageUrl: 'assets/images/me.jpg',
+                  imageUrl: widget.post.userImage,
                   id: widget.post.userId,
                 ),
               ),
@@ -74,19 +70,11 @@ class _PostState extends State<Post> {
                 top: 10,
                 right: 10,
                 child: Clone(
-<<<<<<< HEAD
                   color: widget.post.isCloned
                       ? Colors.black
                       : const Color.fromARGB(255, 141, 133, 137)
                           .withOpacity(0.7),
                   onPressed: () {},
-=======
-                  color: widget.isCloned
-                      ? Colors.black
-                      : const Color.fromARGB(255, 141, 133, 137)
-                          .withOpacity(0.7),
-                  onPressed: widget.onCloned,
->>>>>>> ccf8b2c (:boom: add new feature)
                 ),
               ),
               Positioned(
@@ -95,7 +83,6 @@ class _PostState extends State<Post> {
                 child: Row(
                   children: [
                     React(
-<<<<<<< HEAD
                       text: widget.post.like.toString(),
                       isColor: widget.post.isLiked,
                       icon: Icon(Icons.favorite,
@@ -115,28 +102,6 @@ class _PostState extends State<Post> {
                                 ? const Color.fromARGB(255, 230, 57, 57)
                                 : const Color.fromARGB(255, 255, 255, 255)),
                         onPressed: () {}),
-=======
-                      text: widget.likes.toString(),
-                      isColor: widget.isLiked,
-                      icon: Icon(Icons.favorite,
-                          size: 40,
-                          color: widget.isLiked
-                              ? const Color(0xFFE1DBDB)
-                              : Colors.black),
-                      onPressed: widget.onLiked,
-                    ),
-                    const SizedBox(width: 20),
-                    React(
-                      text: widget.clones.toString(),
-                      isColor: widget.isCloned,
-                      icon: Icon(Icons.cyclone,
-                          size: 40,
-                          color: widget.isLiked
-                              ? const Color(0xFFE1DBDB)
-                              : Colors.black),
-                      onPressed: widget.onCloned,
-                    ),
->>>>>>> ccf8b2c (:boom: add new feature)
                   ],
                 ),
               ),
