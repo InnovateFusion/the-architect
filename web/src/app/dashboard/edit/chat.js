@@ -9,13 +9,30 @@ export default function Chat({ changeImage, mode, image, mask }) {
   const [chats, setChats] = useState([
     JSON.stringify({
       sender: "ai",
-      content:
-        "Hi I'm your design assistant. I'm here to help you in your design process. I can help you by providing inspirational designs based on your needs and help youo modify your designs. Here is my design of the day, I hope you like it :).",
+      content: {
+        imageAI:
+          "Hi I'm your design assistant. I'm here to help you in your design process. I can help you by providing inspirational designs based on your needs and help youo modify your designs. Here is my design of the day, I hope you like it :).",
+      },
       logo: "/if.png",
     }),
     JSON.stringify({
       sender: "ai",
-      content: "/house.jpg",
+      content: {
+        prompt: "",
+        imageUser: "",
+        imageAI:
+          "http://res.cloudinary.com/dtghsmx0s/image/upload/v1698267218/ufnmlna5rxqazgplunmv.jpg",
+        model: "text_to_image",
+        analysis: {
+          title: "",
+          detail: "",
+        },
+        "3D": {
+          status: "",
+          fetch_result: "",
+        },
+        chat: "",
+      },
       logo: "/if.png",
     }),
   ]);
@@ -43,7 +60,7 @@ export default function Chat({ changeImage, mode, image, mask }) {
       ...oldArray,
       JSON.stringify({
         sender: "user",
-        content: message,
+        content: { imageUser: message },
         logo: "/if.png",
       }),
     ]);
@@ -99,25 +116,6 @@ export default function Chat({ changeImage, mode, image, mask }) {
         setChatId(chat.id);
       }
       scrollToBottom();
-    }
-  };
-
-  const getChat = async () => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
-
-    const url = `https://the-architect.onrender.com/api/v1/chats/${chatId}`;
-
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (res.status == 200) {
-      const posts = await res.json();
-      setChats([...posts.messages]);
     }
   };
 
@@ -187,11 +185,31 @@ export default function Chat({ changeImage, mode, image, mask }) {
       setUrl(
         `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
       );
+
+      const getChat = async () => {
+        const userId = localStorage.getItem("userId");
+        const token = localStorage.getItem("token");
+
+        const url = `https://the-architect.onrender.com/api/v1/chats/${chatId}`;
+
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.status == 200) {
+          const posts = await res.json();
+          setChats([...posts.messages]);
+        }
+      };
+
       getChat();
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
     scrollToBottom();
-  }, []);
+  }, [chatId]);
 
   return (
     <div className="h-full flex flex-col">
@@ -218,12 +236,12 @@ export default function Chat({ changeImage, mode, image, mask }) {
           <option value="instruction">Edit my Design</option>
         </select>
       </div>
-      <div className="border mx-auto w-full space-y-4 bg-slate-300 overflow-y-auto h-[99vh]">
-        {chats.length > 0 ? (
+      <div className="p-2 border mx-auto w-full space-y-4 bg-slate-300 overflow-y-auto h-[99vh]">
+        {chats.length > 0 &&
           chats.map((item, index) => {
             const chat = JSON.parse(item);
             return (
-              <>
+              <div key={index}>
                 {chat.sender == "user" ? (
                   <div
                     className="flex justify-end"
@@ -236,23 +254,24 @@ export default function Chat({ changeImage, mode, image, mask }) {
                       </div> */}
                       <div className="mr-4" />
                       <div className="relative max-w-xl rounded-xl rounded-tr-none bg-blue-600 px-4 py-2">
-                        <span className="text-sm font-medium text-white">
-                          {chat.content.substr(0, 1) == "/" ||
-                          chat.content.substr(0, 4) == "http" ? (
+                        <span className="text-sm font-medium text-white ">
+                          {chat?.content?.imageUser?.substr(0, 1) == "/" ||
+                          chat?.content?.imageUser?.substr(0, 4) == "http" ? (
                             <Image
-                              src={chat.content}
+                              src={chat.content.imageUser}
                               width={200}
                               alt=""
                               height={200}
                               onClick={() => {
-                                setModalImage(chat.content);
+                                setModalImage(chat.content.imageUser);
                                 openModal();
                               }}
                               className="hover:cursor-pointer"
                             />
                           ) : (
-                            chat.content
+                            chat.content.prompt
                           )}
+                          {chat?.content?.prompt}
                         </span>
                       </div>
                     </div>
@@ -273,35 +292,35 @@ export default function Chat({ changeImage, mode, image, mask }) {
                         />
                       </div> */}
                       <div className="mr-4" />
-                      <div className="relative max-w-xl rounded-xl rounded-tl-none bg-slate-900 px-4 py-2">
+                      <div className="relative max-w-xl rounded-xl rounded-tl-none bg-green-600 px-4 py-2">
                         <span className="text-sm font-medium text-heading">
-                          {chat.content.substr(0, 1) == "/" ||
-                          chat.content.substr(0, 4) == "http" ? (
+                          {chat.content.imageAI.substr(0, 1) == "/" ||
+                          chat.content.imageAI.substr(0, 4) == "http" ? (
                             <Image
-                              src={chat.content}
+                              src={chat.content.imageAI}
                               width={200}
                               alt=""
                               height={200}
                               onClick={() => {
-                                setModalImage(chat.content);
+                                setModalImage(chat.content.imageAI);
                                 openModal();
                               }}
                               className="hover:cursor-pointer"
                             />
                           ) : (
-                            chat.content
+                            chat?.content?.imageAI
                           )}
+                          {chat?.content?.analysis?.title}
+                          {chat?.content?.analysis?.details}
+                          {chat?.content?.chat}
                         </span>
                       </div>
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             );
-          })
-        ) : (
-          <></>
-        )}
+          })}
       </div>
       <div>
         <div className="flex items-center border-2 border-red-700 py-2">
@@ -360,7 +379,7 @@ export default function Chat({ changeImage, mode, image, mask }) {
                   <span className="label-text">Description</span>
                 </label>
                 <textarea
-                  placeholder="Bio"
+                  placeholder="Type here"
                   className="textarea textarea-bordered textarea-md w-full max-w-xs"
                   onChange={(e) => setPostDescription(e.target.value)}
                   value={postDescription}

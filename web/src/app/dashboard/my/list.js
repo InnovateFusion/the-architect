@@ -34,7 +34,7 @@ function List() {
           <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 py-6 px-2">
             {data.length > 0
               ? data.map((item, index) => (
-                  <div className="group relative" key={index}>
+                  <div className="group relative" key={item.id}>
                     <div
                       className={`aspectw-${
                         index % 2 == 0 ? "full" : "1/2"

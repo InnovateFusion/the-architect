@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Loader from "@/components/Loader";
 
 const DesignView = ({ params }) => {
   const router = useRouter();
@@ -36,7 +37,9 @@ const DesignView = ({ params }) => {
   }, [id]);
 
   if (!design) {
-    return <div className="aligh-text justify-center">Loading...</div>;
+    return (
+      <Loader />
+    );
   }
 
   return (
@@ -56,10 +59,10 @@ const DesignView = ({ params }) => {
           <p className="text-gray-600 mb-4">{design.content}</p>
           <div className="flex items-center mb-4">
             <Image
-              src={`https://i.pravatar.cc/32?u=${design.userId}`}
+              src={`/house.jpg`}
               alt={design.firstName}
-              width={512}
-              height={512}
+              width={40}
+              height={40}
               className="rounded-full mr-2"
             />
             <span>{`${design.firstName} ${design.lastName}`}</span>

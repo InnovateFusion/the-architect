@@ -2,13 +2,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "@/components/theme-toggle";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+  const router = useRouter()
   const handleLogout = () => {
     console.log("logout");
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    window.location.reload();
+    router.push("/auth/signin")
   };
   return (
     <header className="flex w-full flex-row items-center justify-between p-4 z-50 fixed">
