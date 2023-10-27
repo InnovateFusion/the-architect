@@ -39,7 +39,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         userImage = ''
         chatResponse = ''
         analysis = {'title': '', 'detail': ''}
-        threeD = ''
+        threeD = {}
         aiMessageID = str(uuid4())
         
         if message.model == 'text_to_image':
@@ -149,7 +149,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             },
             sender='ai',
             date=date
-        )  
+        )
         new_chat.append(message_from_ai.to_json())
         
         existing_chat.messages = new_chat

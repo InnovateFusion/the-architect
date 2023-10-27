@@ -9,8 +9,5 @@ cloudinary
 python-jose[cryptography]
 passlib[bcrypt]
 PyJWT
-<<<<<<< HEAD
 Pillow
-=======
->>>>>>> ccf8b2c (:boom: add new feature)
 replicate

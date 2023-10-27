@@ -171,7 +171,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 'imageAI': '',
                 'model': message.model,
                 'analysis': {},
-                '3D': '',
+                '3D': {},
                 'chat': ''
             },
             sender='user',
@@ -198,7 +198,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
             },
             sender='ai',
             date=date
-        )    
+        )
         
         chat.add_message(message_from_ai.to_json())
         
@@ -236,7 +236,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 if message.id == notify_id:
                     message.content['3D']['status'] = notify.status
                     message.content['3D']['fetch_result'] = notify.output[0]
-                    break            
+                    break
         except Exception as e:
             raise CacheException("Error getting 3D")
         
