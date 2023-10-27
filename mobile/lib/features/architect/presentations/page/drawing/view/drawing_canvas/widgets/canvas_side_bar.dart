@@ -388,14 +388,31 @@ class CanvasSideBar extends HookWidget {
   Future<void> saveFile(Uint8List bytes, BuildContext context) async {
     final cacheDirectory = await getTemporaryDirectory();
 
-    final uniqueFileName = DateTime.now().toString();
-    final filePath = '${cacheDirectory.path}/$uniqueFileName.png';
+    final uniqueFileName1 = DateTime.now().toString();
+    final filePath1 = '${cacheDirectory.path}/$uniqueFileName1.png';
 
-    final file = File(filePath);
-    await file.writeAsBytes(bytes);
+    final file1 = File(filePath1);
+    await file1.writeAsBytes(bytes);
+
+    String filePath2 = '';
+
+    if (backgroundImage.value != null) {
+      final uniqueFileName2 = DateTime.now().toString();
+      filePath2 = '${cacheDirectory.path}/$uniqueFileName2.png';
+
+      final file2 = File(filePath2);
+      await file2.writeAsBytes((await backgroundImage.value
+                  ?.toByteData(format: ui.ImageByteFormat.png))
+              ?.buffer
+              .asUint8List() ??
+          []);
+    }
 
     () {
-      Navigator.pop(context, filePath);
+      Navigator.pop(context, {
+        'sketch': filePath1,
+        'backgroundImage': filePath2,
+      });
     }();
   }
 

@@ -43,10 +43,11 @@ class Message {
 List<String> modelsX = [
   "new_chat",
   "history",
-  "text_to_image",
+  'text_to_image',
   "image_to_image",
+  "instruction",
   "controlNet",
-  "painting",
+  "edit_image",
   "image_variant",
   "text_to_3D",
   "chatbot",
@@ -82,7 +83,6 @@ class _ChatState extends State<Chat> {
   late TypeBloc _select;
   late String base64ImageForImageToImage;
   late String base64ImageForControlNet;
-  late String base64ImageForVariant;
 
   @override
   void initState() {
@@ -165,7 +165,8 @@ class _ChatState extends State<Chat> {
 
     if (model == 'image_to_image' ||
         model == 'image_variant' ||
-        model == 'analysis') {
+        model == 'analysis' ||
+        model == 'instruction') {
       if ((messages.isNotEmpty && !messages[0].isPicked) || messages.isEmpty) {
         return;
       } else {
@@ -174,6 +175,26 @@ class _ChatState extends State<Chat> {
     } else if (model == 'controlNet') {
       payload["controlnet"] = "canny-1.1";
       payload["image"] = base64ImageForControlNet;
+    }
+
+    if (model == 'image_to_image') {
+      payload["strength"] = 0.5;
+      payload["steps"] = 50;
+    }
+
+    if (model == 'instruction') {
+      payload['model'] = "instruct-pix2pix";
+      payload["image_guidance"] = 1.5;
+      payload["seed"] = 0;
+      payload["scheduler"] = "euler_a";
+    }
+
+    print('base64ImageForImageToImage: $base64ImageForImageToImage');
+    print('base64ImageForControlNet: $base64ImageForControlNet');
+
+    if (model == 'edit_image' && base64ImageForImageToImage.isEmpty) {
+      payload['image'] = base64ImageForImageToImage;
+      payload['mask'] = base64ImageForControlNet;
     }
 
     _select.stream.listen((event) {
@@ -298,21 +319,35 @@ class _ChatState extends State<Chat> {
                 chat: '',
                 isPicked: true),
           );
+        } else {
+          messages.insert(
+            0,
+            Message(
+                prompt: '',
+                isSentByMe: true,
+                imageUser: pickedImage.path,
+                imageAI: '',
+                model: model,
+                analysis: {},
+                threeD: {},
+                chat: '',
+                isPicked: true),
+          );
         }
       });
       base64ImageForImageToImage = await imageToBase64(pickedImage.path);
     }
   }
 
-  Future<void> getControllImage(String imagePath) async {
-    if (imagePath.isEmpty) return;
+  Future<void> getControllImage(Map<String, dynamic> data) async {
+    if (data['sketch'].isEmpty) return;
     setState(() {
       messages.insert(
         0,
         Message(
             prompt: '',
             isSentByMe: true,
-            imageUser: imagePath,
+            imageUser: data['sketch'],
             imageAI: '',
             model: model,
             analysis: {},
@@ -322,7 +357,9 @@ class _ChatState extends State<Chat> {
       );
     });
 
-    base64ImageForControlNet = await imageToBase64(imagePath);
+    base64ImageForControlNet = await imageToBase64(data['sketch']);
+    if (data['backgroundImage'].isEmpty) return;
+    base64ImageForImageToImage = await imageToBase64(data['backgroundImage']);
   }
 
   @override

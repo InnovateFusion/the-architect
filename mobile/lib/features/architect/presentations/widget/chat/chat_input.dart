@@ -14,7 +14,7 @@ class ChatInput extends StatelessWidget {
   final String model;
   final void Function(BuildContext context, String text) onSubmitted;
   final void Function() onImagePick;
-  final Future<void> Function(String image) onControNet;
+  final Future<void> Function(Map<String, dynamic> data) onControNet;
 
   @override
   Widget build(BuildContext context) {
@@ -37,29 +37,36 @@ class ChatInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: model == 'image_to_image' ||
-                    model == "image_variant" ||
-                    model == "analysis"
-                ? onImagePick
-                : () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Draw(),
-                      ),
-                    );
-                    if (result != null) {
-                      onControNet(result);
-                    }
-                  },
+            onTap: () async {
+              if (model == 'image_to_image' ||
+                  model == "image_variant" ||
+                  model == "analysis" ||
+                  model == "instruction") {
+                onImagePick();
+              } else if (model == "controlNet" || model == "edit_image") {
+                {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Draw(),
+                    ),
+                  );
+                  if (result != null) {
+                    onControNet(result);
+                  }
+                }
+              }
+            },
             child: Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 0, 0, 0),
                   borderRadius: BorderRadius.circular(25)),
-              child: const Icon(
-                Icons.attach_file_outlined,
+              child: Icon(
+                model == 'controlNet' || model == 'edit_image'
+                    ? Icons.brush_outlined
+                    : Icons.camera_alt_outlined,
                 color: Colors.white,
                 size: 30,
               ),
@@ -94,9 +101,6 @@ class ChatInput extends StatelessWidget {
               ),
             ),
           )
-          
-          
-
         ],
       ),
     );

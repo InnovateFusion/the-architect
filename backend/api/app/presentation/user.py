@@ -1,24 +1,33 @@
-from fastapi import HTTPException, APIRouter, Depends
 from typing import List, Optional
+
 from app.data.datasources.local.user import UserLocalDataSourceImpl
-from app.domain.repositories.user import BaseRepository as UserRepository
 from app.data.repositories.user import UserRepositoryImpl
 from app.domain.entities.user import User
-from app.domain.use_cases.user.create import CreateUser, Params as CreateUserParams
-from app.domain.use_cases.user.delete import DeleteUser, Params as DeleteUserParams
-from app.domain.use_cases.user.update import UpdateUser, Params as UpdateUserParams
-from app.domain.use_cases.user.view import ViewUser, Params as ViewUserParams
-from app.domain.use_cases.user.follow import FollowUser, Params as FollowUserParams
-from app.domain.use_cases.user.unfollow import UnFollowUser, Params as UnfollowUserParams
-from app.domain.use_cases.user.followers import UserFollowers, Params as UserFollowersParams
-from app.domain.use_cases.user.following import UserFollowing, Params as UserFollowingParams
+from app.domain.repositories.user import BaseRepository as UserRepository
+from app.domain.use_cases.user.create import CreateUser
+from app.domain.use_cases.user.create import Params as CreateUserParams
+from app.domain.use_cases.user.delete import DeleteUser
+from app.domain.use_cases.user.delete import Params as DeleteUserParams
+from app.domain.use_cases.user.follow import FollowUser
+from app.domain.use_cases.user.follow import Params as FollowUserParams
+from app.domain.use_cases.user.followers import Params as UserFollowersParams
+from app.domain.use_cases.user.followers import UserFollowers
+from app.domain.use_cases.user.following import Params as UserFollowingParams
+from app.domain.use_cases.user.following import UserFollowing
+from app.domain.use_cases.user.unfollow import Params as UnfollowUserParams
+from app.domain.use_cases.user.unfollow import UnFollowUser
+from app.domain.use_cases.user.update import Params as UpdateUserParams
+from app.domain.use_cases.user.update import UpdateUser
+from app.domain.use_cases.user.view import Params as ViewUserParams
+from app.domain.use_cases.user.view import ViewUser
 from app.domain.use_cases.user.views import ViewUsers
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
-from sqlalchemy.orm.session import Session
-from pydantic import BaseModel
-
 from core.use_cases.use_case import NoParams
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
+
 
 class UserResponse(BaseModel):
     id: str
@@ -34,11 +43,14 @@ class UserResponse(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
 router = APIRouter()
+
 
 def get_repository(db: Session = Depends(get_db)):
     user_local_datasource = UserLocalDataSourceImpl(db=db)
     return UserRepositoryImpl(user_local_datasource)
+
 
 @router.post("/users/", response_model=UserResponse)
 async def create_user(
@@ -53,6 +65,7 @@ async def create_user(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.put("/users/{user_id}", response_model=UserResponse)
 async def update_user(
     user_id: str,
@@ -60,14 +73,15 @@ async def update_user(
     repository: UserRepository = Depends(get_repository),
     current_user: User = Depends(get_current_user)
 ):
+    user.id = user_id
     update_user_use_case = UpdateUser(repository)
-    user['id'] = user_id
     params = UpdateUserParams(user=user)
     result = await update_user_use_case(params)
     if result.is_right():
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
+
 
 @router.delete("/users/{user_id}", response_model=UserResponse)
 async def delete_user(
@@ -83,6 +97,7 @@ async def delete_user(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.get("/users/", response_model=List[UserResponse])
 async def view_all_users(
     repository: UserRepository = Depends(get_repository)
@@ -95,10 +110,11 @@ async def view_all_users(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.get("/users/{user_id}", response_model=UserResponse)
 async def view_user(
     user_id: str,
-    repository: UserRepository = Depends(get_repository),  
+    repository: UserRepository = Depends(get_repository),
     current_user: User = Depends(get_current_user)
 ):
     view_user_use_case = ViewUser(repository)
@@ -109,9 +125,11 @@ async def view_user(
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
 
+
 @router.get("/me", response_model=UserResponse)
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
 
 @router.get("/users/{user_id}/follow/", response_model=UserResponse)
 async def follow_user(
@@ -126,7 +144,8 @@ async def follow_user(
         return result.get()
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
-    
+
+
 @router.get("/users/{user_id}/unfollow/", response_model=UserResponse)
 async def unfollow_user(
     user_id: str,
@@ -140,7 +159,8 @@ async def unfollow_user(
         return result.get()
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
-    
+
+
 @router.get("/users/{user_id}/followers/", response_model=List[UserResponse])
 async def view_user_followers(
     user_id: str,
@@ -154,7 +174,8 @@ async def view_user_followers(
         return result.get()
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
-    
+
+
 @router.get("/users/{user_id}/following/", response_model=List[UserResponse])
 async def view_user_following(
     user_id: str,

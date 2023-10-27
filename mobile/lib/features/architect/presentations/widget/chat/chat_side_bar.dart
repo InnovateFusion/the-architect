@@ -1,5 +1,6 @@
 import 'package:architect/features/architect/domains/entities/user.dart';
 import 'package:flutter/material.dart';
+
 import 'chat_item.dart';
 
 class ChatSideBar extends StatefulWidget {
@@ -23,7 +24,8 @@ class _ChatSideBarState extends State<ChatSideBar> {
     const Icon(Icons.add_circle_outline),
     const Icon(Icons.history_outlined),
     const Icon(Icons.text_format_outlined),
-    const Icon(Icons.imagesearch_roller),
+    const Icon(Icons.image_outlined),
+    const Icon(Icons.integration_instructions),
     const Icon(Icons.control_point_duplicate_outlined),
     const Icon(Icons.draw_outlined),
     const Icon(Icons.view_array_outlined),
@@ -36,9 +38,10 @@ class _ChatSideBarState extends State<ChatSideBar> {
     "New Chat",
     "History",
     "Text to Image",
-    "Image to Image",
+    "Image from Text",
+    'Instrution',
     "Controller",
-    "Painting",
+    "Edit Image",
     "Variants",
     "Text to 3D",
     "Chat Bot",
@@ -48,10 +51,11 @@ class _ChatSideBarState extends State<ChatSideBar> {
   List<String> modelsX = [
     "new_chat",
     "history",
-    "text_to_image",
+    'text_to_image',
     "image_to_image",
+    "instruction",
     "controlNet",
-    "painting",
+    "edit_image",
     "image_variant",
     "text_to_3D",
     "chatbot",

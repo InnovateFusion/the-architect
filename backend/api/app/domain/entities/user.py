@@ -4,6 +4,7 @@ from app.domain.entities import BaseEntity
 from pydantic import BaseModel
 
 class User(BaseModel):
+    id: Optional[str]
     firstName: str
     lastName: str
     bio: Optional[str]

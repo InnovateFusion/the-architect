@@ -1,25 +1,29 @@
-from uuid import uuid4
-from datetime import datetime
-from sqlalchemy.orm import Session
+import os
 from abc import ABC, abstractmethod
+from datetime import datetime
+from uuid import uuid4
+
+import requests
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
 from app.domain.entities.message import Message, MessageEntity
-from core.errors.exceptions import CacheException
-import requests
 from cloudinary.uploader import upload
-import os
+from core.errors.exceptions import CacheException
+from sqlalchemy.orm import Session
+
 baseUrl = os.getenv("BASE_URL")
+
 
 class MessageLocalDataSource(ABC):
     @abstractmethod
     async def create_chat(self, message: Message, chat_id: str) -> MessageEntity:
         pass
-    
+
+
 class MessageLocalDataSourceImpl(MessageLocalDataSource):
     def __init__(self, db: Session):
         self.db = db
-   
+
     async def create_chat(self, message: Message, chat_id: str) -> MessageEntity:
         date = datetime.utcnow()
         if 'prompt' not in message.payload:
@@ -29,11 +33,12 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             "accept": "application/json",
             "content-type": "application/json"
         }
-        
-        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
+
+        existing_chat = self.db.query(ChatModel).filter(
+            ChatModel.id == chat_id).first()
         if not existing_chat:
             raise CacheException("Chat does not exist")
-        
+
         ai_generation = AiGeneration(requests, upload)
         response = ""
         userImage = ''
@@ -41,7 +46,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         analysis = {'title': '', 'detail': ''}
         threeD = {}
         aiMessageID = str(uuid4())
-        
+
         if message.model == 'text_to_image':
             url = f"{baseUrl}/text-to-image"
             try:
@@ -79,7 +84,8 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'image_variant':
             try:
                 response = await ai_generation.image_variant(message.payload)
-            except:
+            except Exception as e:
+                print("The error ---------------------- ", e)
                 raise CacheException("Error getting image from variant")
         elif message.model == 'image_from_text':
             try:
@@ -117,10 +123,10 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
                 raise CacheException("3D error")
         else:
             raise CacheException("Model not found")
-                
+
         message_from_user = MessageEntity(
             id=str(uuid4()),
-            content= {
+            content={
                 'prompt': message.payload['prompt'],
                 'imageUser': userImage,
                 'imageAI': '',
@@ -132,28 +138,28 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
             sender='user',
             date=date
         )
-        
-        new_chat = [i for i in  existing_chat.messages]
+
+        new_chat = [i for i in existing_chat.messages]
         new_chat.append(message_from_user.to_json())
-        
+
         message_from_ai = MessageEntity(
             id=aiMessageID,
-            content= {
+            content={
                 'prompt': '',
                 'imageUser': '',
                 'imageAI': response,
                 'model': message.model,
                 'analysis': analysis,
-                '3D':  { 'status': 'success', 'fetch_result': threeD},
+                '3D':  {'status': 'success', 'fetch_result': threeD},
                 'chat': chatResponse
             },
             sender='ai',
             date=date
         )
         new_chat.append(message_from_ai.to_json())
-        
+
         existing_chat.messages = new_chat
 
         self.db.commit()
-        
+
         return message_from_ai
