@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:architect/features/architect/domains/entities/post.dart';
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
-import 'package:architect/features/architect/presentations/page/detail.dart';
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/tag.dart';
 import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../domains/entities/user.dart';
 
@@ -86,12 +87,38 @@ class _CreatePostPageState extends State<CreatePostPage> {
           body: SingleChildScrollView(
             child: BlocListener<PostBloc, PostState>(
               listener: (context, state) {
-                if (state is PostLoaded) {
+                if (state is PostUpdated) {
+                  Navigator.popUntil(context, (route) {
+                    return route.runtimeType == HomePage;
+                  });
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          DetailPage(user: widget.user, post: state.post),
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                } else if (state is PostLoading) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: SpinKitThreeBounce(
+                        size: 25,
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: index.isEven
+                                  ? const Color.fromARGB(255, 0, 0, 0)
+                                  : const Color.fromARGB(255, 255, 255, 255),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                } else if (state is PostError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
                     ),
                   );
                 }
@@ -219,66 +246,74 @@ class _CreatePostPageState extends State<CreatePostPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (widget.post != null) {
-                                    Post xxx = widget.post!;
-                                    BlocProvider.of<PostBloc>(context).add(
-                                      EditPostEvent(
-                                        userId: widget.user.id,
-                                        image: widget.imageUrl,
-                                        postId: xxx.id,
-                                        title: _titleController.text,
-                                        content: _descriptionController.text,
-                                        tags: selectedTags.toList(),
+                              BlocBuilder<PostBloc, PostState>(
+                                builder: (context, state) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      if (widget.post != null) {
+                                        Post xxx = widget.post!;
+                                        BlocProvider.of<PostBloc>(context).add(
+                                          EditPostEvent(
+                                            userId: widget.user.id,
+                                            image: widget.imageUrl,
+                                            postId: xxx.id,
+                                            title: _titleController.text,
+                                            content:
+                                                _descriptionController.text,
+                                            tags: selectedTags.toList(),
+                                          ),
+                                        );
+                                      } else {
+                                        BlocProvider.of<PostBloc>(context).add(
+                                          CreatePostEvent(
+                                            image: widget.imageUrl,
+                                            title: _titleController.text,
+                                            content:
+                                                _descriptionController.text,
+                                            tags: selectedTags.toList(),
+                                            userId: widget.user.id,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.black,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
-                                    );
-                                  } else {
-                                    BlocProvider.of<PostBloc>(context).add(
-                                      CreatePostEvent(
-                                        image: widget.imageUrl,
-                                        title: _titleController.text,
-                                        content: _descriptionController.text,
-                                        tags: selectedTags.toList(),
-                                        userId: widget.user.id,
+                                      side: const BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
                                       ),
-                                    );
-                                  }
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.send_outlined,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(width: 15),
+                                          Text(
+                                            widget.post != null
+                                                ? 'Update'
+                                                : 'Post',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  side: const BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.send_outlined,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 15),
-                                      Text(
-                                        widget.post != null ? 'Update' : 'Post',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               )
                             ],
                           ),

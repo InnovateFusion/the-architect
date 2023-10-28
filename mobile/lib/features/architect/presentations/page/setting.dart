@@ -1,9 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:architect/core/util/get_image_base64.dart';
+import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/input_holder.dart';
 import 'package:architect/features/architect/presentations/page/login.dart';
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../injection_container.dart';
 import '../../domains/entities/user.dart';
@@ -36,6 +42,11 @@ class _SettingState extends State<Setting> {
   String bio = '';
   String password = 'Password';
 
+  String base64ImageForImageToImage = '';
+  String orginalImage = '';
+  String orginalImageBase64 = '';
+  String imagePath = '';
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +54,20 @@ class _SettingState extends State<Setting> {
     firstName = widget.user.firstName;
     lastName = widget.user.lastName;
     bio = widget.user.bio;
+    orginalImage = widget.user.image;
+  }
+
+  Future<void> startImage() async {
+    orginalImageBase64 = await getImageAsBase64(orginalImage) ?? '';
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _bioController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   void onFisrtNameEdit(String text) {
@@ -69,6 +94,77 @@ class _SettingState extends State<Setting> {
     });
   }
 
+  Future<void> submit(BuildContext context) async {
+    if (firstName != widget.user.firstName ||
+        lastName != widget.user.lastName ||
+        bio != widget.user.bio ||
+        base64ImageForImageToImage.isNotEmpty) {
+      () {
+        BlocProvider.of<UserBloc>(context).add(
+          UpdateUserEvent(
+            id: widget.user.id,
+            firstName: firstName,
+            lastName: lastName,
+            email: widget.user.email,
+            password: password,
+            image: base64ImageForImageToImage.isNotEmpty
+                ? base64ImageForImageToImage
+                : orginalImageBase64,
+            bio: bio,
+            country: widget.user.country,
+          ),
+        );
+      }();
+      print('xxxxxxxxxxxxxxxxxx');
+      print(base64ImageForImageToImage);
+      print('xxxxxxxxxxxxxxxxxx');
+      print('firstName: $firstName');
+      print('lastName: $lastName');
+      print('bio: $bio');
+      Navigator.popUntil(context, (route) {
+        return route.runtimeType == HomePage;
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } else {
+      print('dcdcsc----------------');
+      // Navigator.of(context).pop();
+    }
+  }
+
+  Future<String> imageToBase64(String imagePath) async {
+    final File imageFile = File(imagePath);
+
+    if (await imageFile.exists()) {
+      List<int> imageBytes = await imageFile.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
+      return base64Image;
+    } else {
+      return '';
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage == null) {
+      return;
+    }
+
+    setState(() {
+      imagePath = pickedImage.path;
+    });
+    imagePath = pickedImage.path;
+    base64ImageForImageToImage = await imageToBase64(pickedImage.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,7 +189,7 @@ class _SettingState extends State<Setting> {
                       width: 40,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          submit(context);
                         },
                         child: const Icon(
                           Icons.arrow_back_ios_new,
@@ -115,7 +211,9 @@ class _SettingState extends State<Setting> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: FileImage(File(widget.user.image)),
+                          image: FileImage(File(imagePath.isEmpty
+                              ? widget.user.image
+                              : imagePath)),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -124,7 +222,9 @@ class _SettingState extends State<Setting> {
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          _pickImage();
+                        },
                         child: Container(
                           width: 35,
                           height: 35,

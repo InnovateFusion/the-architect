@@ -23,6 +23,7 @@ abstract class PostRemoteDataSource {
     required String title,
     String? content,
     required List<String> tags,
+    required String id,
     required String userId,
     required String token,
   });
@@ -172,7 +173,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> deletePost(String id, String token) async {
     final response = await client.delete(
-      Uri.parse('https://the-architect.onrender.com/api/v1/posts/$id/'),
+      Uri.parse('https://the-architect.onrender.com/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -194,9 +195,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       String? content,
       required List<String> tags,
       required String userId,
+      required String id,
       required String token}) async {
     final response = await client.put(
-      Uri.parse('https://the-architect.onrender.com/api/v1/posts/{id}'),
+      Uri.parse('https://the-architect.onrender.com/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -225,7 +227,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> viewPost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('https://the-architect.onrender.com/api/v1/posts/$id/'),
+      Uri.parse('https://the-architect.onrender.com/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

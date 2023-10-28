@@ -1,3 +1,4 @@
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/post_create.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,22 @@ class DetailPage extends StatelessWidget {
       return input;
     }
     return input.split(' ').map((e) => capitalize(e)).join(' ');
+  }
+
+  void navigate(BuildContext context) {
+    BlocProvider.of<PostBloc>(context).add(
+      DeletePostEvent(postId: post.id),
+    );
+    Navigator.popUntil(context, (route) {
+      return route.runtimeType == HomePage;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
   }
 
   @override
@@ -125,8 +142,39 @@ class DetailPage extends StatelessWidget {
                                 const SizedBox(width: 15),
                                 GestureDetector(
                                   onTap: () {
-                                    BlocProvider.of<PostBloc>(context).add(
-                                      DeletePostEvent(postId: post.id),
+                                    showDialog(
+                                      context: context,
+                                      builder: (cntx) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            "Are you sure?",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          content: const Text(
+                                            "Do you want to delete this post?",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(cntx).pop();
+                                              },
+                                              child: const Text("Cancel",
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(cntx).pop();
+                                                navigate(context);
+                                              },
+                                              child: const Text("Delete",
+                                                  style: TextStyle(
+                                                      color: Colors.red)),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     );
                                   },
                                   child: Container(

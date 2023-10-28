@@ -255,6 +255,19 @@ class ChatMessage extends StatelessWidget {
                         child: Row(
                           children: [
                             GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Chat(
+                                      
+                                      user: user,
+                                      messageX: messages,
+                                      replay: content,
+                                    ),
+                                  ),
+                                );
+                              },
                               child: Container(
                                 height: 40,
                                 width: 40,
@@ -278,7 +291,10 @@ class ChatMessage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CreatePostPage(
-                                        user: user, imageUrl: content.imageAI),
+                                        user: user,
+                                        imageUrl: content.model == 'text_to_3D'
+                                            ? content.threeD['fetch_result']
+                                            : content.imageAI),
                                   ),
                                 );
                               },

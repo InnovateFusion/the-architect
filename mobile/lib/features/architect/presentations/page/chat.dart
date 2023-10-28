@@ -58,14 +58,23 @@ List<String> modelsX = [
 ];
 
 class Chat extends StatefulWidget {
-  const Chat(
-      {Key? key, this.messages, required this.user, this.draw, this.post})
-      : super(key: key);
+  const Chat({
+    Key? key,
+    this.messages,
+    required this.user,
+    this.draw,
+    this.replay,
+    this.messageX,
+    this.post,
+  }) : super(key: key);
 
   final List<message.Message>? messages;
   final Map<String, String>? draw;
   final User user;
   final Post? post;
+  final Message? replay;
+  final List<Message>? messageX;
+
   @override
   State<Chat> createState() => _ChatState();
 
@@ -124,6 +133,10 @@ class _ChatState extends State<Chat> {
       }
     } else {
       messages = [];
+    }
+    if (widget.replay != null) {
+      messages = widget.messageX!;
+      startFromReply();
     }
     if (widget.post != null) {
       startFromPost();
@@ -360,6 +373,31 @@ class _ChatState extends State<Chat> {
     base64ImageForImageToImage = await imageToBase64(data['backgroundImage']);
   }
 
+  Future<void> startFromReply() async {
+    if (widget.replay != null) {
+      String? ximage = await getImageAsBase64(widget.replay!.imageAI);
+      if (ximage != null) {
+        setState(() {
+          messages.insert(
+            0,
+            Message(
+                prompt: '',
+                isSentByMe: true,
+                imageUser: ximage,
+                imageAI: 'xxx',
+                model: model,
+                analysis: {},
+                threeD: {},
+                chat: '',
+                isPicked: true),
+          );
+        });
+
+        base64ImageForImageToImage = await imageToBase64(ximage);
+      }
+    }
+  }
+
   Future<void> startFromPost() async {
     if (widget.post != null) {
       Post xpost = widget.post!;
@@ -429,9 +467,23 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-    print('messages: $model');
-    print('messages: $messages');
-    print('chatId: $chatId');
+
+    if (widget.replay != null) {
+      final xxx = messages.removeAt(0);
+      messages.insert(
+        0,
+        Message(
+            prompt: xxx.prompt,
+            isSentByMe: xxx.isSentByMe,
+            imageUser: xxx.imageUser,
+            imageAI: xxx.imageAI,
+            model: xxx.model,
+            analysis: xxx.analysis,
+            threeD: xxx.threeD,
+            chat: xxx.chat,
+            isPicked: xxx.isPicked),
+      );
+    }
 
     return SafeArea(
       child: MultiBlocProvider(
@@ -554,7 +606,9 @@ class _ChatState extends State<Chat> {
                                 }
                               }
                             } else if (state is ChatError) {
-                              if (messages.isNotEmpty &&
+                              if (widget.replay != null &&
+                                  messages[0].imageAI == 'xxx') {
+                              } else if (messages.isNotEmpty &&
                                   messages[0].isSentByMe &&
                                   !(messages.length == 1 &&
                                       ((widget.draw != null) ||

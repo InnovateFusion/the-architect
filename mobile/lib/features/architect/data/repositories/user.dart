@@ -78,7 +78,8 @@ class UserRepositoryImpl extends UserRepository {
           country: country,
         );
         localDataSource.cacheUser(remoteUser);
-        return Right(remoteUser);
+        final response = await localDataSource.getUsers();
+        return Right(response);
       } on ServerException {
         return Left(ServerFailure());
       }

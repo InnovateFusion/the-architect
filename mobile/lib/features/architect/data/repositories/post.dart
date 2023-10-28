@@ -158,6 +158,7 @@ class PostRepositoryImpl extends PostRepository {
       try {
         final auth = await authLocalDataSource.getToken();
         final post = await remoteDataSource.editPost(
+          id: id,
           image: image,
           title: title,
           content: content,
