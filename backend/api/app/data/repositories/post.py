@@ -18,9 +18,9 @@ class PostRepositoryImpl(BaseRepository):
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
     
-    async def update_post(self, post: Post) -> Either[Failure, PostEntity]:
+    async def update_post(self, post: Post, post_id: str) -> Either[Failure, PostEntity]:
         try:
-            post_entity = await self.post_local_datasource.update_post(post)
+            post_entity = await self.post_local_datasource.update_post(post, post_id)
             return Either.right(post_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))

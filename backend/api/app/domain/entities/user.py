@@ -1,20 +1,27 @@
 from dataclasses import dataclass
 from typing import Optional
-from app.domain.entities import BaseEntity
 from pydantic import BaseModel
 
+from app.domain.entities import BaseEntity
+
+
 class User(BaseModel):
-    id: Optional[str]
     firstName: str
     lastName: str
     bio: Optional[str]
     email: str
-    password: Optional[str]
+    Optional[str]
     country: Optional[str]
     image: Optional[str]
-    
-    class Config:
-        arbitrary_types_allowed = True
+
+class UpdatUserRequest(BaseModel):
+    firstName: Optional[str]
+    lastName: Optional[str]
+    bio: Optional[str]
+    email: Optional[str]
+    country: Optional[str]
+    image: Optional[str]
+
 
 @dataclass
 class UserEntity(BaseEntity):
@@ -23,7 +30,7 @@ class UserEntity(BaseEntity):
     lastName: str
     bio: Optional[str]
     email: str
-    password: str
+    password: Optional[str]
     image: Optional[str]
     country: Optional[str]
     followers: Optional[int]
@@ -52,7 +59,7 @@ class UserEntity(BaseEntity):
             'bio': self.bio,
             'email': self.email,
             'password': self.password,
-            'image': self.image, 
+            'image': self.image,
             'country': self.country,
             'followers': self.followers,
             'following': self.following

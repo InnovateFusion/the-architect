@@ -1,23 +1,28 @@
 import json
 from dataclasses import dataclass
+from typing import Dict, List, Optional
+
 from pydantic import BaseModel
-from typing import List, Optional, Dict
-from app.domain.entities.message import Message
+
 from app.domain.entities import BaseEntity
+from app.domain.entities.message import Message
+
 
 class Chat(BaseModel):
     id: Optional[str]
     messages: List[Message]
-    
+
     class Config:
         arbitrary_types_allowed = True
-    
+
+
 class Notify(BaseModel):
     status: Optional[str]
     generationTime: Optional[str]
     id: Optional[str]
-    output: Optional[List[str]] 
+    output: Optional[List[str]]
     meta: Optional[Dict[str, str]]
+
 
 @dataclass
 class ChatEntity(BaseEntity):
@@ -28,7 +33,7 @@ class ChatEntity(BaseEntity):
 
     def add_message(self, message: Message) -> None:
         self.messages.append(message)
-    
+
     @classmethod
     def from_dict(cls, data: dict) -> 'ChatEntity':
         message_data = data.get('messages', [])
@@ -39,7 +44,7 @@ class ChatEntity(BaseEntity):
             user_id=data.get('user_id'),
             messages=messages
         )
-    
+
     def to_dict(self) -> dict:
         return {
             'id': self.id,
@@ -47,7 +52,7 @@ class ChatEntity(BaseEntity):
             'user_id': self.user_id,
             'messages': [msg.to_dict() for msg in self.messages]
         }
-    
+
     def to_json(self) -> str:
         return json.dumps(self.to_dict())
 

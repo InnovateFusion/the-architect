@@ -1,8 +1,12 @@
 from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
+
 from app.data.datasources.local.user import UserLocalDataSourceImpl
 from app.data.repositories.user import UserRepositoryImpl
-from app.domain.entities.user import User
+from app.domain.entities.user import User, UpdatUserRequest
 from app.domain.repositories.user import BaseRepository as UserRepository
 from app.domain.use_cases.user.create import CreateUser
 from app.domain.use_cases.user.create import Params as CreateUserParams
@@ -24,9 +28,6 @@ from app.domain.use_cases.user.views import ViewUsers
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
 from core.use_cases.use_case import NoParams
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
-from sqlalchemy.orm.session import Session
 
 
 class UserResponse(BaseModel):
@@ -69,13 +70,13 @@ async def create_user(
 @router.put("/users/{user_id}", response_model=UserResponse)
 async def update_user(
     user_id: str,
-    user: User,
+    user: UpdatUserRequest,
     repository: UserRepository = Depends(get_repository),
     current_user: User = Depends(get_current_user)
 ):
-    user.id = user_id
+
     update_user_use_case = UpdateUser(repository)
-    params = UpdateUserParams(user=user)
+    params = UpdateUserParams(user=user, user_id=user_id)
     result = await update_user_use_case(params)
     if result.is_right():
         return result.get()

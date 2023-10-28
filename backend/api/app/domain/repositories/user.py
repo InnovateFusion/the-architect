@@ -3,7 +3,7 @@ from typing import Iterable
 from app.domain.repositories import ContextManagerRepository
 from core.common.either import Either
 from core.errors.failure import Failure
-from app.domain.entities.user import UserEntity, User
+from app.domain.entities.user import UserEntity, UpdatUserRequest, User
 
 
 class BaseWriteOnlyRepository(ContextManagerRepository):
@@ -12,7 +12,7 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
         ...
 
     @abstractmethod
-    async def update_user(self, user: User) -> Either[Failure, UserEntity]:
+    async def update_user(self, user: UpdatUserRequest, user_id: str) -> Either[Failure, UserEntity]:
         ...
 
     @abstractmethod

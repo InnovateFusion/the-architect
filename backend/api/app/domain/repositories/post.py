@@ -11,7 +11,7 @@ class BaseWriteOnlyRepository(ContextManagerRepository):
         ...
 
     @abstractmethod
-    async def update_post(self, post: Post) -> Either[Failure, PostEntity]:
+    async def update_post(self, post: Post, post_id: str) -> Either[Failure, PostEntity]:
         ...
 
     @abstractmethod

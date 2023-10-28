@@ -19,7 +19,7 @@ class PostLocalDataSource(ABC):
         pass
     
     @abstractmethod
-    async def update_post(self, post: Post) -> PostEntity:
+    async def update_post(self, post: Post, post_id: str) -> PostEntity:
         pass
     
     @abstractmethod
@@ -88,8 +88,8 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             tags=post.tags
         )
 
-    async def update_post(self, post: Post) -> PostEntity:
-        _post = self.db.query(PostModel).filter(PostModel.id == post.id).first()
+    async def update_post(self, post: Post, post_id: str) -> PostEntity:
+        _post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
         if not _post:
             raise CacheException("Post not found")
         

@@ -3,13 +3,14 @@ from typing import List
 from uuid import uuid4
 
 import requests
+from cloudinary.uploader import upload
+from sqlalchemy.orm import Session
+
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.user import UserModel
-from app.domain.entities.user import User, UserEntity
-from cloudinary.uploader import upload
+from app.domain.entities.user import User, UserEntity, UpdatUserRequest
 from core.common.password import get_password_hash
 from core.errors.exceptions import CacheException
-from sqlalchemy.orm import Session
 
 
 class UserLocalDataSource(ABC):
@@ -19,7 +20,7 @@ class UserLocalDataSource(ABC):
         ...
 
     @abstractmethod
-    async def update_user(self, user: User) -> UserEntity:
+    async def update_user(self, user: UpdatUserRequest, user_id: str) -> UserEntity:
         ...
 
     @abstractmethod
@@ -91,19 +92,13 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
             following=_user.get_following_count(self.db)
         )
 
-    async def update_user(self, user: User) -> UserEntity:
+    async def update_user(self, user: UpdatUserRequest, user_id: str) -> UserEntity:
 
         _user = self.db.query(UserModel).filter(
-            UserModel.id == user.id).first()
+            UserModel.id == user_id).first()
         if _user is None:
             raise CacheException("User not found")
-        if (user.password is not None and user.password != '' and len(user.password) < 8):
-            raise CacheException("Password length atleast 8 characters")
-        if user.password is not None and user.password != '':
-            _user.password = get_password_hash(user.password)
 
-        if len(user.image) > 300:
-            _user.image = await self.ai_generation.upload_image(user.image)
         if user.firstName is not None and user.firstName != '':
             _user.first_name = user.firstName
         if user.lastName is not None and user.lastName != '':

@@ -13,7 +13,7 @@ architecture_tags = [
 
 
 class Post(BaseModel):
-    id = Optional[str]
+
     userId: Optional[str]
     image: str
     title: str

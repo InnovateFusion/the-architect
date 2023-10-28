@@ -90,8 +90,7 @@ async def update_post(
     current_user: User = Depends(get_current_user)
 ):
     update_post_use_case = UpdatePost(repository)
-    post.id = post_id
-    params = UpdatePostParams(post=post)
+    params = UpdatePostParams(post=post, post_id=post_id)
     result = await update_post_use_case(params)
     if result.is_right():
         return result.get()
