@@ -153,5 +153,24 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwind-typewriter")({
+      wordsets: {
+        facts: {
+          words: [
+            "Did you know that honey never spoils?",
+            "Ants can lift up to 50 times their body weight.",
+            "The Eiffel Tower can be 15 cm taller during the summer due to expansion of the iron.",
+            "Bananas are berries, but strawberries are not.",
+            "There is enough gold in the Earth's core to coat the planet in 1.5 feet of the precious metal.",
+          ],
+          delay: 3,
+          writeSpeed: 0.09,
+          repeat: -1,
+          eraseSpeed: 0,
+        },
+      },
+    }),
+  ],
 });

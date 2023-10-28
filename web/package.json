@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "test:ci": "jest --ci"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.16.1",
@@ -25,14 +27,20 @@
     "sharp": "^0.32.6",
     "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
+    "tailwind-typewriter": "^1.0.1",
     "tailwindcss-animate": "^1.0.6",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "6.1.2",
+    "@testing-library/react": "14.0.0",
+    "@testing-library/user-event": "14.4.3",
     "autoprefixer": "^10",
     "daisyui": "^3.9.2",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "29.6.4",
     "postcss": "^8",
     "tailwindcss": "^3"
   }
