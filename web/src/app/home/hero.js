@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/theme-toggle";
 import ModalVideo from "./modal-video";
 
 export default function Hero() {
@@ -33,10 +34,9 @@ export default function Hero() {
           </g>
         </svg>
       </div>
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
-        <div className="pt-32 pb-12 md:pt-40 md:pb-20">
+        <div className="p-12">
           {/* Section header */}
           <div className="text-center pb-12 md:pb-16">
             <h1
@@ -50,7 +50,7 @@ export default function Hero() {
             </h1>
             <div className="max-w-3xl mx-auto">
               <p
-                className="text-xl text-gray-600 mb-8"
+                className="text-xl mb-8"
                 data-aos="zoom-y-out"
                 data-aos-delay="150"
               >

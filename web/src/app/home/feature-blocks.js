@@ -58,7 +58,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Initial design concept and inspirational designs
               </h4>
               <p className="text-gray-600 text-center">
@@ -70,7 +70,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 2nd item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -102,7 +102,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Built in Drawing and Design tool
               </h4>
               <p className="text-gray-600 text-center">
@@ -148,7 +148,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Drawing to Render generation
               </h4>
               <p className="text-gray-600 text-center">
@@ -194,7 +194,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Interior design generation and furniture generative fill
               </h4>
               <p className="text-gray-600 text-center">
@@ -234,7 +234,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Design modification and variation
               </h4>
               <p className="text-gray-600 text-center">
@@ -270,7 +270,7 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center text-xl font-bold leading-snug tracking-tight mb-1">
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
                 Market Research Analysis and Cost Estimation
               </h4>
               <p className="text-gray-600 text-center">

@@ -4,13 +4,17 @@ export const metadata = {
     "AI-powered platform that assist and empowers professionals and enthusiasts in the field of architecture and design by offering a wide range of features and tools.",
 };
 
+import Header from "./header";
 import FeaturesBlocks from "./feature-blocks";
 import Features from "./features";
 import Hero from "./hero";
+import HomeHero from "./main";
 
 export default function Home() {
   return (
     <>
+      <Header />
+      <HomeHero />
       <Hero />
       <Features />
       <FeaturesBlocks />
