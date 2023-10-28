@@ -109,7 +109,7 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
             _user.country = user.country
 
         if user.image is not None and user.image != '':
-            _user.image = await self.ai_generation.generate_image(user.image)
+            _user.image = await self.ai_generation.upload_image(user.image)
 
         self.db.commit()
         return UserEntity(

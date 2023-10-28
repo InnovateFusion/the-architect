@@ -116,6 +116,7 @@ class AiGeneration:
         if upload_result is None:
             raise ServerException('Error uploading image')
         return upload_result["url"]
+    
 
     async def chatbot(self, data):
         messages = [
