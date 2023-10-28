@@ -10,4 +10,5 @@ python-jose[cryptography]
 passlib[bcrypt]
 PyJWT
 Pillow
+Pillow
 replicate
