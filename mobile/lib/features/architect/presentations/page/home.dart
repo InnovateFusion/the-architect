@@ -22,6 +22,8 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
+
+  static const String name = '/home';
 }
 
 class _HomePageState extends State<HomePage> {
@@ -222,11 +224,31 @@ class _HomePageState extends State<HomePage> {
 
   Expanded listPosts() {
     return Expanded(
-        child: ListView.builder(
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        return Post(user: user, post: posts[index]);
-      },
-    ));
+      child: ListView.builder(
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          if (index == posts.length - 1) {
+            return Column(
+              children: [
+                Post(
+                  index: index,
+                  user: user,
+                  post: posts[index],
+                  posts: posts,
+                ),
+                const SizedBox(height: 80.0),
+              ],
+            );
+          } else {
+            return Post(
+              index: index,
+              user: user,
+              post: posts[index],
+              posts: posts,
+            );
+          }
+        },
+      ),
+    );
   }
 }

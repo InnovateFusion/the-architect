@@ -103,7 +103,7 @@ class CustomBottomNavigation extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Draw()));
+                    MaterialPageRoute(builder: (context) => Draw(user: user)));
               },
             ),
           if (currentNav == 3)

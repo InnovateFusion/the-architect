@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:architect/features/architect/domains/entities/message.dart'
     as message;
+import 'package:architect/features/architect/domains/entities/post.dart';
 import 'package:architect/features/architect/presentations/bloc/chat/chat_bloc.dart';
+import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_display.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_side_bar.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/util/get_image_base64.dart';
 import '../../domains/entities/user.dart';
 import '../bloc/type/type_bloc.dart';
 import '../widget/chat/chat_input.dart';
@@ -56,24 +59,17 @@ List<String> modelsX = [
 
 class Chat extends StatefulWidget {
   const Chat(
-      {Key? key,
-      this.messages,
-      this.chatId,
-      this.contollerImage,
-      this.paintingImage,
-      this.maskImage,
-      required this.user})
+      {Key? key, this.messages, required this.user, this.draw, this.post})
       : super(key: key);
 
   final List<message.Message>? messages;
-  final String? chatId;
-  final String? contollerImage;
-  final String? paintingImage;
-  final String? maskImage;
+  final Map<String, String>? draw;
   final User user;
-
+  final Post? post;
   @override
   State<Chat> createState() => _ChatState();
+
+  static const String name = '/chat';
 }
 
 class _ChatState extends State<Chat> {
@@ -128,7 +124,12 @@ class _ChatState extends State<Chat> {
       }
     } else {
       messages = [];
-      chatId = widget.chatId;
+    }
+    if (widget.post != null) {
+      startFromPost();
+    }
+    if (widget.draw != null) {
+      startInt();
     }
   }
 
@@ -189,10 +190,7 @@ class _ChatState extends State<Chat> {
       payload["scheduler"] = "euler_a";
     }
 
-    print('base64ImageForImageToImage: $base64ImageForImageToImage');
-    print('base64ImageForControlNet: $base64ImageForControlNet');
-
-    if (model == 'edit_image' && base64ImageForImageToImage.isEmpty) {
+    if (model == 'edit_image' && base64ImageForImageToImage.isNotEmpty) {
       payload['image'] = base64ImageForImageToImage;
       payload['mask'] = base64ImageForControlNet;
     }
@@ -362,12 +360,79 @@ class _ChatState extends State<Chat> {
     base64ImageForImageToImage = await imageToBase64(data['backgroundImage']);
   }
 
+  Future<void> startFromPost() async {
+    if (widget.post != null) {
+      Post xpost = widget.post!;
+      String? ximage = await getImageAsBase64(xpost.image);
+      if (ximage != null) {
+        setState(() {
+          messages.insert(
+            0,
+            Message(
+                prompt: '',
+                isSentByMe: true,
+                imageUser: ximage,
+                imageAI: '',
+                model: model,
+                analysis: {},
+                threeD: {},
+                chat: '',
+                isPicked: true),
+          );
+        });
+
+        base64ImageForImageToImage = await imageToBase64(ximage);
+      }
+    }
+  }
+
+  void startInt() async {
+    if (widget.draw != null) {
+      String backgroundX = widget.draw!['backgroundImage'] ?? '';
+      String sketchX = widget.draw!['sketch'] ?? '';
+      if (backgroundX.isEmpty) {
+        model == 'edit_image';
+        messages.insert(
+          0,
+          Message(
+              prompt: '',
+              isSentByMe: true,
+              imageUser: sketchX,
+              imageAI: '',
+              model: model,
+              analysis: {},
+              threeD: {},
+              chat: '',
+              isPicked: true),
+        );
+        base64ImageForControlNet = await imageToBase64(backgroundX);
+      } else {
+        model == 'controlNet';
+        messages.insert(
+          0,
+          Message(
+              prompt: '',
+              isSentByMe: true,
+              imageUser: sketchX,
+              imageAI: '',
+              model: model,
+              analysis: {},
+              threeD: {},
+              chat: '',
+              isPicked: true),
+        );
+      }
+      base64ImageForImageToImage = await imageToBase64(sketchX);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
     print('messages: $model');
     print('messages: $messages');
+    print('chatId: $chatId');
+
     return SafeArea(
       child: MultiBlocProvider(
         providers: [
@@ -406,11 +471,26 @@ class _ChatState extends State<Chat> {
                             height: 40,
                             width: 40,
                             child: GestureDetector(
-                              onTap: () {},
-                              child: const Icon(
-                                Icons.arrow_back_ios_new,
-                                color: Colors.white,
-                                size: 30,
+                              onTap: () {
+                                Navigator.popUntil(context, (route) {
+                                  return route.runtimeType == HomePage;
+                                });
+                              },
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomePage(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
                               ),
                             ),
                           ),
@@ -475,7 +555,10 @@ class _ChatState extends State<Chat> {
                               }
                             } else if (state is ChatError) {
                               if (messages.isNotEmpty &&
-                                  messages[0].isSentByMe) {
+                                  messages[0].isSentByMe &&
+                                  !(messages.length == 1 &&
+                                      ((widget.draw != null) ||
+                                          (widget.post != null)))) {
                                 setState(() {
                                   messages.insert(
                                       0,
@@ -493,7 +576,8 @@ class _ChatState extends State<Chat> {
                               }
                             }
                           },
-                          child: ChatDisplay(messages: messages),
+                          child: ChatDisplay(
+                              messages: messages, user: widget.user),
                         ),
                       ],
                     ),
@@ -501,6 +585,7 @@ class _ChatState extends State<Chat> {
                   const SizedBox(height: 10),
                   ChatInput(
                     model: model,
+                    user: widget.user,
                     onImagePick: _pickImage,
                     onSubmitted: handleSubmitted,
                     onControNet: getControllImage,

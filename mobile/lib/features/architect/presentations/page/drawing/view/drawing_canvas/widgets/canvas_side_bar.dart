@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:architect/features/architect/presentations/page/chat.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Image;
@@ -12,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../../../domains/entities/user.dart';
 import '../models/drawing_mode.dart';
 import '../models/sketch.dart';
 import 'color_palette.dart';
@@ -28,9 +30,13 @@ class CanvasSideBar extends HookWidget {
   final ValueNotifier<bool> filled;
   final ValueNotifier<int> polygonSides;
   final ValueNotifier<ui.Image?> backgroundImage;
+  final bool fromChat;
+  final User user;
 
   const CanvasSideBar({
     Key? key,
+    required this.fromChat,
+    required this.user,
     required this.selectedColor,
     required this.strokeSize,
     required this.eraserSize,
@@ -375,7 +381,7 @@ class CanvasSideBar extends HookWidget {
                   height: 40,
                   width: 40,
                   margin: const EdgeInsets.only(bottom: 10),
-                  child: const Icon(Icons.download_outlined, size: 30),
+                  child: const Icon(Icons.send_outlined, size: 30),
                 ),
               ),
             ],
@@ -407,13 +413,27 @@ class CanvasSideBar extends HookWidget {
               .asUint8List() ??
           []);
     }
-
-    () {
-      Navigator.pop(context, {
-        'sketch': filePath1,
-        'backgroundImage': filePath2,
-      });
-    }();
+    if (!fromChat) {
+      () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(
+                      user: user,
+                      draw: {
+          'sketch': filePath1,
+          'backgroundImage': filePath2,
+        },
+                    )));
+      }();
+    } else {
+      () {
+        Navigator.pop(context, {
+          'sketch': filePath1,
+          'backgroundImage': filePath2,
+        });
+      }();
+    }
   }
 
   Future<ui.Image> get _getImage async {

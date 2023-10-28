@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +9,8 @@ import '../../domains/entities/user.dart';
 import '../bloc/post/post_bloc.dart';
 import '../bloc/user/user_bloc.dart';
 import '../widget/gallery_item.dart';
+
+final random = Random();
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -18,6 +22,7 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+  static const String name = '/profile';
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -93,13 +98,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Container(
                                 height: 170,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(30),
                                     topRight: Radius.circular(30),
                                   ),
                                   image: DecorationImage(
-                                    image: AssetImage("assets/images/me.jpg"),
+                                    image: AssetImage(
+                                        "assets/images/cover/${random.nextInt(8) + 1}.jpg"),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -257,13 +263,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   if (i % 2 == 0)
                                     GalleryItem(
                                       user: fetchedUser,
-                                      half: true,
+                                      half: false,
                                       post: state.posts[i],
                                     )
                                   else
                                     GalleryItem(
                                       user: fetchedUser,
-                                      half: false,
+                                      half: true,
                                       post: state.posts[i],
                                     ),
                               ],

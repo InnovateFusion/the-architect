@@ -1,12 +1,10 @@
-import '../../../../../core/use_cases/usecase.dart';
-import '../../repositories/post.dart';
-
-
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../core/errors/failure.dart';
+import '../../../../../core/use_cases/usecase.dart';
 import '../../entities/post.dart';
+import '../../repositories/post.dart';
 
 class CreatePost implements UseCase<Post, Params> {
   final PostRepository repository;
@@ -28,14 +26,14 @@ class CreatePost implements UseCase<Post, Params> {
 class Params extends Equatable {
   final String image;
   final String title;
-  final String content;
+  final String? content;
   final String userId;
   final List<String> tags;
 
   const Params({
     required this.image,
     required this.title,
-    required this.content,
+    this.content,
     required this.userId,
     required this.tags,
   });

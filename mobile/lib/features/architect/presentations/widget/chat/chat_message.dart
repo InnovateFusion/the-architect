@@ -1,19 +1,24 @@
 import 'dart:io';
 
 import 'package:architect/features/architect/presentations/page/chat.dart';
+import 'package:architect/features/architect/presentations/page/post_create.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../../../domains/entities/user.dart';
 
 class ChatMessage extends StatelessWidget {
   final Message content;
   final bool isSentByMe;
   final VoidCallback onDeleted;
   final List<Message> messages;
+  final User user;
 
   const ChatMessage({
     super.key,
     required this.onDeleted,
     required this.content,
+    required this.user,
     required this.isSentByMe,
     required this.messages,
   });
@@ -233,11 +238,69 @@ class ChatMessage extends StatelessWidget {
               },
               child: ClipRRect(
                 borderRadius: borderRadius,
-                child: Image.network(
-                  content.imageAI.isNotEmpty
-                      ? content.imageAI
-                      : content.threeD['fetch_result'],
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      content.imageAI.isNotEmpty
+                          ? content.imageAI
+                          : content.threeD['fetch_result'],
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      left: 10,
+                      bottom: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 5),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Icon(
+                                  Icons.replay_outlined,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CreatePostPage(
+                                        user: user, imageUrl: content.imageAI),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Icon(
+                                  Icons.share_outlined,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -292,10 +355,6 @@ class ChatMessage extends StatelessWidget {
                 ],
               ),
             ),
-
-
-
-
           if (messages[0] == content && content.prompt.isNotEmpty)
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

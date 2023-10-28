@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:io';
 
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
@@ -7,13 +5,14 @@ import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/gallery_item.dart';
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:architect/injection_container.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domains/entities/user.dart';
-import '../widget/custom_bottom_navigation.dart';
 
 class BookMark extends StatelessWidget {
   final User user;
-
+  static const String name = '/bookmark';
   const BookMark({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -36,19 +35,44 @@ class BookMark extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              "My Gallery",
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  height: 40,
+                                  width: 40,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Icon(
+                                      Icons.arrow_back_ios_new,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                const Text(
+                                  "My Gallery",
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 5),
-                            Text(
+                            const SizedBox(height: 5),
+                            const Text(
                               "Capturing moment of Ai",
                               style: TextStyle(
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -137,13 +161,13 @@ class BookMark extends StatelessWidget {
                                               if (i % 2 == 0)
                                                 GalleryItem(
                                                   user: user,
-                                                  half: true,
+                                                  half: false,
                                                   post: state.posts[i],
                                                 )
                                               else
                                                 GalleryItem(
                                                   user: user,
-                                                  half: false,
+                                                  half: true,
                                                   post: state.posts[i],
                                                 ),
                                           ],
@@ -167,15 +191,6 @@ class BookMark extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-              Positioned(
-                bottom: 10,
-                left: 40,
-                right: 40,
-                child: CustomBottomNavigation(
-                  user: user,
-                  currentNav: 3,
-                ),
               ),
             ],
           ),

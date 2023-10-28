@@ -17,7 +17,7 @@ class History extends StatefulWidget {
   }) : super(key: key);
 
   final User user;
-
+static const String name = '/history';
   @override
   State<History> createState() => _HistoryState();
 }
@@ -92,8 +92,6 @@ class _HistoryState extends State<History> {
       context,
       MaterialPageRoute(
         builder: (context) => chat.Chat(
-
-          chatId: id,
           user: widget.user,
           messages: messages,
         ),

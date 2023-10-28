@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../domains/entities/user.dart';
 import '../../page/drawing/drawing.dart';
 
 class ChatInput extends StatelessWidget {
@@ -9,10 +10,12 @@ class ChatInput extends StatelessWidget {
     required this.onSubmitted,
     required this.onImagePick,
     required this.onControNet,
+    required this.user
   }) : super(key: key);
 
   final String model;
   final void Function(BuildContext context, String text) onSubmitted;
+  final User user;
   final void Function() onImagePick;
   final Future<void> Function(Map<String, dynamic> data) onControNet;
 
@@ -48,7 +51,7 @@ class ChatInput extends StatelessWidget {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Draw(),
+                      builder: (context) =>  Draw(user: user),
                     ),
                   );
                   if (result != null) {

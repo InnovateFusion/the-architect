@@ -24,8 +24,10 @@ class PostRepositoryImpl extends PostRepository {
       {List<String>? tags, String? search}) async {
     if (await networkInfo.isConnected) {
       try {
-      final auth = await authLocalDataSource.getToken();;
-        final posts = await remoteDataSource.allPosts(search, tags, auth.accessToken);
+        final auth = await authLocalDataSource.getToken();
+        ;
+        final posts =
+            await remoteDataSource.allPosts(search, tags, auth.accessToken);
         return Right(posts);
       } on ServerException {
         return Left(ServerFailure());
@@ -36,9 +38,18 @@ class PostRepositoryImpl extends PostRepository {
   }
 
   @override
-  Future<Either<Failure, Post>> clone(String id) {
-    // TODO: implement clone
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> clone(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.clonePost(id, auth.accessToken);
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -47,33 +58,92 @@ class PostRepositoryImpl extends PostRepository {
       required String title,
       String? content,
       required String userId,
-      required List<String> tags}) {
-    // TODO: implement create
-    throw UnimplementedError();
+      required List<String> tags}) async {
+    print("create post");
+
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.createPost(
+          image: image,
+          title: title,
+          content: content,
+          tags: tags,
+          userId: userId,
+          token: auth.accessToken,
+        );
+        print("create post success");
+        return Right(post);
+      } on ServerException {
+        print("create post fail");
+        return Left(ServerFailure());
+      }
+    } else {
+      print("create post fail");
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Post>> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> delete(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.deletePost(id, auth.accessToken);
+        print("delete post success");
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      print("delete post fail");
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Post>> like(String id) {
-    // TODO: implement like
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> like(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.likePost(id, auth.accessToken);
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Post>> unclone(String id) {
-    // TODO: implement unclone
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> unclone(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.unLikePost(id, auth.accessToken);
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Post>> unlike(String id) {
-    // TODO: implement unlike
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> unlike(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.unLikePost(id, auth.accessToken);
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -83,15 +153,42 @@ class PostRepositoryImpl extends PostRepository {
       required String title,
       String? content,
       required String userId,
-      required List<String> tags}) {
-    // TODO: implement update
-    throw UnimplementedError();
+      required List<String> tags}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.editPost(
+          image: image,
+          title: title,
+          content: content,
+          tags: tags,
+          userId: userId,
+          token: auth.accessToken,
+        );
+        print('update post success');
+        return Right(post);
+      } on ServerException {
+        print('update post fail');
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Post>> view(String id) {
-    // TODO: implement view
-    throw UnimplementedError();
+  Future<Either<Failure, Post>> view(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final auth = await authLocalDataSource.getToken();
+        final post = await remoteDataSource.viewPost(id, auth.accessToken);
+        return Right(post);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -99,7 +196,8 @@ class PostRepositoryImpl extends PostRepository {
     if (await networkInfo.isConnected) {
       try {
         final auth = await authLocalDataSource.getToken();
-        final posts = await remoteDataSource.viewsPost(userId, auth.accessToken);
+        final posts =
+            await remoteDataSource.viewsPost(userId, auth.accessToken);
         return Right(posts);
       } on ServerException {
         return Left(ServerFailure());

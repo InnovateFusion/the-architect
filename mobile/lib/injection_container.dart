@@ -1,3 +1,4 @@
+import 'package:architect/features/architect/domains/use_cases/post/like.dart';
 import 'package:architect/features/architect/presentations/bloc/type/type_bloc.dart'
     as type;
 import 'package:get_it/get_it.dart';
@@ -34,6 +35,12 @@ import 'features/architect/domains/use_cases/chat/message.dart';
 import 'features/architect/domains/use_cases/chat/view.dart';
 import 'features/architect/domains/use_cases/chat/views.dart';
 import 'features/architect/domains/use_cases/post/all.dart';
+import 'features/architect/domains/use_cases/post/clone.dart';
+import 'features/architect/domains/use_cases/post/create.dart';
+import 'features/architect/domains/use_cases/post/delete.dart';
+import 'features/architect/domains/use_cases/post/unlike.dart';
+import 'features/architect/domains/use_cases/post/update.dart';
+import 'features/architect/domains/use_cases/post/view.dart';
 import 'features/architect/domains/use_cases/post/views.dart';
 import 'features/architect/domains/use_cases/type/get.dart';
 import 'features/architect/domains/use_cases/type/set.dart';
@@ -74,6 +81,13 @@ Future<void> init() async {
   sl.registerFactory(() => PostBloc(
         allPosts: sl(),
         viewsPost: sl(),
+        clonePost: sl(),
+        likePost: sl(),
+        unlikePost: sl(),
+        createPost: sl(),
+        deletePost: sl(),
+        updatePost: sl(),
+        viewPost: sl(),
       ));
 
   // User
@@ -111,6 +125,13 @@ Future<void> init() async {
   // Post
   sl.registerLazySingleton(() => AllPost(sl()));
   sl.registerLazySingleton(() => ViewsPost(sl()));
+  sl.registerLazySingleton(() => ClonePost(sl()));
+  sl.registerLazySingleton(() => LikePost(sl()));
+  sl.registerLazySingleton(() => UnlikePost(sl()));
+  sl.registerLazySingleton(() => CreatePost(sl()));
+  sl.registerLazySingleton(() => DeletePost(sl()));
+  sl.registerLazySingleton(() => UpdatePost(sl()));
+  sl.registerLazySingleton(() => ViewPost(sl()));
 
   // User
   sl.registerLazySingleton(() => UserCreate(sl()));

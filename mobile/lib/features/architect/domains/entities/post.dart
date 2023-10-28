@@ -50,4 +50,38 @@ class Post extends Equatable {
         lastName,
         userImage,
       ];
+
+  Post copyWith({
+    String? id,
+    String? title,
+    String? content,
+    String? image,
+    int? like,
+    int? clone,
+    DateTime? date,
+    String? userId,
+    bool? isLiked,
+    bool? isCloned,
+    List<String>? tags,
+    String? firstName,
+    String? lastName,
+    String? userImage,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      image: image ?? this.image,
+      like: like ?? this.like,
+      clone: clone ?? this.clone,
+      date: date ?? this.date,
+      userId: userId ?? this.userId,
+      isLiked: isLiked ?? this.isLiked,
+      isCloned: isCloned ?? this.isCloned,
+      tags: tags ?? this.tags,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      userImage: userImage ?? this.userImage,
+    );
+  }
 }

@@ -1,8 +1,11 @@
+import 'package:architect/features/architect/presentations/page/post_create.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../domains/entities/post.dart';
 import '../../domains/entities/user.dart';
+import '../bloc/post/post_bloc.dart';
 import '../widget/post/post_info.dart';
 import '../widget/post/react.dart';
 
@@ -15,7 +18,7 @@ class DetailPage extends StatelessWidget {
   }) : super(key: key);
 
   final Post post;
-
+  static const String name = '/detail';
   String capitalize(String input) {
     if (input.isEmpty) {
       return input;
@@ -52,6 +55,27 @@ class DetailPage extends StatelessWidget {
                           child: Image.network(post.image, fit: BoxFit.cover),
                         ),
                         Positioned(
+                          top: 15,
+                          left: 15,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                borderRadius: BorderRadius.circular(5)),
+                            height: 40,
+                            width: 40,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
                           top: 10,
                           right: 10,
                           child: PostInfo(
@@ -62,6 +86,70 @@ class DetailPage extends StatelessWidget {
                             imageUrl: post.userImage,
                           ),
                         ),
+                        if (post.userId == user.id)
+                          Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CreatePostPage(
+                                                user: user,
+                                                imageUrl: post.image,
+                                                post: post,
+                                              )),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.edit,
+                                        size: 20,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                GestureDetector(
+                                  onTap: () {
+                                    BlocProvider.of<PostBloc>(context).add(
+                                      DeletePostEvent(postId: post.id),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: 20,
+                                        color: Color.fromARGB(255, 252, 4, 4),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         Positioned(
                           bottom: 10,
                           left: 10,
@@ -85,7 +173,8 @@ class DetailPage extends StatelessWidget {
                                 icon: Icon(Icons.cyclone,
                                     size: 35,
                                     color: post.isCloned
-                                        ? const Color.fromARGB(255, 230, 57, 57)
+                                        ? const Color.fromARGB(
+                                            255, 57, 218, 230)
                                         : const Color.fromARGB(
                                             255, 255, 255, 255)),
                                 onPressed: () {},

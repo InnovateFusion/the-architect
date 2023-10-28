@@ -10,6 +10,8 @@ class Login extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _LoginState();
+
+  static const String name = '/login';
 }
 
 class _LoginState extends State<Login> {

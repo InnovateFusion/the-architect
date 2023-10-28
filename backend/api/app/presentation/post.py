@@ -1,22 +1,33 @@
-from fastapi import HTTPException, APIRouter, Depends, Query
-from typing import List, Optional
 from datetime import datetime
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
+
 from app.data.datasources.local.post import PostLocalDataSourceImpl
-from app.domain.entities.user import User
-from app.domain.repositories.post import BaseRepository as PostRepository
 from app.data.repositories.post import PostRepositoryImpl
 from app.domain.entities.post import Post
-from app.domain.use_cases.post.create import CreatePost, Params as CreatePostParams
-from app.domain.use_cases.post.delete import DeletePost, Params as DeletePostParams
-from app.domain.use_cases.post.update import UpdatePost, Params as UpdatePostParams
-from app.domain.use_cases.post.view import ViewPost, Params as ViewPostParams
-from app.domain.use_cases.post.views import ViewPosts, Params as ViewPostsParams
-from app.domain.use_cases.post.status import LikePost, UnlikePost, ClonePost, UnclonePost, Params as StatusParams
-from app.domain.use_cases.post.all_posts import AllPost, Params as AllPostParams
+from app.domain.entities.user import User
+from app.domain.repositories.post import BaseRepository as PostRepository
+from app.domain.use_cases.post.all_posts import AllPost
+from app.domain.use_cases.post.all_posts import Params as AllPostParams
+from app.domain.use_cases.post.create import CreatePost
+from app.domain.use_cases.post.create import Params as CreatePostParams
+from app.domain.use_cases.post.delete import DeletePost
+from app.domain.use_cases.post.delete import Params as DeletePostParams
+from app.domain.use_cases.post.status import ClonePost, LikePost
+from app.domain.use_cases.post.status import Params as StatusParams
+from app.domain.use_cases.post.status import UnclonePost, UnlikePost
+from app.domain.use_cases.post.update import Params as UpdatePostParams
+from app.domain.use_cases.post.update import UpdatePost
+from app.domain.use_cases.post.view import Params as ViewPostParams
+from app.domain.use_cases.post.view import ViewPost
+from app.domain.use_cases.post.views import Params as ViewPostsParams
+from app.domain.use_cases.post.views import ViewPosts
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
-from sqlalchemy.orm.session import Session
-from pydantic import BaseModel
+
 
 class PostResponse(BaseModel):
     id: Optional[str]
@@ -79,7 +90,7 @@ async def update_post(
     current_user: User = Depends(get_current_user)
 ):
     update_post_use_case = UpdatePost(repository)
-    post['id'] = post_id
+    post.id = post_id
     params = UpdatePostParams(post=post)
     result = await update_post_use_case(params)
     if result.is_right():

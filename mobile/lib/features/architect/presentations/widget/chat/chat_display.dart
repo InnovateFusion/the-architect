@@ -1,14 +1,17 @@
 import 'package:architect/features/architect/presentations/widget/chat/chat_message.dart';
 import 'package:flutter/material.dart';
 
+import '../../../domains/entities/user.dart';
 import '../../page/chat.dart';
 
 class ChatDisplay extends StatefulWidget {
   const ChatDisplay({
+    required this.user,
     Key? key,
     required this.messages,
   }) : super(key: key);
 
+  final User user;
   final List<Message> messages;
 
   @override
@@ -76,6 +79,7 @@ class _ChatDisplayState extends State<ChatDisplay> {
               itemBuilder: (_, int index) {
                 final message = widget.messages[index];
                 return ChatMessage(
+                  user: widget.user,
                   messages: widget.messages,
                   onDeleted: onDeleted,
                   content: message,

@@ -11,6 +11,19 @@ class Tag extends StatelessWidget {
     required this.text,
     required this.onPressed,
   });
+  String capitalize(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
+  String capitalizeAll(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input.split(' ').map((e) => capitalize(e)).join(' ');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +43,7 @@ class Tag extends StatelessWidget {
       child: InkWell(
         onTap: () => onPressed(text),
         child: Text(
-          text,
+          capitalizeAll(text),
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
             fontSize: 13,

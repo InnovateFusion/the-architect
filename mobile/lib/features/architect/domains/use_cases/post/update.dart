@@ -28,7 +28,7 @@ class Params extends Equatable {
   final String id;
   final String image;
   final String title;
-  final String content;
+  final String? content;
   final String userId;
   final List<String> tags;
 
@@ -36,7 +36,7 @@ class Params extends Equatable {
     required this.id,
     required this.image,
     required this.title,
-    required this.content,
+    this.content,
     required this.userId,
     required this.tags,
   });

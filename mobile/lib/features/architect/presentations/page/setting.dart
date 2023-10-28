@@ -19,6 +19,7 @@ class Setting extends StatefulWidget {
 
   @override
   State<Setting> createState() => _SettingState();
+  static const String name = '/setting';
 }
 
 class _SettingState extends State<Setting> {
