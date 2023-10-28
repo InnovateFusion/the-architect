@@ -55,6 +55,7 @@ export function ExcalidrawPage({
         {Excalidraw && (
           <>
             <Excalidraw
+              onChange={changeImage}
               ref={excalidrawRef}
               UIOptions={UIOptions}
               initalData={{ scrollToContent: false, zoom: false }}

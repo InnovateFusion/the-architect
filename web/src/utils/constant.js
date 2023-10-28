@@ -78,34 +78,34 @@ export const services = [
     title: "Idea to Image",
     image:
       "http://res.cloudinary.com/dtghsmx0s/image/upload/v1698149548/llbmrllk1egq4sndgyr4.jpg",
-    link: "/dashboard/draw?model=text_to_image",
+    link: "/dashboard/tools?model=text_to_image",
     desc: "State your imaginations with simple language and get the images without hussle.",
   },
   {
     title: "Drawing to Render",
     image:
       "http://res.cloudinary.com/dtghsmx0s/image/upload/v1698267218/ufnmlna5rxqazgplunmv.jpg",
-    link: "/dashboard/draw?model=controlNet",
+    link: "/dashboard/tools?model=controlNet",
     desc: "Your simple Sketches will be converted into photorealitic renders.",
   },
   {
     title: "Architectural Knowledge",
     image:
       "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%",
-    link: "/dashboard/draw?model=chatbot",
+    link: "/dashboard/tools?model=chatbot",
     desc: "Your architectural companion helps you not only designing but also answering your questions.",
   },
   {
     title: "Describe my Design",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=1887&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    link: "/dashboard/draw?model=analysis",
+    link: "/dashboard/tools?model=analysis",
     desc: "Get the details of your design from the architects perspective.",
   },
   {
     title: "3D item Models",
     image: "",
-    link: "/dashboard/draw?model=text_to_3D",
+    link: "/dashboard/tools?model=text_to_3D",
     desc: "Collaborate and get inspirations from architects all around the world.",
   },
 ];

@@ -27,12 +27,18 @@ function Chat2({ size, chat, handleDelete }) {
       }  bg-gray-3 border border-gray-2  rounded-lg sticky bottom-0 overflow-auto`}
     >
       <div className="p-2 sticky top-0 z-10 flex justify-between bg-gray-3 border border-gray-2  rounded-tr-lg items-center">
-        <b>{Capitalize(chat.title || "  ")}</b>
+        <b className="whitespace-nowrap overflow-hidden">
+          {Capitalize(chat.title || "  ")}
+        </b>
         <div className="flex gap-x-2">
           {chat?.id && (
             <button
-              onClick={(e) => router.push(`/dashboard/edit?chatId=${chat.id}`)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={(e) =>
+                router.push(
+                  `/dashboard/tools?model=image_to_image&chatId=${chat.id}`
+                )
+              }
+              className="whitespace-nowrap bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Go to Chat
             </button>
@@ -50,7 +56,7 @@ function Chat2({ size, chat, handleDelete }) {
           )}
         </div>
       </div>
-      <div className="overflow-auto">
+      <div className="overflow-auto p-3">
         {chat?.messages?.map((m, i) => {
           return (
             <ChatBuble
@@ -76,7 +82,7 @@ export default Chat2;
 
 const ConfirmDelete = ({ isOpen, setIsOpen, handleDelete }) => (
   <Modal open={isOpen} handleOpen={() => setIsOpen(false)} size={"lg"}>
-    <p className="p-10">
+    <p className="p-6">
       Are you sure you want to delete this Project? <br />
       All of chat messages will be permanently removed. <br /> This action
       cannot be undone.

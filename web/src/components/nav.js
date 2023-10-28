@@ -25,8 +25,8 @@ export const dashboardConfig = {
       icon: "folder",
     },
     {
-      title: "Edit",
-      href: "/dashboard/edit",
+      title: "Tools",
+      href: "/dashboard/tools",
       icon: "brush",
     },
     {
