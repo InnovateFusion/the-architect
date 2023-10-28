@@ -43,7 +43,7 @@ export function UserAuthForm({ className, ...props }) {
         } else {
           throw new Error("Invalid Token");
         }
-        router.push("/dashboard/design");
+        router.push("/dashboard");
       } else {
         throw new Error("Invalid email or password");
       }
@@ -58,7 +58,7 @@ export function UserAuthForm({ className, ...props }) {
   React.useEffect(() => {
     setToken(localStorage.getItem("token"));
     if (token) {
-      router.push("/dashboard/design");
+      router.push("/dashboard");
     }
   }, [token, router]);
 

@@ -47,7 +47,7 @@ export default function SignIn() {
         } else {
           throw new Error("Invalid Token");
         }
-        router.push("/dashboard/design");
+        router.push("/dashboard");
       } else {
         throw new Error("Invalid email or password");
       }
@@ -63,7 +63,7 @@ export default function SignIn() {
     setToken(localStorage.getItem("token"));
     console.log(token);
     if (token) {
-      router.push("/dashboard/design");
+      router.push("/dashboard");
     }
   }, [token]);
 

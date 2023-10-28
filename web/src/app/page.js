@@ -1,6 +1,16 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect((e) => {
+    setTimeout(() => {}, 30000);
+    router.push("/home");
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-around p-24">
       <div className="bottom-0 left-10 flex-auto lg:flex  justify-center static h-auto w-auto lg:bg-none">

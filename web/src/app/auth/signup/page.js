@@ -54,7 +54,7 @@ export default function SignUp() {
     setToken(localStorage.getItem("token"));
     console.log(token);
     if (token) {
-      router.push("/dashboard/design");
+      router.push("/dashboard");
     }
   }, []);
   return (
