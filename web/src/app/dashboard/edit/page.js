@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ChatBuble from "./chatBuble";
 import { PostDesign } from "./PostDesign";
-import { initialMessage, models } from "./constant";
+import { initialMessage, models } from "../../../utils/constant";
 
 async function imageUrlToBase64(url, callback) {
   // Fetch the image
@@ -44,9 +44,7 @@ export default function Chat() {
     !open && setImage(image);
   };
 
-  const [chatId, setChatId] = useState(
-    searchParams.get("chatId")
-  );
+  const [chatId, setChatId] = useState(searchParams.get("chatId"));
 
   const messagesEndRef = useRef(null);
 
@@ -160,7 +158,7 @@ export default function Chat() {
         });
         if (res.status == 200) {
           const posts = await res.json();
-          setChats([...initialMessage, ...posts.messages]);
+          setChats([...posts.messages]);
         }
       };
       getChat();
@@ -184,7 +182,7 @@ export default function Chat() {
       <div className="w-full sm:w-1/2">
         <div className=" gap-x-4 p-1">
           <select
-            className="block w-full border-2  rounded-lg px-4 py-2 outline-none focus:ring focus:ring-indigo-400"
+            className="block w-full border-1  rounded-lg px-4 py-2 outline-none focus:ring focus:ring-indigo-400"
             defaultValue={model}
             onChange={(e) => setModel(e.target.value)}
           >

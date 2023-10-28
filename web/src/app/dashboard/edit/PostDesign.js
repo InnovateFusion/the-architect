@@ -47,7 +47,7 @@ export function PostDesign({ image, open, handleOpen }) {
       <div className="modal-box w-full max-w-5xl">
         <div className="modal-content flex">
           <div className="w-1/2 flex p-3">
-            <ImageZoom src={image} width={512} height={512} alt="" />
+            <ImageZoom zoom="300" src={image} width={512} height={512} alt="" />
           </div>
           <div className="w-1/2 flex p-3 flex-col">
             <div className="form-control w-full max-w-xs">

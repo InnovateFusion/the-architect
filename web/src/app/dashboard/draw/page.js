@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ChatBuble from "../edit/chatBuble";
 import { PostDesign } from "../edit/PostDesign";
-import { initialMessage, models2 } from "../edit/constant";
+import { initialMessage, models2 } from "@/utils/constant";
 import { ExcalidrawPage } from "./ExcalidrawPage";
 import ImageZoom from "react-image-zooom";
 
@@ -67,7 +67,6 @@ export default function Chat() {
   };
 
   const handleSend = async () => {
-    console.log(base64, "base")
     if (model == "controlNet") {
       if (!handleSubmit()) {
         return;

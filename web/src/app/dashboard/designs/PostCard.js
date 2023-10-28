@@ -46,42 +46,40 @@ function DesignCard({ post }) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <>
-      <div className="border-2 dark:border-gray-600 border-gray-300 max-w-xs container  rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
-        <Link href={{ pathname: `/dashboard/design/${post.id}` }}>
+    <div className="block border-2 dark:border-gray-600 border-gray-300 max-w-xs container  rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+      <Link href={{ pathname: `/dashboard/design/${post.id}` }}>
+        <Image
+          className="w-full cursor-pointer rounded-t-xl"
+          src={post.image}
+          width={512}
+          height={512}
+          alt=""
+          priority
+        />
+      </Link>
+      <div className="flex p-2 justify-between">
+        <div className="flex items-center space-x-2">
           <Image
-            className="w-full cursor-pointer rounded-t-xl"
-            src={post.image}
-            width={512}
-            height={512}
-            alt=""
+            className="p-2 aspect-square rounded-full"
+            src={post.userImage}
+            width={40}
+            height={40}
+            alt={post?.firstName}
             priority
           />
-        </Link>
-        <div className="flex p-2 justify-between">
-          <div className="flex items-center space-x-2">
-            <Image
-              className="p-2 aspect-square rounded-full"
-              src={post.userImage}
-              width={40}
-              height={40}
-              alt={post?.firstName}
-              priority
-            />
-            <Link href={`/dashboard/profile/${post.userId}`}>
-              <h2 className="font-bold cursor-pointer">
-                {Capitalize(post.firstName)} {Capitalize(post.lastName)}
-              </h2>
-            </Link>
-          </div>
-          <div className="flex space-x-2">
-            <div className="flex space-x-1 items-center">
-              <span>{clone}</span>
-            </div>
+          <Link href={`/dashboard/profile/${post.userId}`}>
+            <h2 className="font-bold cursor-pointer">
+              {Capitalize(post.firstName)} {Capitalize(post.lastName)}
+            </h2>
+          </Link>
+        </div>
+        <div className="flex space-x-2">
+          <div className="flex space-x-1 items-center">
+            <span>{clone}</span>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

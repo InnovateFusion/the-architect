@@ -2,11 +2,11 @@ import Image from "next/image";
 import React from "react";
 import { Capitalize } from "@/utils/utils";
 
-function ChatBuble({ m, handleOpen, setImage }) {
+function ChatBubble({ m, handleOpen, setImage }) {
   const message = JSON.parse(m);
   return (
     <div
-      className={`py-3 flex justify-${
+      className={`p2-3 flex justify-${
         message?.sender == "user" ? "end" : "start"
       }`}
     >
@@ -30,19 +30,19 @@ function ChatBuble({ m, handleOpen, setImage }) {
               message?.sender == "user" ? "text-white" : "text-heading"
             } `}
           >
-            {message?.content?.imageUser && (
-              <Image
-                src={message?.content?.imageUser}
-                width={300}
-                alt=""
-                height={300}
-                className="hover:cursor-pointer"
-                onClick={(e) => setImage(message.content.imageUser)}
-                onDoubleClick={(e) => handleOpen(message.content.imageUser)}
-              />
-            )}
-            {message?.content?.prompt}
-            {message?.content?.imageAI && (
+            {message?.content?.imageUser &&
+              message?.content?.imageUser != "" && (
+                <Image
+                  src={message?.content?.imageUser}
+                  width={300}
+                  alt=""
+                  height={300}
+                  className="hover:cursor-pointer"
+                  onClick={(e) => setImage(message.content.imageUser)}
+                  onDoubleClick={(e) => handleOpen(message.content.imageUser)}
+                />
+              )}
+            {message?.content?.imageAI && message?.content?.imageAI != "" && (
               <Image
                 src={message?.content?.imageAI}
                 width={300}
@@ -53,28 +53,30 @@ function ChatBuble({ m, handleOpen, setImage }) {
                 onDoubleClick={(e) => handleOpen(message.content.imageAI)}
               />
             )}
+            {message?.content["3D"]?.fetch_result &&
+              message?.content["3D"]?.fetch_result != "" &&
+              JSON.stringify(message?.content["3D"]?.fetch_result) != "{}" && (
+                <Image
+                  src={message?.content["3D"]?.fetch_result}
+                  width={300}
+                  alt=""
+                  height={300}
+                  className="hover:cursor-pointer"
+                  onClick={(e) => setImage(message.content["3D"].fetch_result)}
+                  onDoubleClick={(e) =>
+                    handleOpen(message.content["3D"].fetch_result)
+                  }
+                />
+              )}
+            {message?.content?.prompt}
             {message?.content?.analysis?.title != undefined && (
               <h1 className="text-bold">
                 {Capitalize(message?.content?.analysis?.title)}
               </h1>
             )}
+            {message?.content?.chat}
             {message?.content?.analysis?.detail}
             {message?.content?.analysis?.details}
-            {message?.content?.chat}
-            {message?.content?.chat}
-            {message?.content["3D"]?.fetch_result && (
-              <Image
-                src={message?.content["3D"]?.fetch_result}
-                width={300}
-                alt=""
-                height={300}
-                className="hover:cursor-pointer"
-                onClick={(e) => setImage(message.content["3D"].fetch_result)}
-                onDoubleClick={(e) =>
-                  handleOpen(message.content["3D"].fetch_result)
-                }
-              />
-            )}
           </span>
         </div>
       </div>
@@ -82,4 +84,4 @@ function ChatBuble({ m, handleOpen, setImage }) {
   );
 }
 
-export default ChatBuble;
+export default ChatBubble;

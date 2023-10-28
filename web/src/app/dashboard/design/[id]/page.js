@@ -84,17 +84,17 @@ export default function Design({ params: { id } }) {
               <div className="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4"></div>
               <div className="flex -mx-2 mb-4">
                 <div className="w-1/2 px-2">
-                  <div className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                  <div className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold text-center hover:bg-gray-800 dark:hover:bg-gray-700">
                     Variation
                   </div>
                 </div>
                 <div className="w-1/2 px-2">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold text-center hover:bg-gray-300 dark:hover:bg-gray-600">
                     Modification
                   </div>
                 </div>
                 <div className="w-1/2 px-2">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold text-center hover:bg-gray-300 dark:hover:bg-gray-600">
                     To 3D
                   </div>
                 </div>
@@ -108,13 +108,13 @@ export default function Design({ params: { id } }) {
               </div>
               <div className="flex py-2 justify-between">
                 <div className="text-2xl font-bold text-gray-800 dark:text-white mb-2 w-3/4 h-8 bg-gray-300 dark:bg-gray-700"></div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 px-5">
                   <div className="flex space-x-1 items-center">
-                    <div>0</div>
-                    <div>0</div>
-                    <div></div>
-                    <div>0</div>
-                    <div>0</div>
+                    <span> 1.2k </span>
+                    <span> {clone} </span>
+                    <span />
+                    <span> 362 </span>
+                    <span> {view} </span>
                   </div>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export default function Design({ params: { id } }) {
                 {design?.title}
               </h2>
 
-              <div className="flex space-x-2">
+              <div className="flex space-x-2  px-5">
                 <div className="flex space-x-1 items-center">
                   <span> {design?.clone} </span>
                   <span> {clone} </span>
@@ -222,7 +222,7 @@ export default function Design({ params: { id } }) {
               <span className="font-bold text-gray-700 dark:text-gray-300">
                 Tags:
               </span>
-              <div className="flex flex-wrap items-center mt-2">
+              <div className="flex flex-wrap items-center mt-2 gap-3">
                 {design?.tags.map((tag, index) => (
                   <button
                     key={index}
