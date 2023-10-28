@@ -7,6 +7,9 @@ class Message(BaseModel):
     user_id: str
     payload: dict
     model: str
+    
+    class Config:
+        arbitrary_types_allowed = True
 
 @dataclass
 class MessageEntity(BaseEntity):

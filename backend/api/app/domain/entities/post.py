@@ -1,7 +1,9 @@
-from dataclasses import dataclass
 import datetime
+from dataclasses import dataclass
+from typing import List, Optional
+
 from pydantic import BaseModel, validator
-from typing import Optional, List
+
 from app.domain.entities import BaseEntity
 
 architecture_tags = [
@@ -9,20 +11,25 @@ architecture_tags = [
     "interior", "indoor", "interior design", "space planning", "furniture design", "decor", "lighting"
 ]
 
+
 class Post(BaseModel):
     id = Optional[str]
     userId: Optional[str]
     image: str
     title: str
     content: Optional[str]
-    tags: List[str] 
-    
+    tags: List[str]
+
     @validator('tags', pre=True, always=True)
     def validate_tags(cls, v):
         invalid_tags = [tag for tag in v if tag not in architecture_tags]
         if invalid_tags:
             raise ValueError(f"Invalid tags: {', '.join(invalid_tags)}")
         return v
+
+    class Config:
+        arbitrary_types_allowed = True
+
 
 @dataclass
 class PostEntity(BaseEntity):
@@ -39,7 +46,7 @@ class PostEntity(BaseEntity):
     clone: int
     isLiked: bool
     isCloned: bool
-    tags: List[str]  
+    tags: List[str]
 
     @classmethod
     def from_dict(cls, data: dict) -> 'PostEntity':
@@ -54,10 +61,10 @@ class PostEntity(BaseEntity):
             userImage=data.get('userImage'),
             date=data.get('date'),
             like=data.get('like'),
-            clone=data.get('clone'), 
+            clone=data.get('clone'),
             isLiked=data.get('isLiked'),
             isCloned=data.get('isCloned'),
-            tags=data.get('tags', [])  
+            tags=data.get('tags', [])
         )
 
     def to_dict(self) -> dict:
@@ -75,5 +82,5 @@ class PostEntity(BaseEntity):
             'clone': self.clone,
             'isLiked': self.isLiked,
             'isCloned': self.isCloned,
-            'tags': self.tags  
+            'tags': self.tags
         }

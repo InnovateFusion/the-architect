@@ -9,6 +9,9 @@ class Chat(BaseModel):
     id: Optional[str]
     messages: List[Message]
     
+    class Config:
+        arbitrary_types_allowed = True
+    
 class Notify(BaseModel):
     status: Optional[str]
     generationTime: Optional[str]

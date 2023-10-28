@@ -12,6 +12,9 @@ class User(BaseModel):
     password: Optional[str]
     country: Optional[str]
     image: Optional[str]
+    
+    class Config:
+        arbitrary_types_allowed = True
 
 @dataclass
 class UserEntity(BaseEntity):

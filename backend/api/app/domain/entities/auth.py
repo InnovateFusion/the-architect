@@ -6,6 +6,9 @@ from app.domain.entities import BaseEntity
 class Auth(BaseModel):
     email: str
     password: str
+    
+    class Config:
+        arbitrary_types_allowed = True
 
 @dataclass
 class AuthEntity(BaseEntity):
