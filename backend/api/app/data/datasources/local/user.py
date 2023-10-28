@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.user import UserModel
-from app.domain.entities.user import User, UserEntity, UpdatUserRequest
+from app.domain.entities.user import UpdatUserRequest, User, UserEntity
 from core.common.password import get_password_hash
 from core.errors.exceptions import CacheException
 
@@ -107,6 +107,9 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
             _user.bio = user.bio
         if user.country is not None and user.country != '':
             _user.country = user.country
+
+        if user.image is not None and user.image != '':
+            _user.image = await self.ai_generation.generate_image(user.image)
 
         self.db.commit()
         return UserEntity(
