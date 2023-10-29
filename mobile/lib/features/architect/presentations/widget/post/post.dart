@@ -75,6 +75,7 @@ class _PostState extends State<Post> {
                 top: 10,
                 left: 10,
                 child: UserInfo(
+                  user: widget.user,
                   name:
                       '${capitalize(widget.post.firstName)} ${capitalize(widget.post.lastName)}',
                   date: DateFormat('MMM d y').format(widget.post.date),

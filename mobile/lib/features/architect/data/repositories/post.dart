@@ -20,14 +20,18 @@ class PostRepositoryImpl extends PostRepository {
   final AuthLocalDataSource authLocalDataSource;
 
   @override
-  Future<Either<Failure, List<Post>>> all(
-      {List<String>? tags, String? search}) async {
+  Future<Either<Failure, List<Post>>> all({
+    List<String>? tags,
+    String? search,
+    int? skip,
+    int? limit,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
         final auth = await authLocalDataSource.getToken();
         ;
         final posts =
-            await remoteDataSource.allPosts(search, tags, auth.accessToken);
+            await remoteDataSource.allPosts(search: search, tags: tags, token: auth.accessToken, skip: skip, limit: limit);
         return Right(posts);
       } on ServerException {
         return Left(ServerFailure());

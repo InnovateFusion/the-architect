@@ -8,58 +8,21 @@ sealed class PostEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
-
 final class AllPosts extends PostEvent {
   const AllPosts({
     this.search,
     this.tags,
+    this.skip,
+    this.limit,
   });
 
   final String? search;
   final List<String>? tags;
+  final int? skip;
+  final int? limit;
 
   @override
-  List<Object?> get props => [search, tags];
-}
-
-final class ViewsPosts extends PostEvent {
-  const ViewsPosts({
-    required this.userId,
-  });
-
-  final String userId;
-
-  @override
-  List<Object> get props => [userId];
-}
-
-final class ClonePostEvent extends PostEvent {
-  final String postId;
-  const ClonePostEvent({required this.postId});
-  @override
-  List<Object> get props => [postId];
-}
-
-final class LikePostEvent extends PostEvent {
-  final String postId;
-  const LikePostEvent({required this.postId});
-  @override
-  List<Object> get props => [postId];
-}
-
-final class UnLikePostEvent extends PostEvent {
-  final String postId;
-  const UnLikePostEvent({required this.postId});
-  @override
-  List<Object> get props => [postId];
-}
-
-final class ViewPostEvent extends PostEvent {
-  final String postId;
-  const ViewPostEvent({required this.postId});
-  @override
-  List<Object> get props => [postId];
+  List<Object?> get props => [search, tags, skip, limit];
 }
 
 final class CreatePostEvent extends PostEvent {
@@ -98,9 +61,48 @@ final class EditPostEvent extends PostEvent {
   List<Object> get props => [image, title, tags, userId, postId];
 }
 
+final class ViewPostEvent extends PostEvent {
+  final String postId;
+  const ViewPostEvent({required this.postId});
+  @override
+  List<Object> get props => [postId];
+}
+
+final class ViewsPosts extends PostEvent {
+  const ViewsPosts({
+    required this.userId,
+  });
+
+  final String userId;
+
+  @override
+  List<Object> get props => [userId];
+}
+
 final class DeletePostEvent extends PostEvent {
   final String postId;
   const DeletePostEvent({required this.postId});
+  @override
+  List<Object> get props => [postId];
+}
+
+final class ClonePostEvent extends PostEvent {
+  final String postId;
+  const ClonePostEvent({required this.postId});
+  @override
+  List<Object> get props => [postId];
+}
+
+final class LikePostEvent extends PostEvent {
+  final String postId;
+  const LikePostEvent({required this.postId});
+  @override
+  List<Object> get props => [postId];
+}
+
+final class UnLikePostEvent extends PostEvent {
+  final String postId;
+  const UnLikePostEvent({required this.postId});
   @override
   List<Object> get props => [postId];
 }

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
-from pydantic import BaseModel
 
 from app.domain.entities import BaseEntity
+from pydantic import BaseModel
 
 
 class User(BaseModel):
@@ -10,9 +10,11 @@ class User(BaseModel):
     lastName: str
     bio: Optional[str]
     email: str
+    password: Optional[str]
     Optional[str]
     country: Optional[str]
     image: Optional[str]
+
 
 class UpdatUserRequest(BaseModel):
     firstName: Optional[str]

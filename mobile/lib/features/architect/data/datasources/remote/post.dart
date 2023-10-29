@@ -6,8 +6,13 @@ import '../../../../../core/errors/exception.dart';
 import '../../models/post.dart';
 
 abstract class PostRemoteDataSource {
-  Future<List<PostModel>> allPosts(
-      String? search, List<String>? tags, String token);
+  Future<List<PostModel>> allPosts({
+    String? search,
+    List<String>? tags,
+    required String token,
+    int? skip,
+    int? limit,
+  });
   Future<List<PostModel>> viewsPost(String id, String token);
   Future<PostModel> createPost({
     required String image,
@@ -41,21 +46,51 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   final Client client;
 
   @override
-  Future<List<PostModel>> allPosts(
-      String? search, List<String>? tags, String token) async {
+  Future<List<PostModel>> allPosts({
+    String? search,
+    List<String>? tags,
+    required String token,
+    int? skip,
+    int? limit,
+  }) async {
+    const baseUrl = 'https://the-architect.onrender.com/api/v1/posts/all';
+    final queryParameters = <String, dynamic>{};
+
+    if (search != null && search.isNotEmpty) {
+      queryParameters['search_word'] = search.replaceAll(' ', '&');
+    }
+
+    if (tags != null && tags.isNotEmpty) {
+      queryParameters['tags'] = tags.join('&tags=');
+    }
+
+    if (skip != null) {
+      queryParameters['skip'] = skip.toString();
+    } else {
+      queryParameters['skip'] = '0';
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    } else {
+      queryParameters['limit'] = '8';
+    }
+
+    final url =
+        Uri.parse(baseUrl).replace(queryParameters: queryParameters).toString();
+
     final response = await client.get(
-      Uri.parse('https://the-architect.onrender.com/api/v1/posts/all'),
+      Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
     );
+
     if (response.statusCode == 200) {
       final List<dynamic> postsJson = json.decode(response.body);
-      final List<PostModel> posts = [];
-      for (final post in postsJson) {
-        posts.add(PostModel.fromJson(post));
-      }
+      final List<PostModel> posts =
+          postsJson.map((post) => PostModel.fromJson(post)).toList();
       return posts;
     } else {
       throw ServerException();

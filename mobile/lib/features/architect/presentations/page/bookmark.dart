@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
 import 'package:architect/features/architect/presentations/page/setting.dart';
+import 'package:architect/features/architect/presentations/widget/error.dart';
 import 'package:architect/features/architect/presentations/widget/gallery_item.dart';
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:architect/injection_container.dart';
@@ -115,12 +116,13 @@ class BookMark extends StatelessWidget {
                             const EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: BlocBuilder<PostBloc, PostState>(
                           builder: (context, state) {
-                            if (state is PostInitial || state is PostLoading) {
+                            if (state.otherPostStatus == PostStatus.loading) {
                               return const SizedBox(
                                 height: 550,
                                 child: LoadingIndicator(),
                               );
-                            } else if (state is PostsViewsLoaded) {
+                            } else if (state.otherPostStatus ==
+                                PostStatus.success) {
                               return Column(
                                 children: [
                                   Row(
@@ -132,20 +134,20 @@ class BookMark extends StatelessWidget {
                                           children: [
                                             for (int i = 0;
                                                 i <
-                                                    (state.posts.length / 2)
+                                                    (state.userPosts.length / 2)
                                                         .ceil();
                                                 i++)
                                               if (i % 2 == 0)
                                                 GalleryItem(
                                                   user: user,
                                                   half: false,
-                                                  post: state.posts[i],
+                                                  post: state.userPosts[i],
                                                 )
                                               else
                                                 GalleryItem(
                                                   user: user,
                                                   half: true,
-                                                  post: state.posts[i],
+                                                  post: state.userPosts[i],
                                                 ),
                                           ],
                                         ),
@@ -154,21 +156,21 @@ class BookMark extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             for (int i =
-                                                    (state.posts.length / 2)
+                                                    (state.userPosts.length / 2)
                                                         .ceil();
-                                                i < state.posts.length;
+                                                i < state.userPosts.length;
                                                 i++)
                                               if (i % 2 == 0)
                                                 GalleryItem(
                                                   user: user,
                                                   half: false,
-                                                  post: state.posts[i],
+                                                  post: state.userPosts[i],
                                                 )
                                               else
                                                 GalleryItem(
                                                   user: user,
                                                   half: true,
-                                                  post: state.posts[i],
+                                                  post: state.userPosts[i],
                                                 ),
                                           ],
                                         ),
@@ -177,11 +179,13 @@ class BookMark extends StatelessWidget {
                                   ),
                                 ],
                               );
-                            } else if (state is PostError) {
+                            } else if (state.otherPostStatus ==
+                                PostStatus.failure) {
                               return const SizedBox(
-                                height: 550,
-                                child: Text('Error loading user posts'),
-                              );
+                                  height: 550,
+                                  child: ErrorDisplay(
+                                    message: "Unable to load posts",
+                                  ));
                             } else {
                               return Container();
                             }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../domains/entities/user.dart';
 import '../../page/profile.dart';
 import '../profile_image.dart';
 
@@ -8,9 +9,11 @@ class UserInfo extends StatelessWidget {
   final String date;
   final String imageUrl;
   final String id;
+  final User user;
 
   const UserInfo({
     Key? key,
+    required this.user,
     required this.id,
     required this.name,
     required this.date,
@@ -33,6 +36,7 @@ class UserInfo extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProfilePage(
+                      user: user,
                       userId: id,
                     ),
                   ),

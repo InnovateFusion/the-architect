@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:architect/core/util/get_image_base64.dart';
 import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
+import 'package:architect/features/architect/presentations/page/about_page.dart';
 import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/input_holder.dart';
 import 'package:architect/features/architect/presentations/page/login.dart';
+import 'package:architect/features/architect/presentations/page/premier.dart';
+import 'package:architect/features/architect/presentations/page/privacy.dart';
 import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,12 +118,6 @@ class _SettingState extends State<Setting> {
           ),
         );
       }();
-      print('xxxxxxxxxxxxxxxxxx');
-      print(base64ImageForImageToImage);
-      print('xxxxxxxxxxxxxxxxxx');
-      print('firstName: $firstName');
-      print('lastName: $lastName');
-      print('bio: $bio');
       Navigator.popUntil(context, (route) {
         return route.runtimeType == HomePage;
       });
@@ -132,8 +129,7 @@ class _SettingState extends State<Setting> {
         ),
       );
     } else {
-      print('dcdcsc----------------');
-      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
 
@@ -275,11 +271,6 @@ class _SettingState extends State<Setting> {
                           text: bio,
                           onEdit: onBioEdit,
                           label: 'Bio'),
-                      InputHolder(
-                          controller: _passwordController,
-                          text: password,
-                          onEdit: onPasswordEdit,
-                          label: "Password")
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -295,6 +286,14 @@ class _SettingState extends State<Setting> {
                       children: [
                         const SizedBox(height: 10),
                         GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PremierPage(),
+                              ),
+                            );
+                          },
                           child: const Row(
                             children: [
                               Icon(
@@ -312,6 +311,14 @@ class _SettingState extends State<Setting> {
                         ),
                         const SizedBox(height: 25),
                         GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AboutPage(),
+                              ),
+                            );
+                          },
                           child: const Row(
                             children: [
                               Icon(
@@ -328,19 +335,29 @@ class _SettingState extends State<Setting> {
                           ),
                         ),
                         const SizedBox(height: 25),
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.privacy_tip_outlined,
-                              color: Colors.black,
-                              size: 25,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Privacy Policy',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PrivacyPage(),
+                              ),
+                            );
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.privacy_tip_outlined,
+                                color: Colors.black,
+                                size: 25,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Privacy Policy',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -355,11 +372,16 @@ class _SettingState extends State<Setting> {
                         authBloc.add(AuthLogoutEvent());
                         authBloc.stream.listen((event) {
                           if (event is AuthLoggedOut) {
-                            Navigator.of(context).pushAndRemoveUntil(
+                            Navigator.pushAndRemoveUntil(
+                              context,
                               MaterialPageRoute(
-                                builder: (context) => const Login(),
+                                builder: (context) => const HomePage(),
                               ),
-                              (Route<dynamic> route) => false,
+                              (route) => false,
+                            );
+
+                            MaterialPageRoute(
+                              builder: (context) => const Login(),
                             );
                           } else {
                             const LoadingIndicator();

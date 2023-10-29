@@ -1,6 +1,7 @@
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
 import 'package:architect/injection_container.dart';
+import 'package:architect/simple_bloc_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,8 @@ void main() async {
     statusBarColor: Colors.white,
     statusBarIconBrightness: Brightness.dark,
   ));
+
+  Bloc.observer = const SimpleBlocObserver();
 
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();

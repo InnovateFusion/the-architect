@@ -24,6 +24,8 @@ abstract class PostRepository {
   Future<Either<Failure, List<Post>>> all({
     List<String>? tags,
     String? search,
+    int? skip,
+    int? limit,
   });
   
   Future<Either<Failure, Post>> delete(String id);

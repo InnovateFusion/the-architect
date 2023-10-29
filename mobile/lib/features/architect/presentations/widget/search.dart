@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
-  final TextEditingController searchController;
-  final Function(String) onChanged;
+  final Function(BuildContext context, String value) onChanged;
 
   const Search({
     Key? key,
-    required this.searchController,
     required this.onChanged,
   }) : super(key: key);
 
@@ -15,6 +13,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -42,14 +42,15 @@ class _SearchState extends State<Search> {
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
-                controller: widget.searchController,
-                onChanged: (value) {
-                  widget.onChanged(value);
+                controller: searchController,
+                onSubmitted: (value) {
+                  widget.onChanged(context, value);
+                  searchController.clear();
                 },
                 decoration: const InputDecoration(
                   hintText: 'Search',
                   hintStyle: TextStyle(
-                    color: Colors.grey, // Example hint text color
+                    color: Colors.grey,
                   ),
                   border: InputBorder.none,
                 ),

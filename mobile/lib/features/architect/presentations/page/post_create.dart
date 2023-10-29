@@ -4,6 +4,7 @@ import 'package:architect/features/architect/domains/entities/post.dart';
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
 import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/setting.dart';
+import 'package:architect/features/architect/presentations/widget/error.dart';
 import 'package:architect/features/architect/presentations/widget/tag.dart';
 import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
           body: SingleChildScrollView(
             child: BlocListener<PostBloc, PostState>(
               listener: (context, state) {
-                if (state is PostUpdated) {
+                if (state.otherPostStatus == PostStatus.success) {
                   Navigator.popUntil(context, (route) {
                     return route.runtimeType == HomePage;
                   });
@@ -98,7 +99,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                       builder: (context) => const HomePage(),
                     ),
                   );
-                } else if (state is PostLoading) {
+                } else if (state.otherPostStatus == PostStatus.loading) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: SpinKitThreeBounce(
@@ -115,10 +116,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                       ),
                     ),
                   );
-                } else if (state is PostError) {
+                } else if (state.otherPostStatus == PostStatus.failure) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
+                    const SnackBar(
+                      content:
+                          ErrorDisplay(message: 'Unknown error while posting!'),
                     ),
                   );
                 }

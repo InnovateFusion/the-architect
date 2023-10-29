@@ -1,64 +1,63 @@
 part of 'post_bloc.dart';
 
-@immutable
-sealed class PostState extends Equatable {
-  const PostState();
+enum PostStatusAll { initial, loading, success, failure }
 
-  @override
-  List<Object?> get props => [];
-}
+enum PostStatus { initial, loading, success, failure }
 
-final class PostInitial extends PostState {}
+class PostState extends Equatable {
+  const PostState({
+    this.status = PostStatusAll.initial,
+    this.posts = const <Post>[],
+    this.hasReachedMax = false,
+    this.userPosts = const <Post>[],
+    this.otherPostStatus = PostStatus.initial,
+    this.post,
+  });
 
-final class PostLoading extends PostState {}
-
-final class PostError extends PostState {
-  const PostError({required this.message});
-
-  final String message;
-}
-
-final class PostCreated extends PostState {
-  const PostCreated({required this.post});
-
-  final Post post;
-
-  @override
-  List<Object?> get props => [post];
-}
-
-final class PostUpdated extends PostState {
-  const PostUpdated({required this.post});
-
-  final Post post;
-
-  @override
-  List<Object?> get props => [post];
-}
-
-final class PostDeleted extends PostState {
-  const PostDeleted({required this.post});
-
-  final Post post;
-
-  @override
-  List<Object?> get props => [post];
-}
-
-final class PostLoaded extends PostState {
-  const PostLoaded({required this.post});
-
-  final Post post;
-
-  @override
-  List<Object?> get props => [post];
-}
-
-final class PostsViewsLoaded extends PostState {
-  const PostsViewsLoaded({required this.posts});
-
+  final PostStatusAll status;
   final List<Post> posts;
+  final bool hasReachedMax;
+  final List<Post> userPosts;
+  final Post? post;
+  final PostStatus otherPostStatus;
+
+  PostState copyWith({
+    PostStatusAll? status,
+    List<Post>? posts,
+    bool? hasReachedMax,
+    List<Post>? userPosts,
+    Post? post,
+    PostStatus? otherPostStatus,
+  }) {
+    return PostState(
+      status: status ?? this.status,
+      posts: posts ?? this.posts,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      userPosts: userPosts ?? this.userPosts,
+      post: post ?? this.post,
+      otherPostStatus: otherPostStatus ?? this.otherPostStatus,
+    );
+  }
 
   @override
-  List<Object?> get props => [posts];
+  String toString() {
+    return '''PostState(
+      status: $status,
+      posts: $posts,
+      hasReachedMax: $hasReachedMax,
+      userPosts: $userPosts,
+      post: $post,
+      otherPostStatus: $otherPostStatus,
+
+    )''';
+  }
+
+  @override
+  List<Object> get props => [
+        status,
+        posts,
+        hasReachedMax,
+        userPosts,
+        otherPostStatus,
+      ];
 }

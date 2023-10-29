@@ -52,7 +52,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     String? country,
   }) async {
     final response = await client.post(
-      Uri.parse('https://the-architect.onrender.com/api/v1/users'),
+      Uri.parse('https://the-architect.onrender.com/api/v1/users/'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -229,7 +229,6 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       },
     );
     if (response.statusCode == 200) {
-      
       return UserModel.fromJson(json.decode(response.body));
     } else {
       throw ServerException();
