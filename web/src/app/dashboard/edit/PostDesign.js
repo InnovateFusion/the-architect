@@ -4,9 +4,11 @@ import ImageZoom from "react-image-zooom";
 import TagSelector from "./tags";
 import Image from "next/image";
 import DesignView from "../designs/DesignView";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function PostDesign({ image, open, handleOpen }) {
-  // console.log(image);
+  const router = useRouter()
   const [postTitle, setPostTitle] = React.useState("");
   const [postDescription, setPostDescription] = React.useState("");
   const [selectedtags, setSelectedtags] = React.useState([]);
@@ -16,6 +18,11 @@ export function PostDesign({ image, open, handleOpen }) {
       handleOpen();
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Invalid Credentials. Please Sign in Again.");
+        router.push("/auth/signin");
+        return;
+      }
 
       const url = `https://the-architect.onrender.com/api/v1/posts`;
 

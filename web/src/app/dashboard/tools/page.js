@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ChatBuble from "../edit/chatBuble";
 import { PostDesign } from "../edit/PostDesign";
 import { initialMessage, models2 } from "../../../utils/constant";
@@ -14,9 +14,11 @@ import Download from "./download";
 import { AlertCircle, Eraser } from "lucide-react";
 import Alert from "@/components/alert";
 import Loader from "@/components/Loader";
+import { toast } from "react-toastify";
 
 export default function Chat() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [image, setImage] = useState(searchParams.get("image") || "");
   const [drawing, setDrawing] = useState("");
   const [mask, setMask] = useState("");
@@ -157,6 +159,11 @@ export default function Chat() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
 
     if (chatId != null)
       setUrl(

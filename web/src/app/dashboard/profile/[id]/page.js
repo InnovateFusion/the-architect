@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Capitalize } from "@/utils/utils";
 import PostCard from "../../designs/PostCard";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Profile({ params: { id } }) {
+  const router = useRouter();
   const [posts, setPosts] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
@@ -13,6 +16,11 @@ export default function Profile({ params: { id } }) {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Invalid Credentials. Please Sign in Again.");
+        router.push("/auth/signin");
+        return;
+      }
       try {
         const response = await fetch(
           `https://the-architect.onrender.com/api/v1/users/${id}`,

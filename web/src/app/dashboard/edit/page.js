@@ -3,10 +3,11 @@ import Image from "next/image";
 import ImageZoom from "react-image-zooom";
 
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ChatBuble from "./chatBuble";
 import { PostDesign } from "./PostDesign";
 import { initialMessage, models } from "../../../utils/constant";
+import { toast } from "react-toastify";
 
 async function imageUrlToBase64(url, callback) {
   // Fetch the image
@@ -27,6 +28,7 @@ async function imageUrlToBase64(url, callback) {
 }
 
 export default function Chat() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [image, setImage] = useState("/house.jpg");
   const [chats, setChats] = useState(initialMessage);
@@ -90,6 +92,11 @@ export default function Chat() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
 
     if (chatId != null)
       setUrl(

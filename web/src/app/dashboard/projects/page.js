@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import Chat2 from "./chat";
 import Loader from "@/components/Loader";
 import { Capitalize } from "@/utils/utils";
+import { toast } from "react-toastify";
 
 function Projects() {
   const [size, setSize] = useState("2/5");
@@ -17,6 +18,11 @@ function Projects() {
     setChats(chats.filter((i) => i.id != id));
     setChat("");
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
     const url = `https://the-architect.onrender.com/api/v1/chats/${chat.id}`;
     const res = fetch(url, {
       method: "DELETE",

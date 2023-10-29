@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import TagSelector from "./tags";
+import { toast } from "react-toastify";
 
 export default function Chat({ changeImage, mode, image, mask }) {
+  const router = useRouter();
+  
   const [chats, setChats] = useState([
     JSON.stringify({
       sender: "ai",
@@ -67,7 +70,11 @@ export default function Chat({ changeImage, mode, image, mask }) {
     console.log(chats);
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
-
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
     if (chatId != null)
       setUrl(
         `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
@@ -156,7 +163,9 @@ export default function Chat({ changeImage, mode, image, mask }) {
     if (selectedtags.length > 0 && modalImage) {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
-
+      if (!token) {
+        router.push("/home");
+      }
       const url = `https://the-architect.onrender.com/api/v1/posts`;
 
       const res = await fetch(url, {

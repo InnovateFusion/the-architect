@@ -5,10 +5,13 @@ import ImageZoom from "react-image-zooom";
 import { Capitalize } from "@/utils/utils";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function Design({ params: { id } }) {
   const [design, setDesign] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+  const router = useRouter();
 
   const view = (
     <svg
@@ -51,6 +54,11 @@ export default function Design({ params: { id } }) {
   useEffect(() => {
     const fetchDesign = async () => {
       const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Invalid Credentials. Please Sign in Again.");
+        router.push("/auth/signin");
+        return;
+      }
       try {
         const response = await fetch(
           `https://the-architect.onrender.com/api/v1/posts/${id}`,
@@ -66,7 +74,6 @@ export default function Design({ params: { id } }) {
         if (response.status == 200) {
           const result = await response.json();
           setDesign(result);
-          console.log(result)
         }
       } catch (error) {
         console.error(error);

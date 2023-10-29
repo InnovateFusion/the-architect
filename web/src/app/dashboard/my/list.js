@@ -2,12 +2,20 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 function List() {
+  const router = useRouter();
   const [data, setData] = useState(null);
 
   const getPosts = async () => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
 
     const url = `https://the-architect.onrender.com/api/v1/users/${userId}/posts`;
 
@@ -26,8 +34,8 @@ function List() {
     getPosts();
   }, []);
 
-  if(data?.length == 0){
-    return <div className="text-center p-10">No Posts Yet</div>
+  if (data?.length == 0) {
+    return <div className="text-center p-10">No Posts Yet</div>;
   }
 
   return (

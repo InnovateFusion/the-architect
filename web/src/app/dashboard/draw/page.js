@@ -6,6 +6,8 @@ import { PostDesign } from "../edit/PostDesign";
 import { initialMessage, models2 } from "@/utils/constant";
 import { ExcalidrawPage } from "./ExcalidrawPage";
 import ImageZoom from "react-image-zooom";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 async function imageUrlToBase64(url, callback) {
   // Fetch the image
@@ -27,6 +29,7 @@ async function imageUrlToBase64(url, callback) {
 
 export default function Chat() {
   const searchParams = useSearchParams();
+  const router = useRouter;
   const [image, setImage] = useState("");
   const [chats, setChats] = useState(initialMessage);
   const [message, setMessage] = useState("");
@@ -106,6 +109,11 @@ export default function Chat() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Invalid Credentials. Please Sign in Again.");
+      router.push("/auth/signin");
+      return;
+    }
 
     if (chatId != null)
       setUrl(
