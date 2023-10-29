@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [firstName, setfirstName] = React.useState("Bisrat");
-  const [lastName, setlastName] = React.useState("Kebere");
-  const [email, setEmail] = React.useState("dev@bisrat.tech");
-  const [password, setPassword] = React.useState("12345678");
+  const [firstName, setfirstName] = React.useState("");
+  const [lastName, setlastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const router = useRouter();
 
   async function onSubmit(event) {
@@ -30,7 +31,6 @@ export default function SignUp() {
         image: "",
       }),
     };
-    console.log("user");
     try {
       const res = await fetch(
         "https://the-architect.onrender.com/api/v1/users",
@@ -39,24 +39,28 @@ export default function SignUp() {
       if (res.status == 200) {
         const data = await res.json();
         router.push("/auth/signin");
+        toast.success(
+          `Welcome ${data.firstName} to The Architect \n Your Account has been Created Successfully \n Please log in using your credentials.`
+        );
       } else {
-        throw new Error("Invalid email or password");
+        const { detail } = await res.json();
+        throw new Error(detail);
       }
-      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      toast.error(err.message);
     }
+    setIsLoading(false);
   }
 
   const [token, setToken] = React.useState(null);
   React.useEffect(() => {
     setToken(localStorage.getItem("token"));
-    console.log(token);
     if (token) {
       router.push("/dashboard");
     }
   }, []);
+
   return (
     <section className="">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -74,7 +78,7 @@ export default function SignUp() {
               <div className="flex  -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-800 text-sm font-medium mb-1"
+                    className="block  text-sm font-medium mb-1"
                     htmlFor="name"
                   >
                     First Name <span className="text-red-600">*</span>
@@ -82,8 +86,8 @@ export default function SignUp() {
                   <input
                     id="firstName"
                     type="text"
-                    className="form-input w-full text-gray-800"
-                    placeholder="first name"
+                    className="form-input w-full text-gray-800 "
+                    placeholder="First name"
                     value={firstName}
                     onChange={(e) => setfirstName(e.target.value)}
                     required
@@ -91,7 +95,7 @@ export default function SignUp() {
                 </div>
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-800 text-sm font-medium mb-1"
+                    className="block  text-sm font-medium mb-1"
                     htmlFor="name"
                   >
                     Last Name <span className="text-red-600">*</span>
@@ -99,8 +103,8 @@ export default function SignUp() {
                   <input
                     id="lastName"
                     type="text"
-                    className="form-input w-full text-gray-800"
-                    placeholder="last name"
+                    className="form-input w-full text-gray-800 "
+                    placeholder="Last name"
                     value={lastName}
                     onChange={(e) => setlastName(e.target.value)}
                     required
@@ -110,7 +114,7 @@ export default function SignUp() {
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-800 text-sm font-medium mb-1"
+                    className="block  text-sm font-medium mb-1"
                     htmlFor="email"
                   >
                     Email <span className="text-red-600">*</span>
@@ -118,7 +122,7 @@ export default function SignUp() {
                   <input
                     id="email"
                     type="email"
-                    className="form-input w-full text-gray-800"
+                    className="form-input w-full text-gray-800 "
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -129,7 +133,7 @@ export default function SignUp() {
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-800 text-sm font-medium mb-1"
+                    className="block  text-sm font-medium mb-1"
                     htmlFor="password"
                   >
                     Password <span className="text-red-600">*</span>
@@ -137,7 +141,7 @@ export default function SignUp() {
                   <input
                     id="password"
                     type="password"
-                    className="form-input w-full text-gray-800"
+                    className="form-input w-full text-gray-800 "
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -148,10 +152,11 @@ export default function SignUp() {
               <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
                   <button
-                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                    className={`btn text-white bg-blue-500 hover:bg-blue-700 disabled:bg-black w-full`}
                     onClick={onSubmit}
+                    disabled={isLoading}
                   >
-                    Sign up
+                   {isLoading ? "Signing Up..." :  "Sign up"}
                   </button>
                 </div>
               </div>
@@ -167,7 +172,7 @@ export default function SignUp() {
                 .
               </div>
             </form>
-            <div className="text-gray-600 text-center mt-6">
+            <div className=" text-center mt-6">
               Already using The Architect?{" "}
               <Link
                 href="/auth/signin"

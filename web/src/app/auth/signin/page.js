@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -44,6 +45,9 @@ export default function SignIn() {
           console.log(user);
           localStorage.setItem("userId", user.id);
           localStorage.setItem("token", data.access_token);
+          toast.success(
+            `Welcome back ${user.firstName} to The Architects Platform.`
+          );
         } else {
           throw new Error("Invalid Token");
         }
@@ -54,6 +58,7 @@ export default function SignIn() {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
+      toast.error(err.message);
       setIsLoading(false);
     }
   }
@@ -84,7 +89,7 @@ export default function SignIn() {
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-800 text-sm font-medium mb-1"
+                    className="block   text-sm font-medium mb-1"
                     htmlFor="email"
                   >
                     Email
@@ -92,7 +97,7 @@ export default function SignIn() {
                   <input
                     id="email"
                     type="email"
-                    className="form-input w-full text-gray-800"
+                    className="form-input w-full  text-gray-800"
                     placeholder="Enter your email address"
                     required
                     value={email}
@@ -105,7 +110,7 @@ export default function SignIn() {
                 <div className="w-full px-3">
                   <div className="flex justify-between">
                     <label
-                      className="block text-gray-800 text-sm font-medium mb-1"
+                      className="block   text-sm font-medium mb-1"
                       htmlFor="password"
                     >
                       Password
@@ -120,7 +125,7 @@ export default function SignIn() {
                   <input
                     id="password"
                     type="password"
-                    className="form-input w-full text-gray-800"
+                    className="form-input w-full text-gray-800 "
                     placeholder="Enter your password"
                     required
                     value={password}
@@ -133,10 +138,11 @@ export default function SignIn() {
                 <div className="w-full px-3">
                   <div className="flex justify-between">
                     <label className="flex items-center">
-                      <input type="checkbox" className="form-checkbox" />
-                      <span className="text-gray-600 ml-2">
-                        Keep me signed in
-                      </span>
+                      <input
+                        type="checkbox"
+                        className="text-gray-800 form-checkbox"
+                      />
+                      <span className="  ml-2">Keep me signed in</span>
                     </label>
                   </div>
                 </div>
@@ -145,15 +151,17 @@ export default function SignIn() {
                 <div className="w-full px-3">
                   <button
                     disabled={isLoading}
-                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                    className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full disabled:bg-black ${
+                      isLoading ? "bg-red-500" : ""
+                    } `}
                   >
-                    Sign in
+                    {isLoading ? "Signing in..." : "Sign in"}
                   </button>
                 </div>
               </div>
             </form>
 
-            <div className="text-gray-600 text-center mt-6">
+            <div className="  text-center mt-6">
               Don&apos;t you have an account?{" "}
               <Link
                 href="/auth/signup"
