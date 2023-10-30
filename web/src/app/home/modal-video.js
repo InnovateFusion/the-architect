@@ -25,7 +25,13 @@ export default function ModalVideo({
           data-aos="zoom-y-out"
           data-aos-delay="450"
         >
-          <div className="flex flex-col justify-center">
+          <div
+            className="flex flex-col justify-center hover:cursor-pointer
+          "
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
             <Image
               src={thumb}
               width={thumbWidth}
@@ -93,8 +99,12 @@ export default function ModalVideo({
                   r="96"
                 />
                 <g fillRule="nonzero">
-                  <use fill="#000" xlinkHref="#hero-ill-d" />
-                  <use fill="url(#hero-ill-e)" xlinkHref="#hero-ill-d" />
+                  <use fillOpacity=".35" fill="#000" xlinkHref="#hero-ill-d" />
+                  <use
+                    fillOpacity=".35"
+                    fill="url(#hero-ill-e)"
+                    xlinkHref="#hero-ill-d"
+                  />
                 </g>
               </g>
             </svg>
@@ -113,7 +123,7 @@ export default function ModalVideo({
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" />
               <path d="M10 17l6-5-6-5z" />
             </svg>
-            <span className="ml-3 ">Watch the full video (2 min)</span>
+            <span className="ml-3 ">Watch the full video (3 min)</span>
           </button>
         </div>
       </div>
@@ -163,8 +173,8 @@ export default function ModalVideo({
                 <iframe
                   width="853"
                   height="480"
-                  src="https://www.youtube.com/embed/8-76q0IxwJE"
-                  title="The Architect - Generative AI For Africa Hackathon by Innovate Fussion"
+                  src="https://www.youtube.com/embed/zssHGZY8MuY"
+                  title="ARCHITECT AI BY INNOVATE FUSSION -- A2SV GENERATIVE AI HACKATHON"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen

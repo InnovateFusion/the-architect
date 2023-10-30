@@ -1,12 +1,13 @@
 import ThemeToggle from "@/components/theme-toggle";
 import ModalVideo from "./modal-video";
+import { ArrowBigRightDash, LucideLightbulb } from "lucide-react";
 
 export default function Hero() {
   return (
     <section className="relative">
       {/* Illustration behind hero content */}
       <div
-        className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -z-1"
+        className="hidden md:absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -z-1"
         aria-hidden="true"
       >
         <svg
@@ -65,18 +66,18 @@ export default function Hero() {
               >
                 <div>
                   <a
-                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0"
+                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0 gap-2"
                     href="/auth/signin"
                   >
-                    Start free trial
+                    <LucideLightbulb /> Start free trial
                   </a>
                 </div>
                 <div>
                   <a
-                    className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
+                    className="btn text-white gap-2 bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
                     href="/dashboard"
                   >
-                    Learn more
+                    Dashboard <ArrowBigRightDash />
                   </a>
                 </div>
               </div>
@@ -85,11 +86,11 @@ export default function Hero() {
 
           {/* Hero image */}
           <ModalVideo
-            thumb={"/house1.png"}
+            thumb={"/design.png"}
             thumbWidth={768}
             thumbHeight={432}
             thumbAlt="Modal video thumbnail"
-            video="https://youtu.be/8-76q0IxwJE?si=gCjYeOUTMM0QzZ3f"
+            video="https://youtu.be/zssHGZY8MuY?si=za7T9LriSloAFQdT"
             videoWidth={1920}
             videoHeight={1080}
           />
