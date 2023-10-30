@@ -290,7 +290,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         query = query.order_by(desc(PostModel.date))
 
         posts = posts = query.offset(skip).limit(limit).all()
-        user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+
         post_entities = []
         for post in posts:
             number_of_tags = len(tags)
@@ -299,16 +299,16 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
                     number_of_tags -= 1
             if number_of_tags == len(tags) and tags:
                 continue
-            xuser = self.db.query(UserModel).filter(
-                UserModel.id == post.id).first()
+            user = self.db.query(UserModel).filter(
+                UserModel.id == post.user_id).first()
             post_entities.append(PostEntity(
                 id=post.id,
-                userId=xuser.id,
+                userId=user.id,
                 image=post.image,
-                firstName=xuser.first_name,
-                lastName=xuser.last_name,
+                firstName=user.first_name,
+                lastName=user.last_name,
                 title=post.title,
-                userImage=xuser.image,
+                userImage=user.image,
                 content=post.content,
                 date=post.date,
                 isLiked=post.is_liked(self.db, user_id),
