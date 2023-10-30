@@ -61,4 +61,5 @@ By incorporating Generative AI models into The Architect, we enable architects t
 - [Presentation Link](https://www.canva.com/design/DAFv3UnQxgM/Y1Bbf9UlyyDlYAmk3k5Bcw/edit?utm_content=DAFv3UnQxgM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 - [Pitch Video Link](https://drive.google.com/file/d/17DYaNX1hJ36kHrZ26iAz6MdY3-HZZUu8/view)
 - [Demonstration Video Link](https://youtu.be/8-76q0IxwJE?si=gCjYeOUTMM0QzZ3f)
+- [Advertisement Video Link](https://youtu.be/zssHGZY8MuY?si=za7T9LriSloAFQdT)
 - [Prototype Website Link](https://architect.bisry.me)

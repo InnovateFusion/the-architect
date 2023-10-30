@@ -159,13 +159,13 @@ module.exports = withMT({
       wordsets: {
         facts: {
           words: [
-            "Did you know that honey never spoils?",
-            "Ants can lift up to 50 times their body weight.",
+            "The Colosseum in ancient Rome could hold up to 80,000 spectators.",
+            "The Burj Khalifa in Dubai is the world's tallest skyscraper at 2,722 feet.",
             "The Eiffel Tower can be 15 cm taller during the summer due to expansion of the iron.",
-            "Bananas are berries, but strawberries are not.",
+            "The Great Wall of China is not a single wall but a series of fortifications.",
             "There is enough gold in the Earth's core to coat the planet in 1.5 feet of the precious metal.",
           ],
-          delay: 3,
+          delay: 0.5,
           writeSpeed: 0.09,
           repeat: -1,
           eraseSpeed: 0,

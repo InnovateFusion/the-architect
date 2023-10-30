@@ -4,37 +4,45 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Skeleton from "../designs/PostSkeleton";
+import { Info } from "lucide-react";
+import { usePosts } from "@/lib/requests";
 function List() {
   const router = useRouter();
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { posts, error, isLoading } = usePosts();
 
   const getPosts = async () => {
+    setLoading(true);
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+
     if (!token) {
       toast.error("Invalid Credentials. Please Sign in Again.");
       router.push("/auth/signin");
       return;
     }
 
-    const url = `https://the-architect.onrender.com/api/v1/users/${userId}/posts`;
+    // const url = `https://the-architect.onrender.com/api/v1/users/${userId}/posts`;
 
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const posts = await res.json();
-    setData(posts);
-    console.log(posts);
+    // const res = await fetch(url, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    // const posts = await res.json();
+    setData(posts?.filter((e) => e.userId == userId));
+    setLoading(false);
   };
+
   useEffect(() => {
     getPosts();
   }, []);
 
-  if (data?.length == 0) {
+  if (!loading && data?.length == 0) {
     return <div className="text-center p-10">No Posts Yet</div>;
   }
 
@@ -44,34 +52,34 @@ function List() {
         <div className="mx-auto px-4 py-16 sm:px-6 sm:py-6 lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight ">My Designs</h2>
           <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 py-6 px-2">
-            {data?.length > 0
-              ? data?.map((item, index) => (
-                  <div className="group relative" key={item.id}>
-                    <div
-                      className={`aspectw-${
-                        index % 2 == 0 ? "full" : "1/2"
-                      } overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80`}
-                    >
-                      <Link href={`/dashboard/design/${item.id}`}>
-                        <Image
-                          width={2000}
-                          height={2000}
-                          src={item.image}
-                          alt="Front of men&#039;s Basic Tee in black."
-                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                ))
-              : [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
-                  <div
-                    key={index}
-                    className="h-64 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none "
-                  >
-                    <div className="h-full w-full rounded-xl bg-gray-100 animate-pulse"></div>
-                  </div>
-                ))}
+            {loading ? (
+              <>
+                <div className="items-center justify-center absolute w-[60%] text-center top-[50%] left-[20%] z-50 flex flex-col">
+                  <span className="flex text-sm pb-3">
+                    <Info /> Here are some architectural facts while loading.
+                  </span>
+                  <span className="type-facts text-2xl " />
+                </div>
+                <Skeleton />
+              </>
+            ) : (
+              data?.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`group relative aspect-auto overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75`}
+                >
+                  <Link href={`/dashboard/design/${item.id}`}>
+                    <Image
+                      width={512}
+                      height={512}
+                      src={item.image}
+                      alt="Front of men&#039;s Basic Tee in black."
+                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    />
+                  </Link>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
