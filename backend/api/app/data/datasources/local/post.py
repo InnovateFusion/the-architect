@@ -15,7 +15,7 @@ class PostLocalDataSource(ABC):
         pass
     
     @abstractmethod
-    async def all_posts(self,  tags: List[str], search_word: str, skip: int, limit: int) -> List[PostEntity]:
+    async def all_posts(self,  tags: List[str], search_word: str, skip: int, limit: int, user_id: str) -> List[PostEntity]:
         pass
     
     @abstractmethod
@@ -263,7 +263,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             tags=post.tags
         )
 
-    async def all_posts(self, tags: List[str], search_word: str, skip: int, limit: int) -> List[PostEntity]:
+    async def all_posts(self, tags: List[str], search_word: str, skip: int, limit: int, user_id: str) -> List[PostEntity]:
         query = self.db.query(PostModel)
         if search_word:
             query = query.filter(
@@ -274,7 +274,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             )
 
         posts = posts = query.offset(skip).limit(limit).all()
-
+        user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
         post_entities = []
         for post in posts:
             number_of_tags = len(tags)
@@ -284,7 +284,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             if number_of_tags == len(tags) and tags:
                 continue
 
-            user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
+           
             post_entities.append(PostEntity(
                 id=post.id,
                 userId=post.user_id,
@@ -295,8 +295,8 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
                 userImage=user.image,
                 content=post.content,
                 date=post.date,
-                isLiked=post.is_liked(self.db, post.user_id),
-                isCloned=post.is_cloned(self.db, post.user_id),
+                isLiked=post.is_liked(self.db, user_id),
+                isCloned=post.is_cloned(self.db, user_id),
                 like=post.get_likes_count(self.db),
                 clone=post.get_clones_count(self.db),
                 tags=post.tags

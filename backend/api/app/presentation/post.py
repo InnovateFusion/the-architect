@@ -1,10 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from pydantic import BaseModel
-from sqlalchemy.orm.session import Session
-
 from app.data.datasources.local.post import PostLocalDataSourceImpl
 from app.data.repositories.post import PostRepositoryImpl
 from app.domain.entities.post import Post
@@ -27,6 +23,9 @@ from app.domain.use_cases.post.views import Params as ViewPostsParams
 from app.domain.use_cases.post.views import ViewPosts
 from core.common.current_user import get_current_user
 from core.config.database_config import get_db
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
 
 
 class PostResponse(BaseModel):
@@ -43,9 +42,11 @@ class PostResponse(BaseModel):
     clone: int
     isLiked: bool
     isCloned: bool
-    tags: List[str] 
+    tags: List[str]
+
 
 router = APIRouter()
+
 
 def get_repository(db: Session = Depends(get_db)):
     post_local_datasource = PostLocalDataSourceImpl(db=db)
@@ -58,10 +59,12 @@ async def all_posts(
     limit: int = Query(10, description="Number of items to return per page"),
     tags: List[str] = Query([]),
     search_word: str = "",
-    repository: PostRepository = Depends(get_repository)
+    repository: PostRepository = Depends(get_repository),
+    current_user: User = Depends(get_current_user)
 ):
     all_posts_use_case = AllPost(repository)
-    params = AllPostParams(tags=tags, search_word=search_word, skip=skip, limit=limit)
+    params = AllPostParams(
+        tags=tags, search_word=search_word, skip=skip, limit=limit, user_id=current_user.id)
     result = await all_posts_use_case(params)
     if result.is_right():
         return result.get()
@@ -82,6 +85,7 @@ async def create_post(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.put("/posts/{post_id}", response_model=PostResponse)
 async def update_post(
     post_id: str,
@@ -97,6 +101,7 @@ async def update_post(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.delete("/posts/{post_id}", response_model=PostResponse)
 async def delete_post(
     post_id: str,
@@ -110,6 +115,7 @@ async def delete_post(
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
+
 
 @router.get("/users/{user_id}/posts", response_model=List[PostResponse])
 async def view_all_posts(
@@ -125,6 +131,7 @@ async def view_all_posts(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.get("/posts/{post_id}", response_model=PostResponse)
 async def view_post(
     post_id: str,
@@ -138,6 +145,7 @@ async def view_post(
         return result.get()
     else:
         raise HTTPException(status_code=404, detail=result.get().error_message)
+
 
 @router.get("/posts/{post_id}/like/", response_model=PostResponse)
 async def like_post(
@@ -153,6 +161,7 @@ async def like_post(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.get("/posts/{post_id}/unlike/", response_model=PostResponse)
 async def unlike_post(
     post_id: str,
@@ -166,6 +175,7 @@ async def unlike_post(
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
+
 
 @router.get("/posts/{post_id}/clone/", response_model=PostResponse)
 async def clone_post(
@@ -181,6 +191,7 @@ async def clone_post(
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
 
+
 @router.get("/posts/{post_id}/unclone/", response_model=PostResponse)
 async def unclone_post(
     post_id: str,
@@ -194,4 +205,3 @@ async def unclone_post(
         return result.get()
     else:
         raise HTTPException(status_code=400, detail=result.get().error_message)
-

@@ -7,7 +7,8 @@ from core.errors.failure import Failure
 from app.domain.entities.post import PostEntity
 
 class Params(Equatable):
-    def __init__(self,  tags: List[str], search_word: str, skip:int, limit: int) -> None:
+    def __init__(self, user_id: str, tags: List[str], search_word: str, skip:int, limit: int) -> None:
+        self.user_id = user_id
         self.tags = tags
         self.search_word = search_word
         self.skip = skip
@@ -18,6 +19,6 @@ class AllPost(UseCase[Iterable[PostEntity]]):
         self.repository = repository
     
     async def __call__(self, params: Params) -> Either[Failure, Iterable[PostEntity]]:
-        return await self.repository.all_posts(params.tags, params.search_word, params.skip, params.limit)
+        return await self.repository.all_posts(params.tags, params.search_word, params.skip, params.limit, params.user_id)
     
     
