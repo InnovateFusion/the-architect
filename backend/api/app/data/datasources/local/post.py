@@ -1,39 +1,41 @@
-from sqlalchemy import or_, func
-from uuid import uuid4
-from sqlalchemy.orm import Session
 from abc import ABC, abstractmethod
 from typing import List
+from uuid import uuid4
+
+from app.data.models.post import CloneModel, LikeModel, PostModel
 from app.data.models.user import UserModel
 from app.domain.entities.post import Post, PostEntity
 from core.errors.exceptions import CacheException
-from app.data.models.post import CloneModel, LikeModel, PostModel
+from sqlalchemy import desc, func, or_
+from sqlalchemy.orm import Session
+
 
 class PostLocalDataSource(ABC):
-    
+
     @abstractmethod
     async def create_post(self, post: Post) -> PostEntity:
         pass
-    
+
     @abstractmethod
     async def all_posts(self,  tags: List[str], search_word: str, skip: int, limit: int, user_id: str) -> List[PostEntity]:
         pass
-    
+
     @abstractmethod
     async def update_post(self, post: Post, post_id: str) -> PostEntity:
         pass
-    
+
     @abstractmethod
     async def delete_post(self, post_id: str) -> PostEntity:
         pass
-    
+
     @abstractmethod
     async def view_posts(self, user_id: str) -> List[PostEntity]:
         pass
-    
+
     @abstractmethod
     async def view_post(self, post_id: str) -> PostEntity:
         pass
-    
+
     @abstractmethod
     async def like_post(self, post_id: str, user_id: str) -> PostEntity:
         pass
@@ -50,12 +52,14 @@ class PostLocalDataSource(ABC):
     async def unclone_post(self, post_id: str, user_id: str) -> PostEntity:
         pass
 
+
 class PostLocalDataSourceImpl(PostLocalDataSource):
     def __init__(self, db: Session):
         self.db = db
 
     async def create_post(self, post: Post) -> PostEntity:
-        existing_user = self.db.query(UserModel).filter(UserModel.id == post.userId).first()
+        existing_user = self.db.query(UserModel).filter(
+            UserModel.id == post.userId).first()
         if not existing_user:
             raise CacheException("User does not exist")
 
@@ -89,12 +93,14 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         )
 
     async def update_post(self, post: Post, post_id: str) -> PostEntity:
-        _post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
+        _post = self.db.query(PostModel).filter(
+            PostModel.id == post_id).first()
         if not _post:
             raise CacheException("Post not found")
-        
-        user = self.db.query(UserModel).filter(UserModel.id == post.userId).first()
-        
+
+        user = self.db.query(UserModel).filter(
+            UserModel.id == post.userId).first()
+
         _post.title = post.title
         _post.content = post.content
         _post.image = post.image
@@ -120,14 +126,16 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         )
 
     async def delete_post(self, post_id: str) -> PostEntity:
-        _post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
+        _post = self.db.query(PostModel).filter(
+            PostModel.id == post_id).first()
         if not _post:
             raise CacheException("Post not found")
 
         self.db.delete(_post)
         self.db.commit()
-        
-        user = self.db.query(UserModel).filter(UserModel.id == _post.user_id).first()
+
+        user = self.db.query(UserModel).filter(
+            UserModel.id == _post.user_id).first()
 
         return PostEntity(
             id=_post.id,
@@ -147,11 +155,13 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         )
 
     async def view_posts(self, user_id) -> List[PostEntity]:
-        posts = self.db.query(PostModel).filter(PostModel.user_id == user_id).all()
-        
+        posts = self.db.query(PostModel).filter(
+            PostModel.user_id == user_id).all()
+
         post_entities = []
         for post in posts:
-            user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
+            user = self.db.query(UserModel).filter(
+                UserModel.id == post.user_id).first()
             post_entities.append(PostEntity(
                 id=post.id,
                 userId=post.user_id,
@@ -171,11 +181,13 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         return post_entities
 
     async def view_post(self, post_id: str) -> PostEntity:
-        _post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
+        _post = self.db.query(PostModel).filter(
+            PostModel.id == post_id).first()
         if not _post:
             raise CacheException("Post not found")
 
-        user = self.db.query(UserModel).filter(UserModel.id == _post.user_id).first()
+        user = self.db.query(UserModel).filter(
+            UserModel.id == _post.user_id).first()
         return PostEntity(
             id=_post.id,
             userId=_post.user_id,
@@ -197,18 +209,19 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
         if not post:
             raise CacheException("Post not found")
-        
+
         isLiked = post.is_liked(self.db, user_id)
         if isLiked:
             raise CacheException("Post already liked")
-        
+
         like = LikeModel(id=str(uuid4()), user_id=user_id, post_id=post_id)
         self.db.add(like)
         self.db.commit()
         return self._get_post_entity(post, user_id)
 
     async def unlike_post(self, post_id: str, user_id: str) -> PostEntity:
-        like = self.db.query(LikeModel).filter(LikeModel.post_id == post_id, LikeModel.user_id == user_id).first()
+        like = self.db.query(LikeModel).filter(
+            LikeModel.post_id == post_id, LikeModel.user_id == user_id).first()
         if not like:
             raise CacheException("Like not found")
 
@@ -222,7 +235,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
         if not post:
             raise CacheException("Post not found")
-        
+
         isCloned = post.is_cloned(self.db, user_id)
         if isCloned:
             raise CacheException("Post already cloned")
@@ -234,7 +247,8 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         return self._get_post_entity(post, user_id)
 
     async def unclone_post(self, post_id: str, user_id: str) -> PostEntity:
-        clone = self.db.query(CloneModel).filter(CloneModel.post_id == post_id, CloneModel.user_id == user_id).first()
+        clone = self.db.query(CloneModel).filter(
+            CloneModel.post_id == post_id, CloneModel.user_id == user_id).first()
         if not clone:
             raise CacheException("Clone not found")
 
@@ -245,7 +259,8 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         return self._get_post_entity(post, user_id)
 
     def _get_post_entity(self, post, user_id):
-        user = self.db.query(UserModel).filter(UserModel.id == post.user_id).first()
+        user = self.db.query(UserModel).filter(
+            UserModel.id == post.user_id).first()
         return PostEntity(
             id=post.id,
             userId=post.user_id,
@@ -272,6 +287,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
                     UserModel.first_name.ilike(f"%{search_word}%")
                 )
             )
+        query = query.order_by(desc(PostModel.date))
 
         posts = posts = query.offset(skip).limit(limit).all()
         user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
@@ -284,7 +300,6 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
             if number_of_tags == len(tags) and tags:
                 continue
 
-           
             post_entities.append(PostEntity(
                 id=post.id,
                 userId=post.user_id,
