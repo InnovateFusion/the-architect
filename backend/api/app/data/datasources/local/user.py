@@ -221,6 +221,8 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
             UserModel.id == follower_id).first()
         if user is None or follower is None:
             raise CacheException("User not found")
+        if user in follower.followers:
+            raise CacheException("User already followed")
         follower.followers.append(user)
         self.db.commit()
         return UserEntity(

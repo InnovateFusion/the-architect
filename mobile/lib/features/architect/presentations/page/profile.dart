@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     userBloc = sl<UserBloc>();
     userBloc.add(ViewUserEvent(id: widget.userId));
-    userBloc.add(FollowingUserEvent(id: widget.userId));
+    userBloc.add(FollowersUserEvent(id: widget.userId));
     postBloc = sl<PostBloc>();
     postBloc.add(ViewsPosts(userId: widget.userId));
 
@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       if (_debounce?.isActive ?? false) _debounce!.cancel();
       _debounce = Timer(const Duration(milliseconds: 2000), () {
-        context.read<UserBloc>().add(UnFollowUserEvent(id: widget.userId));
+        context.read<UserBloc>().add(FollowUserEvent(id: widget.userId));
         setState(() {
           isFollowing = !isFollowing;
           followers++;
@@ -127,7 +127,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-
+    print('--------------------------------------------------');
+    print(followers);
+    print(following);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,

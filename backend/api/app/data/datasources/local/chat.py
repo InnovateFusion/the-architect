@@ -1,46 +1,51 @@
+import os
+from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import List
 from uuid import uuid4
-from datetime import datetime
+
 import requests
-from cloudinary.uploader import upload
-from sqlalchemy.orm import Session
-from abc import ABC, abstractmethod
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
 from app.data.models.user import UserModel
 from app.domain.entities.chat import ChatEntity, Notify
 from app.domain.entities.message import Message, MessageEntity
+from cloudinary.uploader import upload
 from core.errors.exceptions import CacheException
-import os
+from sqlalchemy.orm import Session
+
 baseUrl = os.getenv("BASE_URL")
+
 
 class ChatLocalDataSource(ABC):
     @abstractmethod
     async def get_chat(self, chat_id: str) -> ChatEntity:
         ...
-    
+
     @abstractmethod
     async def get_chats(self, user_id) -> List[ChatEntity]:
         ...
-    
+
     @abstractmethod
     async def create_chat(self, message: Message):
         ...
-        
+
     @abstractmethod
     async def delete_chat(self, chat_id: str) -> ChatEntity:
         ...
-        
+
     @abstractmethod
     async def notify(self, chat_id: str, notify_id: str, notify: Notify) -> ChatEntity:
         ...
-    
+
+
 class ChatLocalDataSourceImpl(ChatLocalDataSource):
     def __init__(self, db: Session):
         self.db = db
-        
+
     async def get_chat(self, chat_id: str) -> ChatEntity:
-        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
+        existing_chat = self.db.query(ChatModel).filter(
+            ChatModel.id == chat_id).first()
         if not existing_chat:
             raise CacheException("Chat does not exist")
 
@@ -48,11 +53,12 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
             id=existing_chat.id,
             title=existing_chat.title,
             user_id=existing_chat.user_id,
-            messages=existing_chat.messages 
+            messages=existing_chat.messages
         )
-    
+
     async def get_chats(self, user_id: str) -> List[ChatEntity]:
-        existing_chats = self.db.query(ChatModel).filter(UserModel.id == user_id).all()
+        existing_chats = self.db.query(ChatModel).filter(
+            ChatModel.user_id == user_id).all()
         filtered_chats = [
             ChatEntity(
                 id=chat.id,
@@ -64,20 +70,21 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         return filtered_chats
 
     async def create_chat(self, message: Message):
-        exits_user = self.db.query(UserModel).filter(UserModel.id == message.user_id).first()
+        exits_user = self.db.query(UserModel).filter(
+            UserModel.id == message.user_id).first()
         if not exits_user:
             raise CacheException("No user found")
-        
+
         date = datetime.utcnow()
-        
+
         if 'prompt' not in message.payload:
             raise CacheException("No prompt found")
-        
+
         headers = {
             "accept": "application/json",
             "content-type": "application/json"
         }
-        
+
         ai_generation = AiGeneration(requests, upload)
         response = ""
         userImage = ''
@@ -86,7 +93,7 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
         threeD = ""
         aiMessageID = str(uuid4())
         chat_id = str(uuid4())
-        
+
         if message.model == 'text_to_image':
             url = f"{baseUrl}/text-to-image"
             try:
@@ -162,10 +169,10 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                 raise CacheException("3D error")
         else:
             raise CacheException("Model not found")
-        
+
         message_from_user = MessageEntity(
             id=str(uuid4()),
-            content= {
+            content={
                 'prompt': message.payload['prompt'],
                 'imageUser': userImage,
                 'imageAI': '',
@@ -177,58 +184,60 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
             sender='user',
             date=date
         )
-        
+
         chat = ChatModel(
             id=chat_id,
             user_id=message.user_id,
             messages=[message_from_user.to_json()],
-            title = message.payload['prompt'][:128],
+            title=message.payload['prompt'][:128],
         )
-        
+
         message_from_ai = MessageEntity(
             id=aiMessageID,
-            content= {
+            content={
                 'prompt': '',
                 'imageUser': '',
                 'imageAI': response,
                 'model': message.model,
                 'analysis': analysis,
-                '3D':  { 'status': 'success', 'fetch_result': threeD},
+                '3D':  {'status': 'success', 'fetch_result': threeD},
                 'chat': chatResponse
             },
             sender='ai',
             date=date
         )
-        
+
         chat.add_message(message_from_ai.to_json())
-        
+
         self.db.add(chat)
         self.db.commit()
-        
+
         return ChatEntity(
             id=chat.id,
             user_id=message.user_id,
             title=chat.title,
             messages=chat.messages
         )
-        
+
     async def delete_chat(self, chat_id: str) -> ChatEntity:
-        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
+        existing_chat = self.db.query(ChatModel).filter(
+            ChatModel.id == chat_id).first()
         if not existing_chat:
             raise CacheException("Chat does not exist")
-        
+
         self.db.delete(existing_chat)
         self.db.commit()
-        
+
         return ChatEntity(
             id=existing_chat.id,
             title=existing_chat.title,
             user_id=existing_chat.user_id,
-            messages=existing_chat.messages 
+            messages=existing_chat.messages
         )
-        
+
     async def notify(self, chat_id: str, notify_id: str, notify: Notify) -> ChatEntity:
-        existing_chat = self.db.query(ChatModel).filter(ChatModel.id == chat_id).first()
+        existing_chat = self.db.query(ChatModel).filter(
+            ChatModel.id == chat_id).first()
         if not existing_chat:
             raise CacheException("Chat does not exist")
         try:
@@ -239,13 +248,13 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
                     break
         except Exception as e:
             raise CacheException("Error getting 3D")
-        
+
         self.db.add(existing_chat)
         self.db.commit()
-        
+
         return ChatEntity(
             id=existing_chat.id,
             title=existing_chat.title,
             user_id=existing_chat.user_id,
-            messages=existing_chat.messages 
+            messages=existing_chat.messages
         )

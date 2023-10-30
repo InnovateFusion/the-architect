@@ -134,8 +134,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
 
   @override
   Future<UserModel> followUser(String id, String token) async {
-    final response = await client.delete(
-      Uri.parse('https://the-architect.onrender.com/api/v1/users/$id/follow'),
+    final response = await client.get(
+      Uri.parse('https://the-architect.onrender.com/api/v1/users/$id/follow/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -192,7 +192,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   @override
   Future<UserModel> unfollowUser(String id, String token) async {
     final response = await client.delete(
-      Uri.parse('https://the-architect.onrender.com/api/v1/users/$id/unfollow'),
+      Uri.parse(
+          'https://the-architect.onrender.com/api/v1/users/$id/unfollow/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
