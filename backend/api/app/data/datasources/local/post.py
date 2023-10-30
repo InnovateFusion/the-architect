@@ -131,6 +131,10 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
         if not _post:
             raise CacheException("Post not found")
 
+        self.db.query(LikeModel).filter(LikeModel.post_id == post_id).delete()
+        self.db.query(CloneModel).filter(
+            CloneModel.post_id == post_id).delete()
+
         self.db.delete(_post)
         self.db.commit()
 

@@ -67,10 +67,6 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       }),
     );
 
-    print('---------------------------------');
-    print(response.statusCode);
-    print(response.body);
-
     if (response.statusCode == 200) {
       return UserModel.fromJson(json.decode(response.body));
     } else {
