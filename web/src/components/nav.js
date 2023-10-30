@@ -33,7 +33,7 @@ export const dashboardConfig = {
     },
     {
       title: "Draw",
-      href: "/dashboard/draw",
+      href: "/dashboard/tools?model=controlNet",
       icon: "drafting",
     },
     {

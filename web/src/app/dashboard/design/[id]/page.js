@@ -91,7 +91,7 @@ export default function Design({ params: { id } }) {
               <div className="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4"></div>
               <div className="flex -mx-2 mb-4">
                 <div className="w-1/2 px-2">
-                  <div className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold text-center hover:bg-gray-800 dark:hover:bg-gray-700">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold text-center hover:bg-gray-300 dark:hover:bg-gray-600">
                     Variation
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function Design({ params: { id } }) {
               <div className="text-gray-600 dark:text-gray-300 text-sm mb-4 w-1/2 h-10 bg-gray-300 dark:bg-gray-700"></div>
               <div>
                 <div className="font-bold text-gray-700 dark:text-gray-300">
-                  Design Prompt:
+                  Description:
                 </div>
                 <div className="text-gray-600 dark:text-gray-300 text-sm my-2 w-1/2 h-10 bg-gray-300 dark:bg-gray-700"></div>
               </div>
@@ -167,7 +167,7 @@ export default function Design({ params: { id } }) {
             </div>
             <div className="flex -mx-2 mb-4">
               <div className="w-1/2 px-2">
-                <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
                   Variation
                 </button>
               </div>
@@ -214,12 +214,9 @@ export default function Design({ params: { id } }) {
                 </div>
               </div>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-              {design?.content}
-            </p>
             <div>
               <span className="font-bold text-gray-700 dark:text-gray-300">
-                Design Prompt:
+                Description:
               </span>
               <p className="text-gray-600 dark:text-gray-300 text-sm my-2">
                 {design?.content}

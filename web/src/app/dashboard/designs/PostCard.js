@@ -82,7 +82,7 @@ function DesignCard({ post }) {
             <Link
               href={`/dashboard/tools?model=image_to_image&image=${post.image}`}
             >
-              {post.isCloned ? <Clone /> : <Clone fill={"gray"} />}
+              {post.isCloned ? <Clone fill={"gray"} /> : <Clone />}
             </Link>
           </div>
         </div>

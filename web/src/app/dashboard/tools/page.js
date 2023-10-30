@@ -299,7 +299,7 @@ export default function Chat() {
   };
 
   return (
-    <div className="h-[98%] sm:flex ">
+    <div className="h-[96%] sm:flex ">
       <div className="gap-2 w-full sm:w-1/2 min-h-[532px] flex flex-col justify-top items-center p-4">
         {model == "controlNet" ? (
           <ExcalidrawPage

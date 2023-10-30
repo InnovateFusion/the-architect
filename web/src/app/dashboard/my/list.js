@@ -11,7 +11,6 @@ function List() {
   const router = useRouter();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { posts, error, isLoading } = usePosts();
 
   const getPosts = async () => {
     setLoading(true);
@@ -24,17 +23,17 @@ function List() {
       return;
     }
 
-    // const url = `https://the-architect.onrender.com/api/v1/users/${userId}/posts`;
+    const url = `https://the-architect.onrender.com/api/v1/users/${userId}/posts`;
 
-    // const res = await fetch(url, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-    // const posts = await res.json();
-    setData(posts?.filter((e) => e.userId == userId));
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const posts = await res.json();
+    setData(posts);
     setLoading(false);
   };
 
