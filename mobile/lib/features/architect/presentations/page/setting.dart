@@ -375,7 +375,7 @@ class _SettingState extends State<Setting> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomePage(),
+                                builder: (context) => const Login(),
                               ),
                               (route) => false,
                             );

@@ -3,14 +3,13 @@ from typing import List
 from uuid import uuid4
 
 import requests
-from cloudinary.uploader import upload
-from sqlalchemy.orm import Session
-
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.user import UserModel
 from app.domain.entities.user import UpdatUserRequest, User, UserEntity
+from cloudinary.uploader import upload
 from core.common.password import get_password_hash
 from core.errors.exceptions import CacheException
+from sqlalchemy.orm import Session
 
 
 class UserLocalDataSource(ABC):
@@ -71,7 +70,7 @@ class UserLocalDataSourceImpl(UserLocalDataSource):
             first_name=user.firstName,
             last_name=user.lastName,
             bio=user.bio,
-            image=user.image,
+            image='http://res.cloudinary.com/dtghsmx0s/image/upload/v1698642634/u640aw5vgzzuzowsbgp7.jpg',
             email=user.email,
             password=get_password_hash(user.password),
             country=user.country

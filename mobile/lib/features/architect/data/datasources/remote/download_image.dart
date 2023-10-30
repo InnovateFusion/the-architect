@@ -16,6 +16,9 @@ class GetImageRemoteDataSourceImpl implements GetImageRemoteDataSource {
 
   @override
   Future<String> downloadImage(String url, String id) async {
+
+    
+
     final response = await client.get(Uri.parse(url));
     if (response.statusCode == 200) {
       Directory appDocDir = await getApplicationDocumentsDirectory();

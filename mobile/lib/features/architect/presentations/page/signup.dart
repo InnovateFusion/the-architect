@@ -6,8 +6,6 @@ import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/auth/auth_bloc.dart';
-
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -59,7 +57,7 @@ class _SignUpState extends State<SignUp> {
   void _onPasswordChanged() {
     final password = _passwordController.text;
     setState(() {
-      _isPasswordValid = password.length >= 6;
+      _isPasswordValid = password.length >= 8;
     });
     _onFormChanged();
   }
@@ -108,34 +106,21 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
+  void showAboutDialog(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Center(child: Text('User already exists')),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext cnt) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is Authenticated) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Login()),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is AuthInitial) {
-              return input(context);
-            } else if (state is AuthLoading) {
-              return const Center(
-                child: LoadingIndicator(),
-              );
-            } else if (state is AuthError) {
-              return Center(child: Text(state.message));
-            } else {
-              return Container();
-            }
-          },
-        ),
+        child: input(context),
       ),
     );
   }
@@ -166,9 +151,10 @@ class _SignUpState extends State<SignUp> {
                           const Text(
                             'The ArchiTect',
                             style: TextStyle(
+                                color: Colors.black,
                                 fontFamily: 'Roboto',
                                 fontSize: 28,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w900,
                                 letterSpacing: 0),
                           ),
                         ],
@@ -248,58 +234,81 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                      onPressed: () {
-                        _onSignUpButtonPressed(context);
-                      },
-                      child: const Text('Sign Up',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 18,
-                          )),
-                    ),
-                  ),
                   const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Already have an account?',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
+                  BlocConsumer<UserBloc, UserState>(
+                    listener: (contx, state) {
+                      if (state is UserCreated) {
+                        Navigator.push(
+                            contx,
                             MaterialPageRoute(
-                              builder: (context) => const Login(),
+                                builder: (contx) => const Login()));
+                      }
+                      if (state is UserError) {
+                        showAboutDialog(context);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is UserLoading) {
+                        return const LoadingIndicator();
+                      } else {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 32),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  _onSignUpButtonPressed(context);
+                                },
+                                child: const Text('Sign Up',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    )),
+                              ),
                             ),
-                          );
-                        },
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Already have an account?',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Login(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

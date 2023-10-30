@@ -1,9 +1,9 @@
+import 'package:architect/features/architect/domains/use_cases/auth/delete.dart'
+    as delete_auth;
 import 'package:architect/features/architect/domains/use_cases/auth/get_token.dart'
     as get_auth;
 import 'package:architect/features/architect/domains/use_cases/auth/is_auth.dart'
     as check_auth;
-import 'package:architect/features/architect/domains/use_cases/auth/delete.dart'
-    as delete_auth;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -46,6 +46,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       email: event.email,
       password: event.password,
     ));
+
+    print(failureOrAuth);
     emit(
       failureOrAuth.fold(
           (failure) => AuthError(message: _mapFailureToMessage(failure)),
