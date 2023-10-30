@@ -14,14 +14,14 @@ export default function Footer() {
             <div className="text-sm text-gray-600">
               <a
                 href="#0"
-                className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
+                className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 hover:underline transition duration-150 ease-in-out"
               >
                 Terms
               </a>{" "}
               ·{" "}
               <a
                 href="#0"
-                className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
+                className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 hover:underline transition duration-150 ease-in-out"
               >
                 Privacy Policy
               </a>
@@ -35,7 +35,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Bisrat Kebere
                 </a>
@@ -43,7 +43,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Duresa Feyisa
                 </a>
@@ -51,7 +51,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Biruk Mesfin
                 </a>
@@ -59,7 +59,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Aser Hailu
                 </a>
@@ -67,7 +67,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Estifanos Samson
                 </a>
@@ -82,7 +82,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Documentation
                 </a>
@@ -90,7 +90,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Tutorials & Guides
                 </a>
@@ -98,7 +98,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Blog
                 </a>
@@ -106,7 +106,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Support Center
                 </a>
@@ -114,7 +114,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Partners
                 </a>
@@ -129,7 +129,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Home
                 </a>
@@ -137,7 +137,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   About us
                 </a>
@@ -145,7 +145,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Company values
                 </a>
@@ -153,7 +153,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Pricing
                 </a>
@@ -161,7 +161,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Privacy Policy
                 </a>
@@ -225,7 +225,7 @@ export default function Footer() {
             <li>
               <a
                 href="https://x.com/bisryyy"
-                className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                className="flex justify-center items-center text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Twitter"
               >
                 <svg
@@ -240,7 +240,7 @@ export default function Footer() {
             <li className="ml-4">
               <a
                 href="https://github.com/InnovateFusion/the-architect"
-                className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                className="flex justify-center items-center text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Github"
               >
                 <svg

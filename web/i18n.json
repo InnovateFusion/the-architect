@@ -1,0 +1,14 @@
+{
+  "locales": ["en", "tr", "ao", "am"],
+  "countries": {
+    "en": { "name": "English", "image": "us" },
+    "tr": { "name": "Turkish", "image": "tr" },
+    "ao": { "name": "Afaan Oromo", "image": "ao" },
+    "am": { "name": "Amharic", "image": "am" }
+  },
+  "defaultLocale": "en",
+  "pages": {
+    "*": ["common"],
+    "/": ["home"]
+  }
+}

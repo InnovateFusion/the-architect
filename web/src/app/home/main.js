@@ -1,9 +1,11 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { ArrowBigRightDash, LucideLightbulb } from "lucide-react";
+import useTranslation from "next-translate/useTranslation";
 
 export default function Hero() {
+  const { t } = useTranslation("common");
   return (
     <section className="flex md:flex-row flex-col-reverse p-5">
       {/* Illustration behind hero content */}
@@ -57,9 +59,7 @@ export default function Hero() {
                   data-aos="zoom-y-out"
                   data-aos-delay="150"
                 >
-                  Meet out platform and perform more with our AI driven
-                  designing tools, All made to make your job more easier, faster
-                  and efficient than ever.
+                  {t("description")}
                 </p>
                 <div
                   className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"

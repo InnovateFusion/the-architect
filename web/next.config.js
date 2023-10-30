@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const nextTranslate = require("next-translate-plugin");
+
+const nextConfig = nextTranslate({
   // add image domain for next/image
+  i18n: {
+    locales: ["am", "en", "tr", "ao"],
+    defaultLocale: "en",
+  },
   images: {
     remotePatterns: [
       {
@@ -29,6 +36,6 @@ const nextConfig = {
       },
     ],
   },
-};
+});
 
 module.exports = nextConfig;
