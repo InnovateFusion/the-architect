@@ -303,7 +303,7 @@ class PostLocalDataSourceImpl(PostLocalDataSource):
                 UserModel.id == post.id).first()
             post_entities.append(PostEntity(
                 id=post.id,
-                userId=xuser.user_id,
+                userId=xuser.id,
                 image=post.image,
                 firstName=xuser.first_name,
                 lastName=xuser.last_name,
