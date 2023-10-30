@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import LikeButton from "@/components/like";
 
 const view = (
   <svg
@@ -24,10 +25,10 @@ const view = (
   </svg>
 );
 
-const clone = (
+const Clone = ({ fill }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
+    fill={fill ? fill : "none"}
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
@@ -46,7 +47,7 @@ function DesignCard({ post }) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div className="block border-2 dark:border-gray-600 border-gray-300 max-w-xs container  rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+    <div className="block border-2 dark:border-gray-600 border-gray-300   rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
       <Link href={{ pathname: `/dashboard/design/${post.id}` }}>
         <Image
           className="w-full cursor-pointer rounded-t-xl"
@@ -74,8 +75,15 @@ function DesignCard({ post }) {
           </Link>
         </div>
         <div className="flex space-x-2">
-          <div className="flex space-x-1 items-center">
-            <span>{clone}</span>
+          <div className="flex space-x-1 items-center gap-3">
+            <span className="flex gap-2 items-baseline">
+              <LikeButton liked={post.isLiked} likes={post.like} />
+            </span>
+            <Link
+              href={`/dashboard/tools?model=image_to_image&image=${post.image}`}
+            >
+              {post.isCloned ? <Clone /> : <Clone fill={"gray"} />}
+            </Link>
           </div>
         </div>
       </div>

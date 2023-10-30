@@ -171,6 +171,10 @@ export default function Profile() {
                   <span className="text-2xl"> {user?.following} </span>
                   <span className="font-bold"> following </span>
                 </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-2xl"> {posts ? posts.length : 0} </span>
+                  <span className="font-bold"> Posts </span>
+                </div>
               </div>
             </div>
           </div>
