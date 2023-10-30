@@ -48,9 +48,9 @@ export default function Hero() {
                 className="text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4"
                 data-aos="zoom-y-out"
               >
-                We help to <br /> build your <br />
+                {t("we")} <br /> {t("build")} <br />
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-teal-400 text-5xl md:text-6xl">
-                  Dreams
+                  {t("dreams")}
                 </span>
               </h1>
               <div className="max-w-3xl mx-auto">
@@ -71,15 +71,7 @@ export default function Hero() {
                       className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0 gap-2"
                       href="/auth/signin"
                     >
-                      <LucideLightbulb /> Start free trial
-                    </a>
-                  </div>
-                  <div>
-                    <a
-                      className="btn text-white gap-2 bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
-                      href="/dashboard"
-                    >
-                      Start Designing <ArrowBigRightDash />
+                      <LucideLightbulb /> {t("start")}
                     </a>
                   </div>
                 </div>

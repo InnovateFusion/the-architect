@@ -22,7 +22,7 @@ export default function PostList() {
       return;
     }
 
-    const url = `https://the-architect.onrender.com/api/v1/posts/all?limit=9&skip=1`;
+    const url = `https://the-architect.onrender.com/api/v1/posts/all?limit=30`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -60,7 +60,7 @@ export default function PostList() {
 
   // render data
   return (
-    <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-3 gap-4 space-y-4 py-6 px-2">
+    <div className=" grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 space-y-4 py-6 px-2">
       {data?.length == 0 ? (
         <div>No Posts Yet</div>
       ) : (

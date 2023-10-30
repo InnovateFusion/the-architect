@@ -188,7 +188,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="md:flex-1 columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-3 space-y-4 p-4 justify-center bg-gray-3 border border-gray-2    rounded-xl">
+        <div className="md:flex-1 columns-2 sm:columns-2 md:columns-3 lg:columns-3 gap-3 space-y-4 p-4 justify-center bg-gray-3 border border-gray-2    rounded-xl">
           {!posts
             ? [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
                 <div

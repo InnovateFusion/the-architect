@@ -10,6 +10,7 @@ import Features from "./features";
 import Hero from "./hero";
 import HomeHero from "./main";
 import Pricing from "./pricing";
+import Mobile from "./mobile";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Hero />
       <Features />
       <FeaturesBlocks />
+      <Mobile />
       <Pricing />
     </>
   );
