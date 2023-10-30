@@ -32,7 +32,7 @@ export default function Dropzone(props) {
         {isDragActive ? (
           <p>Drop the image here ...</p>
         ) : (
-          <p>Optional: Drag and drop a starting image here</p>
+          <p>Click here to Add your oun design from File. <br /> or <br /> Click the designs form the chat window to enhance previous designs.</p>
         )}
       </div>
     </div>

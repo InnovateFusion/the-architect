@@ -3,7 +3,7 @@ import ChatBuble from "../edit/chatBuble";
 import { usePathname, useRouter } from "next/navigation";
 import { PostDesign } from "../edit/PostDesign";
 import { Capitalize, cn } from "@/utils/utils";
-import { Trash } from "lucide-react";
+import { LucideExternalLink, Trash } from "lucide-react";
 import Modal from "../designs/DesignView";
 
 function Chat2({ size, chat, handleDelete }) {
@@ -38,9 +38,9 @@ function Chat2({ size, chat, handleDelete }) {
                   `/dashboard/tools?model=image_to_image&chatId=${chat.id}`
                 )
               }
-              className="whitespace-nowrap bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="w-9 h-9 flex justify-center items-center cursor-pointer p-2 hover:bg-gray-2 rounded-lg transition-colors my-2 hover:bg-green-600"
             >
-              Go to Chat
+              <LucideExternalLink />
             </button>
           )}
           {chat && (

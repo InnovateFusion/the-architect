@@ -15,6 +15,7 @@ import { AlertCircle, Eraser } from "lucide-react";
 import Alert from "@/components/alert";
 import Loader from "@/components/Loader";
 import { toast } from "react-toastify";
+import { Step, Step2 } from "@/components/steps";
 
 export default function Chat() {
   const searchParams = useSearchParams();
@@ -71,6 +72,7 @@ export default function Chat() {
   const handleClick = async (img) => {
     setupload(false);
     setImage(img);
+    handleBase64(img);
   };
 
   const handleBase64 = async (img) => {
@@ -324,7 +326,7 @@ export default function Chat() {
         ) : model == "text_to_image" ? (
           !image ? (
             <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
-              Explain it well
+              <Step />
             </div>
           ) : (
             <ImageZoom
@@ -364,7 +366,7 @@ export default function Chat() {
           </div>
         ) : model == "chatbot" ? (
           <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
-            Lets talk about Architecture
+            <Step2 />
           </div>
         ) : (
           <ImageZoom
