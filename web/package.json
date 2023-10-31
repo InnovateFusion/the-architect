@@ -13,7 +13,9 @@
   "dependencies": {
     "@excalidraw/excalidraw": "^0.16.1",
     "@headlessui/react": "^1.7.17",
+    "@loglib/tracker": "^0.8.0",
     "@material-tailwind/react": "^2.1.4",
+    "@vercel/analytics": "^1.1.1",
     "aos": "^2.3.4",
     "clsx": "^2.0.0",
     "lucide-react": "^0.288.0",
