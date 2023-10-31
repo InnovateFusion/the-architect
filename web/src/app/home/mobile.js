@@ -13,7 +13,7 @@ function Mobile() {
         </p>
         <div className="justify-center items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <a
-            href="#"
+            href="https://drive.google.com/drive/folders/16JC1FUrBXntj8RWgEG2H9kUkEz_Ultha"
             className="w-full sm:w-auto flex bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
           >
             <svg
@@ -39,7 +39,7 @@ function Mobile() {
             </div>
           </a>
           <a
-            href="#"
+            href="https://drive.google.com/drive/folders/16JC1FUrBXntj8RWgEG2H9kUkEz_Ultha"
             className="w-full sm:w-auto flex bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
           >
             <svg
