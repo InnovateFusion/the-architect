@@ -15,9 +15,10 @@ const Header = () => {
         <ThemeToggle />
         <Image
           src={`/flags/${lang}.svg` || "/flags/en/svg"}
-          width={40}
-          height={40}
+          width={20}
+          height={20}
           alt={lang}
+          className="w-10 md:20"
         />
         <Language />
       </div>

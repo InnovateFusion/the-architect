@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import { useState, useRef, useEffect } from 'react'
-import { Transition } from '@headlessui/react'
-import Image from 'next/image'
+import { useState, useRef, useEffect } from "react";
+import { Transition } from "@headlessui/react";
+import Image from "next/image";
 
 export default function Features() {
-  
-  const [tab, setTab] = useState(1)
+  const [tab, setTab] = useState(1);
 
-  const tabs = useRef(null)
+  const tabs = useRef(null);
 
   const heightFix = () => {
-    if (tabs.current && tabs.current.parentElement) tabs.current.parentElement.style.height = `${tabs.current.clientHeight}px`
-  }
+    if (tabs.current && tabs.current.parentElement)
+      tabs.current.parentElement.style.height = `${tabs.current.clientHeight}px`;
+  };
 
   useEffect(() => {
-    heightFix()
-  }, []) 
+    heightFix();
+  }, []);
 
   return (
     <section className="relative">
@@ -192,12 +192,12 @@ export default function Features() {
                         alt="Features bg"
                       />
                       <Image
-                        className="md:max-w-none absolute w-full left-0 transform animate-float"
+                        className="md:max-w-none absolute w-full left-0 transform animate-float rounded-lg"
                         src={"/house.jpg"}
                         width={500}
                         height="44"
                         alt="Element"
-                        style={{ top: "30%" }}
+                        style={{ top: "50%" }}
                       />
                     </div>
                   </Transition>
@@ -224,12 +224,12 @@ export default function Features() {
                         alt="Features bg"
                       />
                       <Image
-                        className="md:max-w-none absolute w-full left-0 transform animate-float"
-                        src={"/house.jpg"}
+                        className="md:max-w-none absolute w-full left-0 transform animate-float rounded-lg"
+                        src={"/think.jpg"}
                         width={500}
                         height="44"
                         alt="Element"
-                        style={{ top: "30%" }}
+                        style={{ top: "80%" }}
                       />
                     </div>
                   </Transition>
@@ -256,12 +256,12 @@ export default function Features() {
                         alt="Features bg"
                       />
                       <Image
-                        className="md:max-w-none absolute w-full left-0 transform animate-float"
-                        src={"/house.jpg"}
+                        className="md:max-w-none absolute w-full left-0 transform animate-float rounded-lg"
+                        src={"/design.png"}
                         width={500}
                         height="44"
                         alt="Element"
-                        style={{ top: "30%" }}
+                        style={{ top: "90%" }}
                       />
                     </div>
                   </Transition>

@@ -22,7 +22,7 @@ export default function Test() {
   return (
     <select
       id="languageSelect"
-      className="mt-1 block px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:outline-none w-40"
+      className="mt-1 block px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:outline-none w-16 md:w-40"
       value={selectedLanguage}
       onChange={handleLanguageChange}
     >

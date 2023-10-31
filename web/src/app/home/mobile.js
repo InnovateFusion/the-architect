@@ -1,20 +1,30 @@
+import Image from "next/image";
 import React from "react";
 
 function Mobile() {
   return (
     <div className="max-w-2xl mx-auto m-20">
-      <div className="p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 border-gray-700">
+      <div className="p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 border-gray-700 flex flex-col items-center">
+        <Image
+          className="rounded-lg transform animate-float"
+          src={"/mobile.jpg"}
+          width={200}
+          height="44"
+          alt="Element"
+          // style={{ top: "30%" }}
+        />
         <h3 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
           Work fast from anywhere
         </h3>
         <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
-          Stay up to date, design and move work forward with The Architects on iOS & Android.
-          Download the app today.
+          Stay up to date, design and move work forward with The Architects on
+          iOS & Android. Download the app today.
         </p>
         <div className="justify-center items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <a
             href="https://drive.google.com/drive/folders/16JC1FUrBXntj8RWgEG2H9kUkEz_Ultha"
             className="w-full sm:w-auto flex bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+            target="_blank"
           >
             <svg
               className="mr-3 w-7 h-7"
@@ -39,8 +49,9 @@ function Mobile() {
             </div>
           </a>
           <a
-            href="https://drive.google.com/drive/folders/16JC1FUrBXntj8RWgEG2H9kUkEz_Ultha"
+            href="https://drive.google.com/file/d/1AjKHm8BEighA31DaMUEFiL6eTOGW9coj/view?usp=drivesdk"
             className="w-full sm:w-auto flex bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+            target="_blank"
           >
             <svg
               className="mr-3 w-7 h-7"
@@ -58,9 +69,9 @@ function Mobile() {
               ></path>
             </svg>
             <div className="text-left">
-              <div className="mb-1 text-xs">Get in on</div>
+              <div className="mb-1 text-xs">Download</div>
               <div className="-mt-1 font-sans text-sm font-semibold">
-                Google Play
+                For Android
               </div>
             </div>
           </a>

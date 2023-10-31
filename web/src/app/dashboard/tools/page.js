@@ -172,16 +172,6 @@ export default function Chat() {
         `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
       );
 
-    if (model == "text_to_3D")
-      setUrl(
-        `https://the-architect-3d.onrender.com/api/v1/chats`
-      );
-
-    if (chatId != null && model == "text_to_3D")
-      setUrl(
-        `https://the-architect-3d.onrender.com/api/v1/chats/${chatId}/messages`
-      );
-
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -372,7 +362,8 @@ export default function Chat() {
           )
         ) : model == "text_to_3D" ? (
           <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
-            Takes ages to Produce
+            Input your prompt and click generate. Takes a while to Generate The
+            3D Model.
           </div>
         ) : model == "chatbot" ? (
           <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
