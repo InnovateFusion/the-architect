@@ -1,5 +1,16 @@
 import { create } from "zustand";
 
+export const usePostsStore = create((set) => ({
+    posts: [],
+    setPosts: (data) => set({ posts: data })
+}));
+
+export const usePostStore = create((set) => ({
+  post: [],
+  setPost: (data) => set({ post: data }),
+}));
+
+
 const designsStore = create((set, get) => ({
   designs: [],
   selectedDesign: null,

@@ -1,17 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DesignView from "../../designs/DesignView";
 import ImageZoom from "react-image-zooom";
 import { Capitalize } from "@/utils/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { usePost } from "@/app/hooks/usePosts";
 export default function Design({ params: { id } }) {
-  const [design, setDesign] = useState(null);
+  const { data: design, isLoading, isError, error } = usePost(id);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const router = useRouter();
 
   const view = (
     <svg
@@ -51,38 +50,8 @@ export default function Design({ params: { id } }) {
       />
     </svg>
   );
-  useEffect(() => {
-    const fetchDesign = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Invalid Credentials. Please Sign in Again.");
-        router.push("/auth/signin");
-        return;
-      }
-      try {
-        const response = await fetch(
-          `https://the-architect.onrender.com/api/v1/posts/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
 
-        if (response.status == 200) {
-          const result = await response.json();
-          setDesign(result);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDesign();
-  }, [id]);
-
-  if (!design) {
+  if (isLoading) {
     return (
       <div className="bg-gray-100 dark:bg-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -147,6 +116,11 @@ export default function Design({ params: { id } }) {
         </div>
       </div>
     );
+  }
+
+  if (isError) {
+    toast.error(error.message);
+    return <div>{error.message}</div>;
   }
 
   return (
