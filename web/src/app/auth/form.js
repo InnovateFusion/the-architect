@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 export function UserAuthForm({ className, ...props }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [username, setUsername] = React.useState("dev@bisrat.tech");
   const [password, setPassword] = React.useState("12345678");
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -70,7 +72,7 @@ export function UserAuthForm({ className, ...props }) {
             <div className="grid gap-2">
               <div className="grid gap-1">
                 <div className="label sr-only" htmlFor="email">
-                  Email
+                  {t("r_email")}
                 </div>
                 <input
                   id="email"
@@ -114,7 +116,7 @@ export function UserAuthForm({ className, ...props }) {
                     />
                   </svg>
                 )}
-                Login
+                {t("fm_login")}
               </button>
             </div>
           </form>

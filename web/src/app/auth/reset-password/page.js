@@ -1,4 +1,5 @@
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 export const metadata = {
   title: "Reset Password - The Architect",
@@ -6,19 +7,16 @@ export const metadata = {
 };
 
 export default function ResetPassword() {
+  const { t } = useTranslation("common");
+
   return (
     <section className="">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="pt-12 pb-12 md:pt-10 md:pb-10">
           {/* Page header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-            <h1 className="h1 mb-4 md:mx-24">
-              Let&apos;s get you back up on your feet
-            </h1>
-            <p className="text-xl ">
-              Enter the email address you used when you signed up for your
-              account, and we&apos;ll email you a link to reset your password.
-            </p>
+            <h1 className="h1 mb-4 md:mx-24">{t("r_header")}</h1>
+            <p className="text-xl ">{t("r_header_desc")}</p>
           </div>
 
           {/* Form */}
@@ -30,7 +28,7 @@ export default function ResetPassword() {
                     className="block text-sm font-medium mb-1"
                     htmlFor="email"
                   >
-                    Email <span className="text-red-600">*</span>
+                    {t("r_email")} <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="email"
@@ -44,18 +42,18 @@ export default function ResetPassword() {
               <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
                   <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">
-                    Send reset link
+                    {t("r_action_1")}
                   </button>
                 </div>
               </div>
             </form>
             <div className=" text-center mt-6">
-              Don&apos;t you have an account?{" "}
+              {t("r_ques")}
               <Link
                 href="/auth/signup"
                 className="text-blue-600 hover:underline transition duration-150 ease-in-out"
               >
-                Sign up
+                {t("r_action_2")}
               </Link>
             </div>
           </div>

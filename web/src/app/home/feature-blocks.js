@@ -1,4 +1,7 @@
+import useTranslation from "next-translate/useTranslation";
+
 export default function FeaturesBlocks() {
+  const { t } = useTranslation("common");
   return (
     <section className="relative">
       {/* Section background (needs .relative class on parent and next sibling elements) */}
@@ -12,16 +15,17 @@ export default function FeaturesBlocks() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center  pb-12 md:pb-20">
-            <h2 className="h2 mb-4">Explore the solutions</h2>
-            <p className="text-xl text-gray-600">
-              The Architects Platform is a cutting-edge solution designed to
-              address the challenges and enhance the capabilities of architects
-              and designers.
-            </p>
+            <h2 className="h2 mb-4" data-aos="zoom-y-out">
+              {t("f_header")}
+            </h2>
+            <p className="text-xl text-gray-600">{t("f_header_desc")}</p>
           </div>
 
           {/* Items */}
-          <div className="max-w-sm mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none">
+          <div
+            className="max-w-sm mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none"
+            data-aos="zoom-y-out"
+          >
             {/* 1st item */}
             <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
               <svg
@@ -58,15 +62,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Initial design concept and inspirational designs
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_1")}
               </h4>
-              <p className="text-gray-600 text-center">
-                The application should provide a design concept based on the
-                architect&apos;s input on the needs of the client and other
-                constraints like location, budget and also generate inspiration
-                designs.
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_1_desc")}</p>
             </div>
 
             {/* 2nd item */}
@@ -102,14 +101,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Built in Drawing and Design tool
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_2")}
               </h4>
-              <p className="text-gray-600 text-center">
-                Users will have access to built in designing and sketching tools
-                where they can provide their ideas to the Architect to get
-                feedback, suggestion and variations of the design.
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_2_desc")}</p>
             </div>
 
             {/* 3rd item */}
@@ -148,15 +143,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Drawing to Render generation
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_3")}
               </h4>
-              <p className="text-gray-600 text-center">
-                The Architect assists in designing the interiors of houses and
-                buildings by providing designs as well as the setup of tools and
-                furnitures with only a prompt without the need to sketch and
-                render everything
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_3_desc")}</p>
             </div>
 
             {/* 4th item */}
@@ -194,14 +184,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Interior design generation and furniture generative fill
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_4")}
               </h4>
-              <p className="text-gray-600 text-center">
-                The drawings made on the platform as well as provided from users
-                as images will be rendered into realistic renders within
-                seconds.{" "}
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_4_desc")}</p>
             </div>
 
             {/* 5th item */}
@@ -234,14 +220,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Design modification and variation
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_5")}
               </h4>
-              <p className="text-gray-600 text-center">
-                The Architect will assist in shaping and modifying already made
-                designs as well as sketches based on a prompt and also provides
-                a suggestion and variation for the design
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_5_desc")}</p>
             </div>
 
             {/* 6th item */}
@@ -270,14 +252,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1">
-                Market Research Analysis and Cost Estimation
+              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+                {t("fb_item_6")}
               </h4>
-              <p className="text-gray-600 text-center">
-                Based on the design and requirement constraints The Architect
-                helps by analyzing the design needs and estimating the cost of
-                construction and suggests more affordable solutions.
-              </p>
+              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_6_desc")}</p>
             </div>
           </div>
         </div>

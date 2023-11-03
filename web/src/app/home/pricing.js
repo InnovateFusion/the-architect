@@ -1,20 +1,21 @@
 "use client";
 import { pricing } from "@/utils/constant";
 import React, { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 function Pricing() {
   const [x, setx] = useState(true);
+  const { t } = useTranslation("common");
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
         <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Designed for business teams <br /> like yours
+            {t("pr_header_1")} <br /> {t("pr_header_2")}
           </h2>
           <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
-            Here at Innovate Fusion we focus on architects where technology,
-            innovation, and capital can unlock long-term value and drive
-            economic growth.
+            {t("pr_header_desc")}
           </p>
 
           <div className="flex items-center justify-center mt-10 space-x-4">
@@ -74,7 +75,7 @@ function Pricing() {
                 href="#"
                 className=" bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 rounded-lg text-sm px-5 py-2.5 text-center  dark:focus:ring-primary-900 border hover:bg-blue-600 bg-blue-500 font-extrabold"
               >
-                Get started
+                {t("pr_action")}
               </a>
             </div>
           ))}
