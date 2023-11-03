@@ -8,7 +8,7 @@ import { useAllPosts } from "@/app/hooks/usePosts";
 import { useInView } from "react-intersection-observer";
 import { useRef, useEffect } from "react";
 export default function PostList() {
-  const router = useRouter()
+  const router = useRouter();
   const { ref, inView } = useInView();
   const myRef = useRef(null);
 
@@ -47,9 +47,11 @@ export default function PostList() {
     );
 
   if (isError) {
-    toast.error("Authentication failed. Please login again.");
-    router.push("/auth/signin")
-    return
+    if (error.status == 401) {
+      toast.error("Authentication failed. Please login again.");
+      router.push("/auth/signin");
+    }else toast.error("Something went wrong.");
+    return;
   }
 
   // render data
@@ -66,8 +68,8 @@ export default function PostList() {
               .map((index) => {
                 if (index == Object.keys(page).length - 3) {
                   return (
-                    <div ref={ref}>
-                      <PostCard key={page[index].id} post={page[index]} />
+                    <div ref={ref} key={page[index].id}>
+                      <PostCard  post={page[index]} />
                     </div>
                   );
                 } else {
@@ -77,10 +79,10 @@ export default function PostList() {
           )
         )}
       </div>
-        <div className="flex items-center justify-center">
-          {isFetchingNextPage && <p className="mb-4">Loading...</p>}
-          {!hasNextPage && <div> You have seen it All!</div>}
-        </div>
+      <div className="flex items-center justify-center">
+        {isFetchingNextPage && <p className="mb-4">Loading...</p>}
+        {!hasNextPage && <div> You have seen it All!</div>}
+      </div>
     </div>
   );
 }

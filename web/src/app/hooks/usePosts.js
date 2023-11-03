@@ -25,7 +25,7 @@ export const useAllPosts = () => {
   return useInfiniteQuery({
     queryFn: ({ pageParam = 0 }) => {
       return apiClient.allPosts({
-        limit: 12,
+        limit: 8,
         skip: pageParam,
       });
     },
