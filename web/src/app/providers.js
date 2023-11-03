@@ -12,14 +12,7 @@ export default function Providers({ children }) {
   }, []);
 
   if (!mounted) {
-    return (
-      <>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-        <ToastContainer theme={theme} />;
-      </>
-    );
+    return <></>;
   }
 
   return (

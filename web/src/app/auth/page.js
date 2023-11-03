@@ -53,7 +53,7 @@ export default function AuthenticationPage() {
               </h1>
             </div>
             <UserAuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
+            <div className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
                 href="/terms"
@@ -69,7 +69,7 @@ export default function AuthenticationPage() {
                 Privacy Policy
               </Link>
               .
-            </p>
+            </div>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import i18nConfig from "../../../i18n.json";
 
 const { locales, countries } = i18nConfig;
-export default function Test() {
+export default function Language() {
   const { lang } = useTranslation();
   //translations from common.json
   const router = useRouter();
