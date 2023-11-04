@@ -34,8 +34,8 @@ function Pricing() {
             <span className="text-base font-medium">ETB</span>
           </div>
         </div>
-        <div className="space-y-8 lg:grid lg:grid-cols-2 sm:gap-6 xl:gap-10 lg:space-y-0">
-          {pricing.map((e, i) => (
+        <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+          {pricing.slice(1).map((e, i) => (
             <div
               key={i}
               className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-500 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white"
@@ -46,10 +46,10 @@ function Pricing() {
               </p>
               <div className="flex justify-center items-baseline my-8">
                 <span className="mr-2 text-5xl font-extrabold">
-                  {i == 3 ? e.price : x ? "$" + e.priceD : e.priceB + " birr"}
+                  {i == 2 ? e.price : x ? "$" + e.priceD : e.priceB + " birr"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">
-                  {i != 3 && "/" + e.duration}
+                  {i != 2 && "/" + e.duration}
                 </span>
               </div>
               <ul role="list" className="mb-8 space-y-4 text-left">

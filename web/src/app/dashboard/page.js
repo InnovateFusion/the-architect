@@ -13,11 +13,11 @@ export default function Test() {
             height={512}
             alt="Avatar of Jonathan Reinink"
           />
-          <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+          <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white dark:bg-gray-800 shadow  rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal dark:border-gray-500">
             <div className="mb-8">
-              <p className="text-sm text-gray-600 flex items-center">
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
                 <svg
-                  className="fill-current text-gray-500 w-3 h-3 mr-2"
+                  className="fill-current  w-3 h-3 mr-2"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >
@@ -25,10 +25,12 @@ export default function Test() {
                 </svg>
                 New
               </p>
-              <div className="text-gray-900 font-bold text-xl mb-2">
+              <div className="text-gray-900 dark:text-white font-bold text-xl mb-2">
                 <Link href={e.link}>{e.title}</Link>
               </div>
-              <p className="text-gray-700 text-base">{e.desc}</p>
+              <p className="text-gray-700 dark:text-gray-400 text-base">
+                {e.desc}
+              </p>
             </div>
           </div>
         </div>

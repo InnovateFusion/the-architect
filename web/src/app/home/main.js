@@ -7,7 +7,7 @@ import useTranslation from "next-translate/useTranslation";
 export default function Hero() {
   const { t } = useTranslation("common");
   return (
-    <section className="flex md:flex-row flex-col-reverse p-5">
+    <section className="max-w-7xl mx-auto flex md:flex-row flex-col-reverse p-5">
       {/* Illustration behind hero content */}
       <div className="w-full md:w-1/2">
         <div
