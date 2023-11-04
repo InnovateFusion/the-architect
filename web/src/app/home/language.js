@@ -9,7 +9,7 @@ export default function Language() {
   const { lang } = useTranslation();
   //translations from common.json
   const router = useRouter();
-  const [selectedLanguage, setSelectedLanguage] = useState(lang); // Default language is English
+  const [selectedLanguage, setSelectedLanguage] = useState(lang || "en"); // Default language is English
   const handleLanguageChange = async (e) => {
     setSelectedLanguage(e.target.value);
     router.push(
