@@ -10,7 +10,6 @@ import { useRef, useEffect } from "react";
 export default function PostList() {
   const router = useRouter();
   const { ref, inView } = useInView();
-  const myRef = useRef(null);
 
   const {
     data,
@@ -38,9 +37,10 @@ export default function PostList() {
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 p-3">
         <div className="items-center justify-center absolute w-[60%] text-center top-[50%] left-[20%] z-50 flex flex-col">
           <span className="flex text-sm">
-            <Info /> Here are some facts while loading...
+            <Info /> Getting design inspirations is easy with our community...
+            {/* Here are some architectural facts while loading. */}
           </span>
-          <span className="type-facts text-2xl" />
+          {/* <span className="type-facts text-2xl" /> */}
         </div>
         <Skeleton />
       </div>
@@ -51,7 +51,7 @@ export default function PostList() {
       toast.error("Authentication failed. Please login again.");
       router.push("/auth/signin");
     }else toast.error("Something went wrong.");
-    return;
+    return <div className="items-center">Something went wrong</div>;
   }
 
   // render data

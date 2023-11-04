@@ -55,9 +55,10 @@ function List() {
               <>
                 <div className="items-center justify-center absolute w-[60%] text-center top-[50%] left-[20%] z-50 flex flex-col">
                   <span className="flex text-sm pb-3">
-                    <Info /> Here are some architectural facts while loading.
+                    <Info /> Getting design inspirations is easy with our community...
+                    {/* Here are some architectural facts while loading. */}
                   </span>
-                  <span className="type-facts text-2xl " />
+                  {/* <span className="type-facts text-2xl " /> */}
                 </div>
                 <Skeleton />
               </>

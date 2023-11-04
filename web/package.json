@@ -35,7 +35,6 @@
     "stripe": "^14.2.0",
     "swr": "^2.2.4",
     "tailwind-merge": "^1.14.0",
-    "tailwind-typewriter": "^1.0.1",
     "tailwindcss-animate": "^1.0.6",
     "zustand": "^4.4.4"
   },
