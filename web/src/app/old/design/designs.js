@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import designsStore from "../../../store/designs";
+import designsStore from "../../../store/store";
 import DesignCard from "./DesignCard";
 
 function DesignList() {

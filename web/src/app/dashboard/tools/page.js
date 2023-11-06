@@ -12,26 +12,35 @@ import Dropzone from "./dropzone";
 import Canvas from "./canvas";
 import Download from "./download";
 import { AlertCircle, Eraser } from "lucide-react";
-import Alert from "@/components/alert";
 import Loader from "@/components/Loader";
 import { toast } from "react-toastify";
 import { Step, Step2 } from "@/components/steps";
+import { useEditStore } from "@/store/store";
 
 export default function Chat() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [image, setImage] = useState(searchParams.get("image") || "");
+  const {
+    image,
+    setImage,
+    clearImage,
+    base64,
+    setbase64,
+    getBase64,
+    model,
+    setModel,
+  } = useEditStore();
   const [drawing, setDrawing] = useState("");
   const [mask, setMask] = useState("");
   const [chats, setChats] = useState(initialMessage);
   const [message, setMessage] = useState("");
-  const [model, setModel] = useState(searchParams.get("model") || "controlNet");
+  // const [model, setModel] = useState(searchParams.get("model") || "controlNet");
   const [predictions, setPredictions] = useState([]);
   const [userUploadedImage, setUserUploadedImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [upload, setupload] = useState(false);
   const [chatId, setChatId] = useState(searchParams.get("chatId"));
-  const [base64, setbase64] = useState(null);
+  // const [base64, setbase64] = useState(null);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const excalidrawRef = useRef(null);
@@ -40,51 +49,27 @@ export default function Chat() {
     `https://the-architect.onrender.com/api/v1/chats`
   );
 
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState(false);
-  const [alertType, setAlertType] = useState(false);
-
-  const hideAlert = () => {
-    setIsAlertVisible(false);
-  };
-
-  // Function to show the alert
-  const showAlert = (message, type) => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setIsAlertVisible(true);
-
-    // Automatically hide the alert after 5 seconds
-    setTimeout(() => {
-      hideAlert();
-    }, 5000);
-  };
-
   const handleOpen = () => {
     setOpen(!open);
   };
 
-  const handleUpload = (image) => {
-    setImage(image);
-    setupload(true);
+  const handleUpload = (file) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result;
+      setbase64(base64String.substr(23));
+      setImage(base64String);
+    };
+
+    if (file) {
+      console.log(file, reader.readAsDataURL(file));
+    }
   };
 
   const handleClick = async (img) => {
     setupload(false);
     setImage(img);
-    handleBase64(img);
-  };
-
-  const handleBase64 = async (img) => {
-    await imageUrlToBase64(img, (base64String) => {
-      if (base64String) {
-        setbase64(base64String);
-        // console.log("base", base64);
-      } else {
-        console.log("Failed to convert image to base64");
-        return "";
-      }
-    });
+    await getBase64(img);
   };
 
   const scrollToBottom = () => {
@@ -100,7 +85,7 @@ export default function Chat() {
     let userImage = "";
     switch (model) {
       case "controlNet":
-        userImage = drawing;
+        userImage = image;
         break;
       case "painting":
         userImage = !upload ? image : URL.createObjectURL(image);
@@ -111,7 +96,7 @@ export default function Chat() {
       case "instruction":
       case "image_to_3D":
       case "image_variant":
-        userImage = !upload ? image : URL.createObjectURL(image);
+        userImage = image;
         break;
       case "text_to_3D":
       case "image_from_text":
@@ -121,7 +106,7 @@ export default function Chat() {
         break;
     }
 
-    await handleBase64(userImage);
+    // await handleBase64(userImage);
     if (
       model != "text_to_image" &&
       model != "image_from_text" &&
@@ -129,7 +114,7 @@ export default function Chat() {
       model != "text_to_3D" &&
       !userImage
     ) {
-      showAlert("Please Upload or select an Image ", "blue");
+      toast.info("Please Upload or select an Image ");
       setLoading(false);
       return;
     }
@@ -186,7 +171,7 @@ export default function Chat() {
               ? "xsarchitectural-interior-design"
               : model == "painting"
               ? "stable-diffusion-v1-5-inpainting"
-              : "stable-diffusion-v1-5",
+              : model == "instruction" ? "instruct-pix2pix" :  "stable-diffusion-v1-5",
           prompt: message,
           controlnet: "scribble-1.1",
           image: model == "controlNet" ? drawing.substring(22) : base64,
@@ -217,7 +202,7 @@ export default function Chat() {
       scrollToBottom();
     } else {
       const { detail } = await res.json();
-      showAlert(detail, "red");
+      toast.error(detail);
     }
     setLoading(false);
   };
@@ -244,7 +229,7 @@ export default function Chat() {
     if (!ctx) return;
 
     ctx.font = "30px Virgil";
-    setDrawing(canvas.toDataURL());
+    setImage(canvas.toDataURL());
     return canvas.toDataURL();
   }
 
@@ -292,15 +277,15 @@ export default function Chat() {
     // e.preventDefault();
     setPredictions([]);
     setMask("");
-    setImage("");
+    clearImage();
     setupload(false);
     setDrawing("");
     setUserUploadedImage("");
   };
 
   return (
-    <div className="h-[96%] sm:flex ">
-      <div className="gap-2 w-full sm:w-1/2 min-h-[532px] flex flex-col justify-top items-center p-4">
+    <div className="h-full sm:flex ">
+      <div className="gap-2 w-full sm:w-1/2 min-h-[532px] flex flex-col justify-top items-center p-4 md:resize">
         {model == "controlNet" ? (
           <ExcalidrawPage
             excalidrawRef={excalidrawRef}
@@ -327,6 +312,7 @@ export default function Chat() {
           !image ? (
             <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
               <Step />
+              {/* <Step2 setMessage={setMessage} /> */}
             </div>
           ) : (
             <ImageZoom
@@ -361,13 +347,13 @@ export default function Chat() {
             />
           )
         ) : model == "text_to_3D" ? (
-          <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
+          <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center p-5">
             Input your prompt and click generate. Takes a while to Generate The
             3D Model.
           </div>
         ) : model == "chatbot" ? (
           <div className="h-[512px] flex items-center rounded-md border border-gray-600 w-[512px] justify-center ">
-            <Step2 />
+            <Step2 setMessage={setMessage} />
           </div>
         ) : (
           <ImageZoom
@@ -411,7 +397,7 @@ export default function Chat() {
             ))}
           </select>
         </div>
-        <div className="h-[97%] flex flex-col">
+        <div className="h-[92%] flex flex-col">
           <div
             className="p-2 border dark:border dark:border-gray-600 rounded-2xl mx-auto w-full space-y-4 bg-slate-300 overflow-y-auto h-[99vh]"
             id="chat-container"
@@ -429,7 +415,7 @@ export default function Chat() {
                 );
               })}
             {loading && <Loader />}
-            <h1 className="text-sm flex">
+            <h1 className="text-sm flex dark:text-black">
               <AlertCircle size={20} /> The Generative AI model might produce
               incomplete and inaccurate data.
             </h1>
@@ -473,7 +459,6 @@ export default function Chat() {
           )}
         </div>
       </div>
-      {isAlertVisible && <Alert message={alertMessage} type={alertType} />}
     </div>
   );
 }

@@ -6,7 +6,7 @@ function ChatBubble({ m, handleOpen, setImage }) {
   const message = JSON.parse(m);
   return (
     <div
-      className={`p2-3 flex justify-${
+      className={`py-3 flex justify-${
         message?.sender == "user" ? "end" : "start"
       }`}
     >

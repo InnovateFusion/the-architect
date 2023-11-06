@@ -30,9 +30,7 @@ function Projects() {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (res.status == 200) {
-      const posts = await res.json();
-    }
+    toast.success("Project Chat Successfully Deleted.")
     router.refresh("/dashboard/projects");
   };
   useEffect(() => {
@@ -65,12 +63,12 @@ function Projects() {
 
   const Iconss = Icons["plus"];
   return (
-    <div className="flex flex-row p-3 gap-3 h-[100%]">
+    <div className="flex md:flex-row flex-col p-3 gap-3 h-[100%]">
       <div
-        className={`w-${size} w- p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
+        className={`w-${size} min-h-[40%] md:h-[100%] p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
       >
         <div className="flex flex-col gap-2 justify-around">
-          <div className="flex w-full justify-center">
+          <div className="flex sticky w-full justify-center">
             <button
               onClick={(e) => {
                 setSize("2/5");
@@ -86,23 +84,26 @@ function Projects() {
             </button>
           </div>
           {!chats && <Loader />}
-          {chats?.map((chat, i) => {
+          {chats?.map((chatItem, i) => {
             const Icon = Icons["link"];
             return (
               <div
-                className="flex w-full items-center space-x-2 p-2 cursor-pointer hover:bg-gray-200 hover:border-r-8 dark:hover:bg-gray-700 overflow-x-hidden"
-                key={chat.id}
+                className={`flex w-full items-center space-x-2 p-2 cursor-pointer hover:bg-gray-300 hover:border-r-8 border-gray-500 dark:hover:bg-gray-700 overflow-x-hidden ${
+                  chat.id == chatItem.id &&
+                  "dark:bg-gray-700 bg-gray-300 border-r-8 border-gray-500"
+                }`}
+                key={chatItem.id}
                 onClick={(e) => {
                   setSize("2/5");
                   // router.push(`/dashboard/edit?chatId=${chat.id}`);
-                  setChat(chat);
+                  setChat(chatItem);
                 }}
               >
                 <span>
                   <Icon size={20} />
                 </span>
                 <span className="whitespace-nowrap overflow-x-hidden">
-                  {Capitalize(chat.title || "Title")}...
+                  {Capitalize(chatItem.title || "Title")}...
                 </span>
               </div>
             );

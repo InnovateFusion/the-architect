@@ -24,7 +24,7 @@ function Chat2({ size, chat, handleDelete }) {
     <div
       className={`w-${
         size == "full" ? "0 hidden" : "full"
-      }  bg-gray-3 border border-gray-2  rounded-lg sticky bottom-0 overflow-auto`}
+      }  min-h-[60%] bg-gray-3 border border-gray-2  rounded-lg sticky bottom-0 overflow-auto`}
     >
       <div className="p-2 sticky top-0 z-10 flex justify-between bg-gray-3 border border-gray-2  rounded-tr-lg items-center">
         <b className="whitespace-nowrap overflow-hidden">
@@ -56,7 +56,7 @@ function Chat2({ size, chat, handleDelete }) {
           )}
         </div>
       </div>
-      <div className="overflow-auto p-3">
+      <div className="overflow-auto p-8 gap-5 ">
         {chat?.messages?.map((m, i) => {
           return (
             <ChatBuble

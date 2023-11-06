@@ -7,7 +7,7 @@ export default async function DashboardLayout({ children }) {
       <aside className=" max-h-screen w-20 p-5 bg-gray-3 border border-gray-2   rounded-lg sticky top-0 md:block ">
         <Nav />
       </aside>
-      <main className="flex-1 bg-gray-3 border border-gray-2  rounded-lg  max-h-screen overflow-auto pb-5 pt-3">
+      <main className="flex-1 bg-gray-3 border border-gray-2  rounded-lg  max-h-screen overflow-auto ">
         {/* <Header /> */}
         {children}
       </main>

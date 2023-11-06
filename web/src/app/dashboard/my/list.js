@@ -55,7 +55,7 @@ function List() {
               <>
                 <div className="items-center justify-center absolute w-[60%] text-center top-[50%] left-[20%] z-50 flex flex-col">
                   <span className="flex text-sm pb-3">
-                    <Info /> Getting design inspirations is easy with our community...
+                    <Info /> Easily manage and redisign your designs...
                     {/* Here are some architectural facts while loading. */}
                   </span>
                   {/* <span className="type-facts text-2xl " /> */}

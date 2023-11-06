@@ -47,16 +47,44 @@ export default function PostList() {
     );
 
   if (isError) {
-    if (error.status == 401) {
+    if (error.response.status == 401) {
       toast.error("Authentication failed. Please login again.");
       router.push("/auth/signin");
-    }else toast.error("Something went wrong.");
+      return;
+    } else toast.error("Something went wrong.");
     return <div className="items-center">Something went wrong</div>;
   }
 
   // render data
   return (
     <div>
+      <div className="box p-6 shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-sm flex flex-row justify-start md:justify-start items-start mx-auto ">
+        <div className="box-wrapper w-fit">
+          <div className=" rounded flex items-center w-full p-3 shadow-sm border">
+            <input
+              type="search"
+              name=""
+              id=""
+              placeholder="Search for designs with AI..."
+              x-model="q"
+              className="w-full pl-2 text-sm outline-none focus:outline-none bg-transparent"
+            />
+            <button className="outline-none focus:outline-none">
+              <svg
+                className=" w-5  h-5 cursor-pointer"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
       <div className=" grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 space-y-4 py-6 px-2">
         {data?.length == 0 ? (
           <div>No Posts Yet </div>
@@ -68,8 +96,8 @@ export default function PostList() {
               .map((index) => {
                 if (index == Object.keys(page).length - 3) {
                   return (
-                    <div ref={ref} key={page[index].id}>
-                      <PostCard  post={page[index]} />
+                    <div key={page[index].id}>
+                      <PostCard innerRef={ref} post={page[index]} />
                     </div>
                   );
                 } else {

@@ -57,7 +57,7 @@ export const models2 = [
   { code: "image_to_image", name: "Reference this" },
   { code: "controlNet", name: "Drawing to Design" },
   { code: "painting", name: "Design Modification" },
-  { code: "instruction", name: "Edit my Design" },
+  { code: "instruction", name: "Modify my Design" },
   { code: "image_variant", name: "Design Variation" },
   { code: "image_from_text", name: "Exterior Design" },
   { code: "edit_image", name: "Edit my Design" },

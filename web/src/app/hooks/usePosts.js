@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { usePostStore, usePostsStore } from "@/store/designs";
+import { usePostStore, usePostsStore } from "@/store/store";
 import APIClient from "@/store/apiClient";
 
 const usePosts = () => {
@@ -32,7 +32,7 @@ export const useAllPosts = () => {
     queryKey: ["posts"],
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage.next) {
-        return null
+        return null;
       }
       return lastPage.prevSkip;
     },
