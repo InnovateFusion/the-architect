@@ -2,12 +2,12 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { usePostStore, usePostsStore } from "@/store/store";
 import APIClient from "@/store/apiClient";
 
-const usePosts = () => {
+const usePosts = (prop) => {
   const posts = usePostsStore((state) => state.posts);
   const apiClient = new APIClient();
   return useQuery({
     queryKey: [posts, "posts"],
-    queryFn: () => apiClient.getAll(),
+    queryFn: () => apiClient.getAll(prop),
   });
 };
 
@@ -20,13 +20,15 @@ export const usePost = (id) => {
   });
 };
 
-export const useAllPosts = () => {
+export const useAllPosts = ({search, tag}) => {
   const apiClient = new APIClient();
   return useInfiniteQuery({
     queryFn: ({ pageParam = 0 }) => {
       return apiClient.allPosts({
         limit: 8,
         skip: pageParam,
+        search_word: search || null,
+        tags: tag || null,
       });
     },
     queryKey: ["posts"],

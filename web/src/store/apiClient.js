@@ -26,10 +26,15 @@ class APIClient {
     this.endpoint = endpoint;
   }
 
-  getAll = async () => {
-    const response = await axiosInstance.get(`posts/all?limit=12`, {
-      headers: token,
-    });
+  getAll = async ({ limit, search_word, tags }) => {
+    const response = await axiosInstance.get(
+      `posts/all?limit=${limit ? limit : "8"}${
+        search_word ? "&search_word=" + search_word : ""
+      }${tags ? tags.map((tag) => "&tags=" + tag) : ""}`,
+      {
+        headers: token,
+      }
+    );
     return response.data;
   };
 

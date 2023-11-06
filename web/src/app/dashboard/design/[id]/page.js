@@ -4,10 +4,12 @@ import DesignView from "../../designs/DesignView";
 import ImageZoom from "react-image-zooom";
 import { Capitalize } from "@/utils/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { usePost } from "@/app/hooks/usePosts";
 export default function Design({ params: { id } }) {
+  const router = useRouter();
   const { data: design, isLoading, isError, error } = usePost(id);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
@@ -166,6 +168,9 @@ export default function Design({ params: { id } }) {
                   <button
                     key={index}
                     className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600"
+                    onClick={(e) =>
+                      router.push(`/dashboard/designs/search?tags=${tag}`)
+                    }
                   >
                     {tag}
                   </button>
@@ -181,7 +186,6 @@ export default function Design({ params: { id } }) {
     </div>
   );
 }
-
 
 const view = (
   <svg

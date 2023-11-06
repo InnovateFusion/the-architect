@@ -4,6 +4,8 @@ import { imageUrlToBase64 } from "@/utils/utils";
 
 export const usePostsStore = create((set) => ({
   posts: [],
+  searchKey: null,
+  setSearch: (key) => ({ searchKey: key}),
   setPosts: (data) => set({ posts: data }),
 }));
 

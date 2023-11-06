@@ -1,14 +1,15 @@
 "use client";
 import { Info } from "lucide-react";
-import PostCard from "./PostCard";
-import Skeleton from "./PostSkeleton";
+import PostCard from "../PostCard";
+import Skeleton from "../PostSkeleton";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useAllPosts } from "@/app/hooks/usePosts";
 import { useInView } from "react-intersection-observer";
 import { useRef, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import Tags from "./tags";
+import Tags from "../tags";
+
 export default function PostList() {
   const router = useRouter();
   const { ref, inView } = useInView();
@@ -35,6 +36,11 @@ export default function PostList() {
       fetchNextPage();
     }
   }, [hasNextPage, inView, fetchNextPage]);
+  
+  useEffect(() => {
+    router.refresh()
+  }, [search]);
+  
 
   if (isLoading)
     return (
