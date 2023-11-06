@@ -15,7 +15,7 @@ const MonthlySubscriptionCard = ({ plan }) => {
       amount: plan == "Starter" ? 1000 : 3000,
       plan: "yearly",
       planDescription: `Subscribe for $ ${
-        plan == "Starter" ? 10.00 : 30.00
+        plan == "Starter" ? 10.0 : 30.0
       } Monthly`,
     };
 
@@ -35,16 +35,20 @@ const MonthlySubscriptionCard = ({ plan }) => {
   };
   // render a simple card
   return (
-    <div className="border items-center rounded-md p-8 flex flex-col gap-2 ">
-      <h2 className="text-xl font-bold">Monthly Subscription</h2>
-      <p className="">
-        ${plan == "Starter" ? 9.99 : 29.99} per month
-      </p>
+    <div className=" items-center rounded-md p-8 flex flex-col gap-2 ">
+      <h2 className="text-xl font-bold">
+        {plan != "Enterprise" ? "Monthly Subscription" : "Customized"}
+      </h2>
+      {plan != "Enterprise" ? (
+        <p className="">${plan == "Starter" ? 9.99 : 29.99} per month</p>
+      ) : (
+        "based on your needs."
+      )}
       <button
         onClick={() => handleClick()}
         className="border  rounded-md w-full transition-colors bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 text-sm px-5 py-2.5 text-center  dark:focus:ring-primary-900 hover:bg-blue-600 bg-blue-500 font-extrabold"
       >
-        Subscribe
+        {plan != "Enterprise" ? "Subscribe" : "Contact Us"}
       </button>
     </div>
   );
