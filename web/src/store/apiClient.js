@@ -45,6 +45,22 @@ class APIClient {
     return response.data;
   };
 
+  generate = async (prompt) => {
+    if (!prompt) return;
+    const response = await fetch(
+      `https://the-architect.onrender.com/api/v1/free`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: prompt }),
+      }
+    );
+    const data = await response.json();
+    return data;
+  };
+
   allPosts = async ({ limit, skip, tags, search_word }) => {
     const response = await axiosInstance.get(`posts/all`, {
       headers: token,
