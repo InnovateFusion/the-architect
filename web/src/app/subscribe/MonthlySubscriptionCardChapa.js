@@ -1,10 +1,11 @@
 // components/MonthlySubscriptionCard.tsx
 "use client";
+
 import { useRouter } from "next/navigation";
 
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 
-const MonthlySubscriptionCard = ({ plan }) => {
+const ChapaMonthlySubscriptionCard = ({ plan }) => {
   const router = useRouter();
 
   const handleClick = async () => {
@@ -13,8 +14,8 @@ const MonthlySubscriptionCard = ({ plan }) => {
       return;
     }
     // step 1: load stripe
-    const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-    const stripe = await loadStripe(STRIPE_PK);
+    // const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    // const stripe = await loadStripe(STRIPE_PK);
 
     // step 2: define the data for monthly subscription
     const body = {
@@ -27,8 +28,8 @@ const MonthlySubscriptionCard = ({ plan }) => {
     };
 
     // step 3: make a post fetch api call to /checkout-session handler
-    const result = await fetch("/api/v1/checkout/stripe", {
-      method: "post",
+    const result = await fetch("/api/v1/checkout/chapa", {
+      method: "POST",
       body: JSON.stringify(body, null),
       headers: {
         "content-type": "application/json",
@@ -36,11 +37,11 @@ const MonthlySubscriptionCard = ({ plan }) => {
     });
 
     // step 4: get the data and redirect to checkout using the sessionId
-    const data = await result.json();
-    const sessionId = data.id;
-    stripe?.redirectToCheckout({ sessionId });
+    if (result.status == 200) {
+      const data = await result.json();
+      router.push(data?.data?.checkout_url);
+    }
   };
-  // render a simple card
   return (
     <div className=" items-center rounded-md p-8 flex flex-col gap-2 ">
       <h2 className="text-xl font-bold">
@@ -60,4 +61,4 @@ const MonthlySubscriptionCard = ({ plan }) => {
     </div>
   );
 };
-export default MonthlySubscriptionCard;
+export default ChapaMonthlySubscriptionCard;

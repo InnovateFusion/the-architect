@@ -45,5 +45,5 @@ export async function POST(req) {
   }
 }
 export async function GET(req) {
-  return NextResponse.json({ checkout: "session" });
+  return NextResponse.json({ checkout: "stripe" });
 }

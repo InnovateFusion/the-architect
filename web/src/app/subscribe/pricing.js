@@ -2,6 +2,7 @@
 import { pricing } from "@/utils/constant";
 import React, { useState } from "react";
 import MonthlySubscriptionCard from "./MonthlySubscriptionCard";
+import ChapaMonthlySubscriptionCard from "./MonthlySubscriptionCardChapa";
 
 function Pricing() {
   const [x, setx] = useState(true);
@@ -71,7 +72,11 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              <MonthlySubscriptionCard plan={e.name} />
+              {x ? (
+                <MonthlySubscriptionCard plan={e.name} />
+                ) : (
+                <ChapaMonthlySubscriptionCard plan={e.name} />
+              )}
             </div>
           ))}
         </div>
