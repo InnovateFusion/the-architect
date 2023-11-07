@@ -39,6 +39,7 @@ export default function ModalVideo({
               width={thumbWidth}
               height={thumbHeight}
               alt={thumbAlt}
+              className="w-auto"
             />
             <svg
               className="absolute inset-0 max-w-full mx-auto md:max-w-none h-auto"

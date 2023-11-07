@@ -64,7 +64,7 @@ export default function PostList() {
     <div>
       <div className="box p-6 shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-sm flex flex-row justify-start md:justify-start items-start mx-auto ">
         <div className="box-wrapper w-fit">
-          <div className=" rounded flex items-center w-full p-3 shadow-sm ">
+          <div className=" rounded flex items-center w-full p-2 shadow-sm border border-gray-500">
             <input
               type="search"
               value={search}
@@ -85,7 +85,7 @@ export default function PostList() {
             <button
               className="outline-none focus:outline-none"
               onClick={() =>
-                router.push(`/dashboard/designs?search=${search}&tags=${tag}`)
+                router.push(`/dashboard/designs/search?search=${search}&tags=${tag}`)
               }
             >
               <svg

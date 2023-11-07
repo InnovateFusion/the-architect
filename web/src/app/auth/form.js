@@ -6,8 +6,8 @@ import useTranslation from "next-translate/useTranslation";
 
 export function UserAuthForm({ className, ...props }) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [username, setUsername] = React.useState("dev@bisrat.tech");
-  const [password, setPassword] = React.useState("12345678");
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const router = useRouter();
   const { t } = useTranslation("common");
 

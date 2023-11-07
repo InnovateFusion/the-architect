@@ -85,6 +85,7 @@ export default function Profile() {
                   width={512}
                   height={512}
                   onClick={handleOpen}
+                  priority
                 />
               </div>
               <div className="w-[50%] aspect-square rounded-lg m-4 aligh-center justify-center">

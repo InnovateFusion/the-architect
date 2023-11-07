@@ -41,7 +41,7 @@ export default function Hero() {
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Hero content */}
-          <div className="p-3 md:pt-14 md:pb-20">
+          <div className="p-3 md:py-14 ">
             {/* Section header */}
             <div className="text-center pb-12 md:pb-16">
               <h1
@@ -81,7 +81,7 @@ export default function Hero() {
         </div>
       </div>
       <div className="w-full md:w-1/2 ">
-        {/* <Transition
+        <Transition
           show={true}
           appear={true}
           className="w-full"
@@ -92,15 +92,16 @@ export default function Hero() {
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 -translate-y-16"
           unmount={false}
-        > */}
+        >
         <Image
           src="/room.png"
           height={1024}
           width={1024}
           alt="hero"
           className=""
+          priority
         />
-        {/* </Transition> */}
+        </Transition>
       </div>
     </section>
   );

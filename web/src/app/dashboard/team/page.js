@@ -15,7 +15,7 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             <Image
-              className=""
+              className="w-auto"
               src="/logo.svg"
               alt="Next.js Logo"
               width={130}

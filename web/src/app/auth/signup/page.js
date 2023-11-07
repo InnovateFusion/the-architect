@@ -55,9 +55,8 @@ export default function SignUp() {
     setIsLoading(false);
   }
 
-  const [token, setToken] = React.useState(null);
   React.useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
     if (token) {
       router.push("/dashboard");
     }

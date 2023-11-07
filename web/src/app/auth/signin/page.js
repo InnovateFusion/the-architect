@@ -8,8 +8,8 @@ import useTranslation from "next-translate/useTranslation";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [email, setEmail] = React.useState("dev@bisrat.tech");
-  const [password, setPassword] = React.useState("12345678");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const router = useRouter();
   const { t } = useTranslation("common");
 

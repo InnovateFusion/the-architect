@@ -1,20 +1,23 @@
 "use client";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import i18nConfig from "../../../i18n.json";
 
 const { locales, countries } = i18nConfig;
 export default function Language() {
-  const { lang } = useTranslation();
+  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  console.log(pathname)
+  const lang = searchParams.get("lang")
   //translations from common.json
   const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState(lang || "en"); // Default language is English
   const handleLanguageChange = async (e) => {
     setSelectedLanguage(e.target.value);
     router.push(
-      `/home?lang=${e.target.value}`,
-      `/home?lang=${e.target.value}`,
+      `${pathname}?lang=${e.target.value}`,
+      `${pathname}?lang=${e.target.value}`,
       { locale: `${e.target.value}` }
     );
   };

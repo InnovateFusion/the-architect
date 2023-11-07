@@ -12,12 +12,11 @@ function Mobile() {
         data-aos="zoom-y-out"
       >
         <Image
-          className="rounded-lg transform animate-float"
+          className="rounded-lg transform animate-float w-auto"
           src={"/mobile.jpg"}
           width={200}
-          height="44"
+          height={200}
           alt="Element"
-          // style={{ top: "30%" }}
         />
         <h3 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
           {t("mb_header")}

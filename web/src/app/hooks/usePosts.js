@@ -20,6 +20,14 @@ export const usePost = (id) => {
   });
 };
 
+export const useGenerate = (prompt) => {
+  const apiClient = new APIClient();
+  return useQuery({
+    queryKey: ["generation"],
+    queryFn: () => apiClient.generate(prompt),
+  });
+};
+
 export const useAllPosts = ({search, tag}) => {
   const apiClient = new APIClient();
   return useInfiniteQuery({

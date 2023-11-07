@@ -65,7 +65,7 @@ function Pricing() {
               </p>
               <div className="flex justify-center items-baseline my-8">
                 <span className="mr-2 text-5xl font-extrabold">
-                  {i == 3 ? e.price : x ? "$" + e.priceD : e.priceB + " birr"}
+                  {i == 3 ? e.price : x ? "$" + e.priceD : e.priceB + " ETB"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">
                   {i != 3 && "/" + e.duration}

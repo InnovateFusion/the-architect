@@ -1,32 +1,44 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { Capitalize } from "@/utils/utils";
 
-const people = [
-  "All",
-  "Top Choice",
-  "Architectural Design",
-  "Interior Design",
-  "Urban Planning",
-  "Landscape Design",
-  "Handmade Models",
-  "Others",
+const taglist = [
+  "exterior",
+  "facade",
+  "outdoor",
+  "landscape",
+  "architectural facade",
+  "outdoor design",
+  "interior",
+  "indoor",
+  "interior design",
+  "space planning",
+  "furniture design",
+  "decor",
+  "lighting",
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tags() {
-  const [selected, setSelected] = useState(people[0]);
+export default function Tags({setTag}) {
+  const [selected, setSelected] = useState(taglist[0]);
+  const handleChange = (index)=>{
+    setSelected(index)
+    setTag(taglist[index]);
+  }
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={handleChange}>
       {({ open }) => (
         <>
-          <div className="relative mt-2">
-            <Listbox.Button className="relative w-full min-w-[200px] cursor-default rounded-md bg-transparent dark:bg-gray-600 py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          <div className="relative">
+            <Listbox.Button className="relative w-full min-w-[100px] cursor-default rounded-md bg-transparent py-1.5 pl-3 pr-10 text-left shadow-sm sm:text-sm sm:leading-6 border border-gray-500">
               <span className="flex items-center">
-                <span className="ml-3 block truncate">{selected}</span>
+                <span className="ml-3 block truncate">
+                  {Capitalize(selected)}
+                </span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <svg
@@ -51,8 +63,8 @@ export default function Tags() {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white dark:bg-gray-500  py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {people.map((person) => (
+              <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-fit overflow-auto rounded-md bg-white dark:bg-gray-500  py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {taglist.map((person) => (
                   <Listbox.Option
                     key={person}
                     className={({ active }) =>
@@ -74,7 +86,7 @@ export default function Tags() {
                               "ml-3 block truncate"
                             )}
                           >
-                            {person}
+                            {Capitalize(person)}
                           </span>
                         </div>
 

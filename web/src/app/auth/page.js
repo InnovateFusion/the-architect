@@ -24,7 +24,14 @@ export default function AuthenticationPage() {
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex flex-col items-center  text-lg font-medium">
             <span className="flex gap-4 items-center justify-center p-3">
-              <Image src="/logo.svg" alt="" width={40} height={40} />
+              <Image
+                src="/logo.svg"
+                alt=""
+                width={40}
+                height={40}
+                priority
+                className="w-auto"
+              />
               The Architect by Innovate Fusion
               <Image src="/if.png" alt="" width={80} height={80} />
             </span>
@@ -35,6 +42,7 @@ export default function AuthenticationPage() {
                 height={843}
                 alt="Authentication"
                 className="block w-[80%]"
+                priority
               />
               <Image
                 src="/house.jpg"
@@ -42,6 +50,7 @@ export default function AuthenticationPage() {
                 height={843}
                 alt="Authentication"
                 className="hidden dark:block"
+                priority
               />
             </div>
           </div>

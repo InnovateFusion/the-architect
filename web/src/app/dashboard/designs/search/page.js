@@ -68,10 +68,11 @@ export default function PostList() {
   // render data
   return (
     <div>
-      <div className="box p-6 shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-sm flex flex-row justify-start md:justify-start items-start mx-auto ">
+      <div className="box p-6 shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-3xl flex flex-row justify-start md:justify-start items-start mx-auto ">
         <div className="box-wrapper w-fit">
           <div className=" rounded flex items-center w-full p-3 shadow-sm ">
             <input
+              autoFocus
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -134,7 +135,7 @@ export default function PostList() {
       </div>
       <div className="flex items-center justify-center">
         {isFetchingNextPage && <p className="mb-4">Loading...</p>}
-        {!hasNextPage && <div> You have seen it All!</div>}
+        {!hasNextPage && <div> No more designs.</div>}
       </div>
     </div>
   );

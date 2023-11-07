@@ -22,11 +22,11 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             <Image
-              className=""
               src="/logo.svg"
               alt="Next.js Logo"
               width={130}
               height={24}
+              className="w-auto"
               priority
             />
             The Architect

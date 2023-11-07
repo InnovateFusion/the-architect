@@ -189,6 +189,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -196,7 +197,8 @@ export default function Features() {
                         width={500}
                         height="44"
                         alt="Element"
-                        style={{ top: "30%" }}
+                        style={{ top: "30%"}}
+                        priority
                       />
                     </div>
                   </Transition>
@@ -221,6 +223,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -229,6 +232,7 @@ export default function Features() {
                         height="44"
                         alt="Element"
                         style={{ top: "30%" }}
+                        priority
                       />
                     </div>
                   </Transition>
@@ -253,6 +257,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -261,6 +266,7 @@ export default function Features() {
                         height="44"
                         alt="Element"
                         style={{ top: "30%" }}
+                        priority
                       />
                     </div>
                   </Transition>

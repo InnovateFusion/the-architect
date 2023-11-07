@@ -27,7 +27,7 @@ export default function FeaturesBlocks() {
             data-aos="zoom-y-out"
           >
             {/* 1st item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -35,7 +35,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"
@@ -69,7 +69,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 2nd item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white  rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -77,7 +77,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"
@@ -108,7 +108,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 3rd item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -116,7 +116,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"
@@ -150,7 +150,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 4th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -158,7 +158,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"
@@ -191,7 +191,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 5th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -199,7 +199,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"
@@ -227,7 +227,7 @@ export default function FeaturesBlocks() {
             </div>
 
             {/* 6th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -235,7 +235,7 @@ export default function FeaturesBlocks() {
               >
                 <g fill="none" fillRule="evenodd">
                   <rect
-                    className="fill-current text-blue-600"
+                    className="fill-current text-green-500"
                     width="64"
                     height="64"
                     rx="32"

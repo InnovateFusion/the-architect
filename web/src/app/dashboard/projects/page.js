@@ -30,11 +30,11 @@ function Projects() {
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("Project Chat Successfully Deleted.")
+    toast.success("Project Chat Successfully Deleted.");
     router.refresh("/dashboard/projects");
   };
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserChat = async () => {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       try {
@@ -52,32 +52,33 @@ function Projects() {
         if (response.status == 200) {
           const result = await response.json();
           setChats(result);
-          console.log(result[0]);
+        } else {
+          toast.error("Failed to Load Your Projects.");
         }
       } catch (error) {
         console.error(error);
+        toast.error("Unable to Load Your Projects.");
       }
     };
-    fetchUser();
+    fetchUserChat();
   }, []);
 
   const Iconss = Icons["plus"];
   return (
     <div className="flex md:flex-row flex-col p-3 gap-3 h-[100%]">
       <div
-        className={`w-${size} min-h-[40%] md:h-[100%] p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
+        className={`w-fit min-h-[40%] md:h-[100%] p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
       >
         <div className="flex flex-col gap-2 justify-around">
           <div className="flex sticky w-full justify-center">
             <button
               onClick={(e) => {
-                setSize("2/5");
-                router.push(`/dashboard/edit`);
+                router.push(`/dashboard/tools`);
                 setChat("");
               }}
               variant="gradient"
               color="indigo"
-              className="flex gap-2 btn btn-primary bg-blue-gray-700 hover:bg-blue-gray-900 duration-100"
+              className="flex gap-2 btn btn-primary p-3 bg-green-600 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-500 duration-100"
             >
               <Iconss size={20} />
               Create New Project

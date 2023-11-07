@@ -12,6 +12,7 @@ export default function Test() {
             width={512}
             height={512}
             alt="Avatar of Jonathan Reinink"
+            priority
           />
           <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white dark:bg-gray-800 shadow  rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal dark:border-gray-500">
             <div className="mb-8">

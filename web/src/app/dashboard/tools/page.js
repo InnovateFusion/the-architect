@@ -156,53 +156,58 @@ export default function Chat() {
       setUrl(
         `https://the-architect.onrender.com/api/v1/chats/${chatId}/messages`
       );
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        payload: {
-          model:
-            model == "text_to_image"
-              ? "xsarchitectural-interior-design"
-              : model == "painting"
-              ? "stable-diffusion-v1-5-inpainting"
-              : model == "instruction" ? "instruct-pix2pix" :  "stable-diffusion-v1-5",
-          prompt: message,
-          controlnet: "scribble-1.1",
-          image: model == "controlNet" ? drawing.substring(22) : base64,
-          negative_prompt: "Disfigured, cartoon, blurry",
-          mask_image: model == "painting" ? mask.substring(22) : "",
-          strength: 0.5,
-          width: 512,
-          height: 512,
-          steps: 25,
-          guidance: 7.5,
-          seed: 0,
-          scheduler: model == "painting" ? "ddim" : "dpmsolver++",
-          output_format: "jpeg",
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        model: model,
-      }),
-    });
+        body: JSON.stringify({
+          user_id: userId,
+          payload: {
+            model:
+              model == "text_to_image"
+                ? "xsarchitectural-interior-design"
+                : model == "painting"
+                ? "stable-diffusion-v1-5-inpainting"
+                : model == "instruction"
+                ? "instruct-pix2pix"
+                : "stable-diffusion-v1-5",
+            prompt: message,
+            controlnet: "scribble-1.1",
+            image: model == "controlNet" ? drawing.substring(22) : base64,
+            negative_prompt: "Disfigured, cartoon, blurry",
+            mask_image: model == "painting" ? mask.substring(22) : "",
+            strength: 0.5,
+            width: 512,
+            height: 512,
+            steps: 25,
+            guidance: 7.5,
+            seed: 0,
+            scheduler: model == "painting" ? "ddim" : "dpmsolver++",
+            output_format: "jpeg",
+          },
+          model: model,
+        }),
+      });
 
-    if (res.status == 200) {
-      const chat = await res.json();
-      if (chatId != null) {
-        const x = JSON.stringify(chat);
-        setChats((oldArray) => [...oldArray, x]);
+      if (res.status == 200) {
+        const chat = await res.json();
+        if (chatId != null) {
+          const x = JSON.stringify(chat);
+          setChats((oldArray) => [...oldArray, x]);
+        } else {
+          setChats([...chats, ...chat.messages]);
+          setChatId(chat.id);
+        }
+        scrollToBottom();
       } else {
-        setChats([...chats, ...chat.messages]);
-        setChatId(chat.id);
+        const { detail } = await res.json();
+        toast.error(detail);
       }
-      scrollToBottom();
-    } else {
-      const { detail } = await res.json();
-      toast.error(detail);
+    } catch (error) {
+      toast.error(error.message);
     }
     setLoading(false);
   };
@@ -256,17 +261,27 @@ export default function Chat() {
 
         const url = `https://the-architect.onrender.com/api/v1/chats/${chatId}`;
 
-        const res = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (res.status == 200) {
-          const posts = await res.json();
-          setChats([...initialMessage, ...posts.messages]);
-          scrollToBottom();
+        try {
+          const res = await fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (res.status == 200) {
+            const posts = await res.json();
+            setChats([...initialMessage, ...posts.messages]);
+            scrollToBottom();
+          } else {
+            toast.error(
+              "Unable to fetch your Project. Please check your internet"
+            );
+          }
+        } catch (err) {
+          toast.error(
+            "Unable to fetch your Project. Please check your internet"
+          );
         }
       };
       getChat();
