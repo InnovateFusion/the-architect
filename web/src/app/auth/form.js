@@ -97,6 +97,7 @@ export function UserAuthForm({ className, ...props }) {
                   className="input input-bordered w-full "
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
+                  autoComplete="current-password"
                 />
               </div>
               <button className="btn btn-primary m-2" disabled={isLoading}>

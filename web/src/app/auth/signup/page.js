@@ -76,7 +76,7 @@ export default function SignUp() {
 
           {/* Form */}
           <div className="max-w-sm mx-auto">
-            <form>
+            <form onSubmit={onSubmit}>
               <div className="flex  -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
@@ -131,6 +131,7 @@ export default function SignUp() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -150,6 +151,7 @@ export default function SignUp() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="new-password"
                   />
                 </div>
               </div>
@@ -157,7 +159,6 @@ export default function SignUp() {
                 <div className="w-full px-3">
                   <button
                     className={`btn text-white bg-blue-500 hover:bg-blue-700 disabled:bg-black w-full`}
-                    onClick={onSubmit}
                     disabled={isLoading}
                   >
                     {isLoading ? "Signing Up..." : "Sign up"}
