@@ -10,6 +10,12 @@ class Auth(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+class AuthGoogle(BaseModel):
+    email: str
+    
+    class Config:
+        arbitrary_types_allowed = True
+
 @dataclass
 class AuthEntity(BaseEntity):
     access_token: str

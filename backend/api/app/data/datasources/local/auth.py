@@ -1,13 +1,13 @@
 import datetime
-import jwt
-from sqlalchemy.orm import Session
+import os
 from abc import ABC, abstractmethod
+
+import jwt
+from app.data.models.user import UserModel
 from app.domain.entities.auth import Auth, AuthEntity
 from core.common.password import verify_password
 from core.errors.exceptions import CacheException
-from app.data.models.user import UserModel
-import os
-
+from sqlalchemy.orm import Session
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
@@ -37,9 +37,3 @@ class AuthLocalDataSourceImpl(AuthLocalDataSource):
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         
         return AuthEntity(access_token=encoded_jwt, token_type="bearer", id=_user.id)
-    
-
-        
-        
-        
-            

@@ -1,11 +1,11 @@
-from fastapi import HTTPException, APIRouter, Depends, HTTPException, status
 from app.data.datasources.local.auth import AuthLocalDataSourceImpl
-from app.domain.repositories.auth import BaseRepository as AuthRepository
 from app.data.repositories.auth import AuthRepositoryImpl
-from app.domain.entities.auth import Auth
+from app.domain.entities.auth import Auth, AuthGoogle
+from app.domain.repositories.auth import BaseRepository as AuthRepository
 from core.config.database_config import get_db
-from sqlalchemy.orm.session import Session
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy.orm.session import Session
 
 
 class AuthResponse(BaseModel):
@@ -36,4 +36,5 @@ async def get_token(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
 

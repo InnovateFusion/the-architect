@@ -10,9 +10,9 @@ class MessageRepositoryImpl(BaseRepository):
     def __init__(self, message_local_datasource: MessageLocalDataSource):
         self.message_local_datasource = message_local_datasource
         
-    async def create_message(self, message: Message, chat_id: str) -> Either[Failure, MessageEntity]:
+    async def create_message(self, message: Message, chat_id: str, user_id: str) -> Either[Failure, MessageEntity]:
         try:
-            chat_entity = await self.message_local_datasource.create_chat(message, chat_id)
+            chat_entity = await self.message_local_datasource.create_chat(message, chat_id, user_id)
             return Either.right(chat_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))

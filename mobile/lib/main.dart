@@ -13,19 +13,25 @@ import 'injection_container.dart' as di;
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
+    statusBarColor: Color.fromARGB(255, 236, 238, 244),
     statusBarIconBrightness: Brightness.dark,
   ));
 
   Bloc.observer = const SimpleBlocObserver();
 
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await di.init();
-  runApp(const MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

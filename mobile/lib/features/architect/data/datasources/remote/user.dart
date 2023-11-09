@@ -34,6 +34,7 @@ abstract class UserRemoteDataSource {
   Future<UserModel> unfollowUser(String id, String token);
   Future<List<UserModel>> followersUser(String id, String token);
   Future<List<UserModel>> followingUser(String id, String token);
+  Future<List<UserModel>> viewsAll(String token);
 }
 
 class UserRemoteDataSourceImpl extends UserRemoteDataSource {
@@ -231,6 +232,25 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     );
     if (response.statusCode == 200) {
       return UserModel.fromJson(json.decode(response.body));
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<UserModel>> viewsAll(String token) async {
+    final response = await client.get(
+      Uri.parse('https://the-architect.onrender.com/api/v1/users'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Future.value((json.decode(response.body) as List)
+          .map((e) => UserModel.fromJson(e))
+          .toList());
     } else {
       throw ServerException();
     }

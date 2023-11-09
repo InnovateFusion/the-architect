@@ -19,7 +19,6 @@ class ChatItem extends StatelessWidget {
     required this.onTap,
     required this.icon,
     required this.user,
-
   }) : super(key: key);
 
   @override
@@ -32,9 +31,7 @@ class ChatItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => History(
-                user: user
-              ),
+              builder: (context) => History(user: user),
             ),
           );
         } else {
@@ -46,7 +43,9 @@ class ChatItem extends StatelessWidget {
         height: 40,
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 181, 178, 179),
+            color: isSelected
+                ? const Color.fromARGB(255, 142, 231, 175)
+                : Color.fromARGB(255, 210, 215, 228),
             borderRadius: BorderRadius.circular(20)),
         child: IconTheme(
           data: IconThemeData(

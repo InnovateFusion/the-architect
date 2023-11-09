@@ -1,4 +1,17 @@
+import 'package:architect/features/architect/data/datasources/remote/team.dart';
+import 'package:architect/features/architect/data/repositories/team.dart';
+import 'package:architect/features/architect/domains/repositories/team.dart';
 import 'package:architect/features/architect/domains/use_cases/post/like.dart';
+import 'package:architect/features/architect/domains/use_cases/team/add_member.dart';
+import 'package:architect/features/architect/domains/use_cases/team/create.dart';
+import 'package:architect/features/architect/domains/use_cases/team/delete.dart';
+import 'package:architect/features/architect/domains/use_cases/team/join.dart';
+import 'package:architect/features/architect/domains/use_cases/team/leave.dart';
+import 'package:architect/features/architect/domains/use_cases/team/member.dart';
+import 'package:architect/features/architect/domains/use_cases/team/update.dart';
+import 'package:architect/features/architect/domains/use_cases/team/view.dart';
+import 'package:architect/features/architect/domains/use_cases/team/views.dart';
+import 'package:architect/features/architect/presentations/bloc/team/team_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/type/type_bloc.dart'
     as type;
 import 'package:get_it/get_it.dart';
@@ -53,6 +66,7 @@ import 'features/architect/domains/use_cases/user/me.dart';
 import 'features/architect/domains/use_cases/user/unfollow.dart';
 import 'features/architect/domains/use_cases/user/update.dart';
 import 'features/architect/domains/use_cases/user/view.dart';
+import 'features/architect/domains/use_cases/user/views.dart';
 import 'features/architect/presentations/bloc/auth/auth_bloc.dart';
 import 'features/architect/presentations/bloc/chat/chat_bloc.dart';
 import 'features/architect/presentations/bloc/post/post_bloc.dart';
@@ -92,6 +106,7 @@ Future<void> init() async {
 
   // User
   sl.registerFactory(() => UserBloc(
+        viewsUser: sl(),
         createUser: sl(),
         deleteUser: sl(),
         getUser: sl(),
@@ -110,7 +125,30 @@ Future<void> init() async {
         deleteAuth: sl(),
       ));
 
+  // team
+  sl.registerFactory(() => TeamBloc(
+        create: sl(),
+        views: sl(),
+        leave: sl(),
+        join: sl(),
+        member: sl(),
+        view: sl(),
+        delete: sl(),
+        addMember: sl(),
+        update: sl(),
+      ));
+
   // Use cases
+  sl.registerLazySingleton(() => TeamCreate(sl()));
+  sl.registerLazySingleton(() => TeamViews(sl()));
+  sl.registerLazySingleton(() => TeamView(sl()));
+  sl.registerLazySingleton(() => TeamUpdate(sl()));
+  sl.registerLazySingleton(() => TeamMembers(sl()));
+  sl.registerLazySingleton(() => TeamDelete(sl()));
+  sl.registerLazySingleton(() => TeamLeave(sl()));
+  sl.registerLazySingleton(() => TeamJoin(sl()));
+  sl.registerLazySingleton(() => TeamAddMembers(sl()));
+
   // Type
   sl.registerLazySingleton(() => SetType(sl()));
   sl.registerLazySingleton(() => GetType(sl()));
@@ -143,6 +181,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UserUpdate(sl()));
   sl.registerLazySingleton(() => ViewUser(sl()));
   sl.registerLazySingleton(() => Me(sl()));
+  sl.registerLazySingleton(() => ViewUsers(sl()));
 
   // Auth
   sl.registerLazySingleton(() => GetToken(sl()));
@@ -150,6 +189,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteAuth(sl()));
 
   // Repository
+
+  // Team
+  sl.registerLazySingleton<TeamRepository>(
+    () => TeamRepositoryImpl(
+        remoteDataSource: sl(), networkInfo: sl(), authLocalDataSource: sl()),
+  );
+
   // Type
   sl.registerLazySingleton<TypeRepository>(
     () => TypeRepositoryImpl(
@@ -199,6 +245,10 @@ Future<void> init() async {
   // Data sources
   // Remote
   // Image
+
+  sl.registerLazySingleton<TeamRemoteDataSource>(
+      () => TeamRemoteDataSourceImpl(client: sl()));
+
   sl.registerLazySingleton<GetImageRemoteDataSource>(
       () => GetImageRemoteDataSourceImpl(client: sl()));
 

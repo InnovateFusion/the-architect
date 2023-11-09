@@ -15,6 +15,7 @@ abstract class ChatRepository {
     required String chatId,
     required String model,
     required String userId,
+    bool? isTeam,
   });
 
   Future<Either<Failure, Chat>> view(String id);

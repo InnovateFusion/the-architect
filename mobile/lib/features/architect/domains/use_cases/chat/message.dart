@@ -20,6 +20,7 @@ class MakeChat extends UseCase<Message, Params> {
       chatId: params.chatId,
       model: params.model,
       userId: params.userId,
+      isTeam: params.isTeam,
     );
   }
 }
@@ -30,12 +31,14 @@ class Params extends Equatable {
     required this.chatId,
     required this.model,
     required this.userId,
+    this.isTeam,
   });
 
   final Map<String, dynamic> payload;
   final String chatId;
   final String model;
   final String userId;
+  final bool? isTeam;
 
   @override
   List<Object?> get props => [

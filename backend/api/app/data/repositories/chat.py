@@ -1,11 +1,13 @@
 from typing import List
-from app.domain.entities.message import Message
-from core.common.either import Either
-from core.errors.failure import Failure, CacheFailure
-from core.errors.exceptions import CacheException
-from app.domain.entities.chat import ChatEntity, Notify
-from app.domain.repositories.chat import BaseRepository
+
 from app.data.datasources.local.chat import ChatLocalDataSource
+from app.domain.entities.chat import ChatEntity, Notify
+from app.domain.entities.message import Message
+from app.domain.repositories.chat import BaseRepository
+from core.common.either import Either
+from core.errors.exceptions import CacheException
+from core.errors.failure import CacheFailure, Failure
+
 
 class ChatRepositoryImpl(BaseRepository):
         
@@ -39,12 +41,4 @@ class ChatRepositoryImpl(BaseRepository):
             return Either.right(chat_entity)
         except CacheException as e:
             return Either.left(CacheFailure(error_message=str(e)))
-        
-    async def notify (self, chat_id: str, notify_id: str, notify: Notify) -> Either[Failure, ChatEntity]:
-        try:
-            chat_entity = await self.chat_local_datasource.notify(chat_id, notify_id, notify)
-            return Either.right(chat_entity)
-        except CacheException as e:
-            return Either.left(CacheFailure(error_message=str(e)))
-
         

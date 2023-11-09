@@ -127,12 +127,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    print('--------------------------------------------------');
-    print(followers);
-    print(following);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 236, 238, 244),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: BlocProvider(
@@ -144,14 +141,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   BlocBuilder<PostBloc, PostState>(builder: (context, state) {
                 if (state.otherPostStatus == PostStatus.loading ||
                     state.otherPostStatus == PostStatus.initial) {
-                  return const SizedBox(
-                    height: 700,
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 350),
                     child: LoadingIndicator(),
                   );
                 } else if (state.otherPostStatus == PostStatus.success) {
                   return displayPost(context, deviceWidth, state.userPosts);
                 } else if (state.otherPostStatus == PostStatus.failure) {
-                  return const ErrorDisplay(message: 'Unable to load posts');
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 350),
+                    child: ErrorDisplay(message: 'Unable to load posts'),
+                  );
                 } else {
                   return Container();
                 }
@@ -163,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Column displayPost(
+  Widget displayPost(
       BuildContext context, double deviceWidth, List<Post> posts) {
     return Column(
       children: [
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               children: [
                 Container(
-                  height: 170,
+                  height: 200,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -194,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
               left: 10,
               child: Container(
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 0, 0, 0),
+                    color: const Color(0xff22c55e),
                     borderRadius: BorderRadius.circular(5)),
                 height: 40,
                 width: 40,
@@ -211,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Positioned(
-              top: 120,
+              top: 150,
               right: deviceWidth / 2 - 50 - 10,
               child: Container(
                 decoration: BoxDecoration(
@@ -248,42 +248,40 @@ class _ProfilePageState extends State<ProfilePage> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        const SizedBox(height: 5),
         Text(
           capitalizeAll(fetchedUser.bio),
           style: const TextStyle(
-            color: Color(0xFF9F9C9E),
+            color: Color.fromARGB(255, 121, 119, 121),
             fontSize: 14,
             fontWeight: FontWeight.w300,
           ),
           softWrap: true,
         ),
-        const SizedBox(height: 20),
+        if (widget.user.id != fetchedUser.id) const SizedBox(height: 20),
         if (widget.user.id != fetchedUser.id)
           GestureDetector(
             onTap: () => followAndUnFollow(context),
-            child: Expanded(
-              child: Container(
-                height: 45,
-                width: 130,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: isFollowing ? Colors.black : Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black,
-                      spreadRadius: 1,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    isFollowing ? 'Unfollow' : 'Follow',
-                    style: TextStyle(
-                      color: isFollowing ? Colors.white : Colors.black,
-                      fontSize: 16,
-                      fontWeight:
-                          isFollowing ? FontWeight.w400 : FontWeight.w500,
-                    ),
+            child: Container(
+              height: 45,
+              width: 130,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: isFollowing ? Colors.black : Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    spreadRadius: 0.4,
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  isFollowing ? 'Unfollow' : 'Follow',
+                  style: TextStyle(
+                    color: isFollowing ? Colors.white : Colors.black,
+                    fontSize: 14,
+                    fontWeight: isFollowing ? FontWeight.w400 : FontWeight.w500,
                   ),
                 ),
               ),
@@ -292,6 +290,7 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Column(
               children: [
@@ -305,7 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Text(
                   "Followers",
                   style: TextStyle(
-                    color: Color(0xFF9F9C9E),
+                    color: Color.fromARGB(255, 121, 119, 121),
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
@@ -325,7 +324,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Text(
                   "Following",
                   style: TextStyle(
-                    color: Color(0xFF9F9C9E),
+                    color: Color.fromARGB(255, 121, 119, 121),
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
@@ -345,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Text(
                   "Posts",
                   style: TextStyle(
-                    color: Color(0xFF9F9C9E),
+                    color: Color.fromARGB(255, 121, 119, 121),
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
@@ -354,7 +353,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-        const SizedBox(height: 25),
+        const SizedBox(height: 15),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -398,6 +397,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
+        const SizedBox(height: 10),
       ],
     );
   }

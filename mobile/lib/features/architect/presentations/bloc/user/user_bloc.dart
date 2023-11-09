@@ -16,7 +16,8 @@ import 'package:architect/features/architect/domains/use_cases/user/update.dart'
     as update_user;
 import 'package:architect/features/architect/domains/use_cases/user/view.dart'
     as get_user;
-
+import 'package:architect/features/architect/domains/use_cases/user/views.dart'
+    as views_user;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -41,6 +42,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final unfollow_user.UnFollowUser unfollowUser;
   final following_user.UserFollowing followingUser;
   final followers_user.UserFollowers followersUser;
+  final views_user.ViewUsers viewsUser;
 
   UserBloc({
     required this.createUser,
@@ -52,6 +54,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required this.unfollowUser,
     required this.followingUser,
     required this.followersUser,
+    required this.viewsUser,
   }) : super(UserInitial()) {
     on<CreateUserEvent>(_onCreateUser);
     on<UpdateUserEvent>(_onUpdate);
@@ -62,6 +65,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UnFollowUserEvent>(_onUnFollowUser);
     on<FollowingUserEvent>(_onFollowingUser);
     on<FollowersUserEvent>(_onFollowersUser);
+    on<ViewsUserEvent>(_onAllUser);
   }
 
   Future<void> _onCreateUser(
@@ -162,6 +166,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       FollowersUserEvent event, Emitter<UserState> emit) async {
     emit(UserLoading());
     final result = await followersUser(followers_user.Params(event.id));
+    result.fold(
+      (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
+      (users) => emit(UsersViewsLoaded(users: users)),
+    );
+  }
+
+  Future<void> _onAllUser(ViewsUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final result = await viewsUser(NoParams());
     result.fold(
       (failure) => emit(UserError(message: _mapFailureToMessage(failure))),
       (users) => emit(UsersViewsLoaded(users: users)),

@@ -4,14 +4,14 @@ import '../../../domains/entities/user.dart';
 import '../../page/drawing/drawing.dart';
 
 class ChatInput extends StatelessWidget {
-  const ChatInput({
-    Key? key,
-    required this.model,
-    required this.onSubmitted,
-    required this.onImagePick,
-    required this.onControNet,
-    required this.user
-  }) : super(key: key);
+  const ChatInput(
+      {Key? key,
+      required this.model,
+      required this.onSubmitted,
+      required this.onImagePick,
+      required this.onControNet,
+      required this.user})
+      : super(key: key);
 
   final String model;
   final void Function(BuildContext context, String text) onSubmitted;
@@ -51,7 +51,7 @@ class ChatInput extends StatelessWidget {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  Draw(user: user),
+                      builder: (context) => Draw(user: user, fromChat: true),
                     ),
                   );
                   if (result != null) {
@@ -64,7 +64,7 @@ class ChatInput extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 0, 0, 0),
+                  color: const Color(0xff22c55e),
                   borderRadius: BorderRadius.circular(25)),
               child: Icon(
                 model == 'controlNet' || model == 'edit_image'
@@ -100,7 +100,7 @@ class ChatInput extends StatelessWidget {
               child: Icon(
                 Icons.send_outlined,
                 size: 40,
-                color: Color.fromARGB(255, 0, 0, 0),
+                color: Color(0xff22c55e),
               ),
             ),
           )

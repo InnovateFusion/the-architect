@@ -125,7 +125,9 @@ class _SettingState extends State<Setting> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => HomePage(
+            user: widget.user,
+          ),
         ),
       );
     } else {
@@ -165,7 +167,7 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 236, 238, 244),
         body: Container(
           height: double.infinity,
           padding: const EdgeInsets.all(15),
@@ -179,7 +181,7 @@ class _SettingState extends State<Setting> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 0, 0, 0),
+                          color: const Color(0xff22c55e),
                           borderRadius: BorderRadius.circular(5)),
                       height: 40,
                       width: 40,

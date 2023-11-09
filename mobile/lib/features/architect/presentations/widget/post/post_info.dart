@@ -26,7 +26,7 @@ class PostInfo extends StatelessWidget {
       ),
       child: Row(
         children: [
-          ProfileImage(imageUrl: imageUrl, size: 45),
+          
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

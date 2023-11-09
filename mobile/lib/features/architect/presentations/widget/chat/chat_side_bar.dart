@@ -1,6 +1,7 @@
 import 'package:architect/features/architect/domains/entities/user.dart';
 import 'package:flutter/material.dart';
 
+import '../../page/ChatInfo.dart';
 import 'chat_item.dart';
 
 class ChatSideBar extends StatefulWidget {
@@ -71,6 +72,29 @@ class _ChatSideBarState extends State<ChatSideBar> {
         width: 40,
         child: Column(
           children: [
+            GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatInfo(
+                    user: widget.user,
+                  ),
+                ),
+              ),
+              child: Container(
+                width: 40,
+                height: 40,
+                margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 210, 215, 228),
+                    borderRadius: BorderRadius.circular(20)),
+                child: const IconTheme(
+                  data: IconThemeData(color: Colors.black, size: 20),
+                  child: Icon(Icons.info_outline,
+                      color: Color.fromARGB(255, 0, 0, 0), size: 20),
+                ),
+              ),
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

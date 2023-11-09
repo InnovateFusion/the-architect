@@ -9,8 +9,10 @@ import replicate
 import requests
 from cloudinary.uploader import upload
 from core.errors.exceptions import ServerException
+from openai import OpenAI
 from PIL import Image
 
+client = OpenAI()
 CAPI_KEY = os.getenv("CLD_API_KEY")
 CAPI_SECRET = os.getenv("CLD_API_SECRET")
 CGET_IMAGE_KEY = os.getenv("GET_IMAGE_KEY")
@@ -19,6 +21,7 @@ asticaAPI_key = os.getenv("ASTICA_API_KEY")
 CGET_3D_KEY = os.getenv("GET_3D_KEY")
 cloudinary.config(
     cloud_name="dtghsmx0s", api_key=CAPI_KEY, api_secret=CAPI_SECRET)
+
 
 
 class AiGeneration:
@@ -46,12 +49,14 @@ class AiGeneration:
         return upload_result['url']
 
     async def create_from_text(self, data):
-        response = openai.Image.create(
+        response = client.images.generate(
+            model="dall-e-3",
             prompt=data['prompt'],
             size="1024x1024",
-            n=1
+            quality="standard",
+            n=1,
         )
-        image_url = response["data"][0]["url"]
+        image_url = response.data[0].url
         image_data = requests.get(image_url).content
         upload_result = upload(image_data)
         if upload_result is None:
@@ -76,6 +81,7 @@ class AiGeneration:
             resized_mask_image_data = output_mask_image.read()
             
         response = openai.Image.create_edit(
+            
         image=io.BytesIO(resized_image_data).read(),
         mask=io.BytesIO(resized_mask_image_data).read(),
         prompt=data['prompt'],

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../bloc/auth/auth_bloc.dart';
 import '../widget/loading_indicator.dart';
-import 'home.dart';
+import 'floatingButtonNav.dart';
 import 'signup.dart'; // Import the SignUp widget from the same directory.
 
 class Login extends StatefulWidget {
@@ -85,7 +86,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 236, 238, 244),
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -101,20 +102,31 @@ class _LoginState extends State<Login> {
                     Column(
                       children: [
                         Center(
-                          child:
-                              Image.asset('assets/images/logo.png', width: 120),
+                          child: SvgPicture.asset('assets/images/logo.svg',
+                              height: 90, width: 90),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'The ArchiTect',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Roboto',
-                            fontSize: 28,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 0,
-                          ),
-                        ),
+                        const Row(
+                          children: [
+                            Text(
+                              "The",
+                              style: TextStyle(
+                                fontSize: 32,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "Architect",
+                              style: TextStyle(
+                                fontSize: 32,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ],
@@ -177,7 +189,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         cxt,
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const FloatingNavigator(),
                         ),
                       );
                     }
@@ -187,7 +199,9 @@ class _LoginState extends State<Login> {
                   },
                   builder: (cotx, state) {
                     if (state is AuthLoading) {
+                      //BlocProvider.of<AuthBloc>(context).add(AuthLogoutEvent());
                       return const SizedBox(
+                        height: 70,
                         child: LoadingIndicator(),
                       );
                     } else {
@@ -199,9 +213,9 @@ class _LoginState extends State<Login> {
                             height: 50,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
+                                backgroundColor: const Color(0xff22c55e),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(2),
+                                  borderRadius: BorderRadius.circular(25),
                                 ),
                               ),
                               onPressed: () {
@@ -221,12 +235,13 @@ class _LoginState extends State<Login> {
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               const Text(
                                 'Don\'t have an account?',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                               ),
                               TextButton(
@@ -242,7 +257,7 @@ class _LoginState extends State<Login> {
                                   'Sign Up',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

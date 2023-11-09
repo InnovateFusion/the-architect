@@ -1,5 +1,6 @@
 import 'package:architect/features/architect/presentations/widget/chat/chat_message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../domains/entities/user.dart';
 import '../../page/chat.dart';
@@ -48,11 +49,8 @@ class _ChatDisplayState extends State<ChatDisplay> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(
-                        "assets/images/logo.png",
-                        width: 100,
-                        height: 100,
-                      ),
+                      SvgPicture.asset('assets/images/logo.svg',
+                          height: 100, width: 100),
                       const SizedBox(height: 10),
                       const Text(
                         "Start a New Chat",

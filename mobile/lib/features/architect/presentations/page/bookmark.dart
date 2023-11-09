@@ -25,7 +25,7 @@ class BookMark extends StatelessWidget {
             ViewsPosts(userId: user.id),
           ),
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 236, 238, 244),
           body: Stack(
             children: [
               Column(
@@ -36,44 +36,33 @@ class BookMark extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                      borderRadius: BorderRadius.circular(5)),
-                                  height: 40,
-                                  width: 40,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Icon(
-                                      Icons.arrow_back_ios_new,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                const Text(
-                                  "My Gallery",
+                                Text(
+                                  "My",
                                   style: TextStyle(
-                                    fontSize: 32,
+                                    fontSize: 30,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                SizedBox(width: 5),
+                                Text(
+                                  "Gallery",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
                               ],
                             ),
-                            const SizedBox(height: 5),
-                            const Text(
+                            SizedBox(height: 5),
+                            Text(
                               "Capturing moment of Ai",
                               style: TextStyle(
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -93,14 +82,19 @@ class BookMark extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: FileImage(File(user.image)),
-                                fit: BoxFit.fill,
+                          child: CircleAvatar(
+                            backgroundImage: Image.asset(
+                              'assets/images/user.png',
+                            ).image,
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: FileImage(File(user.image)),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                           ),
@@ -111,9 +105,9 @@ class BookMark extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      child: Container(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 10, right: 10, bottom: 20),
                         child: BlocBuilder<PostBloc, PostState>(
                           builder: (context, state) {
                             if (state.otherPostStatus == PostStatus.loading) {

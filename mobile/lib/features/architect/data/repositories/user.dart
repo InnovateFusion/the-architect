@@ -205,4 +205,19 @@ class UserRepositoryImpl extends UserRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<User>>> views() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await authLocalDataSource.getToken();
+        final remoteUsers = await remoteDataSource.viewsAll(token.accessToken);
+        return Right(remoteUsers);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(CacheFailure());
+    }
+  }
 }

@@ -61,22 +61,31 @@ class DrawingPage extends HookWidget {
             ),
             Positioned(
               left: 10,
-              top: 15,
+              top: 10,
               child: Container(
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                    borderRadius: BorderRadius.circular(5)),
-                height: 40,
-                width: 40,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                    size: 25,
-                  ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                height: 50,
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Ske",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "-tch",
+                      style: TextStyle(
+                        fontSize: 32,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -92,22 +101,25 @@ class DrawingPage extends HookWidget {
                     ),
                   ),
                 ),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: FileImage(File(user.image)),
-                      fit: BoxFit.fill,
+                child: CircleAvatar(
+                  backgroundImage: const AssetImage('assets/images/user.png'),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: FileImage(File(user.image)),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             Positioned(
-              top: kToolbarHeight + 60,
-              left: 5,
+              top: kToolbarHeight + 30,
+              left: 0,
               child: CanvasSideBar(
                 fromChat: fromChat,
                 user: user,

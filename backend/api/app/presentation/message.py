@@ -32,7 +32,7 @@ async def create_chat(
     current_user: User = Depends(get_current_user)
 ):
     create_message_use_case = CreateMessage(repository)
-    params = CreateMessageParams(message=message, chat_id=chat_id)
+    params = CreateMessageParams(message=message, chat_id=chat_id, user_id=current_user.id)
     result = await create_message_use_case(params)
     if result.is_right():
         return result.get()

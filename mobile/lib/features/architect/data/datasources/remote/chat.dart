@@ -24,6 +24,7 @@ abstract class ChatRemoteDataSource {
     required String model,
     required String token,
     required String userId,
+    bool isTeam = false,
   });
 }
 
@@ -41,8 +42,11 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     required String model,
     required String token,
   }) async {
-    final response = await client.post(
-        Uri.parse("https://the-architect.onrender.com/api/v1/chats/"),
+    String theurl = (model == 'text_to_3D')
+        ? "https://the-architect-3d.onrender.com/api/v1/chats/"
+        : "https://the-architect.onrender.com/api/v1/chats/";
+
+    final response = await client.post(Uri.parse(theurl),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -69,6 +73,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         'Authorization': 'Bearer $token',
       },
     );
+    print(response.body);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       return ChatModel.fromJson(jsonData);
@@ -108,10 +113,13 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     required String model,
     required String token,
     required String userId,
+    bool isTeam = false,
   }) async {
-    final response = await client.post(
-        Uri.parse(
-            "https://the-architect.onrender.com/api/v1/chats/$chatId/messages"),
+    String theurl = (model == 'text_to_3D')
+        ? "https://the-architect-3d.onrender.com/api/v1/chats/$chatId/messages"
+        : "https://the-architect.onrender.com/api/v1/chats/$chatId/messages";
+
+    final response = await client.post(Uri.parse(theurl),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -120,6 +128,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           'payload': payload,
           'user_id': userId,
           'model': model,
+          'isTeam': isTeam,
         }));
     if (response.statusCode == 200) {
       print('${response.body} ${response.statusCode}');

@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
 from uuid import uuid4
-
 import requests
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
@@ -32,10 +31,6 @@ class ChatLocalDataSource(ABC):
 
     @abstractmethod
     async def delete_chat(self, chat_id: str) -> ChatEntity:
-        ...
-
-    @abstractmethod
-    async def notify(self, chat_id: str, notify_id: str, notify: Notify) -> ChatEntity:
         ...
 
 
@@ -226,30 +221,6 @@ class ChatLocalDataSourceImpl(ChatLocalDataSource):
             raise CacheException("Chat does not exist")
 
         self.db.delete(existing_chat)
-        self.db.commit()
-
-        return ChatEntity(
-            id=existing_chat.id,
-            title=existing_chat.title,
-            user_id=existing_chat.user_id,
-            messages=existing_chat.messages
-        )
-
-    async def notify(self, chat_id: str, notify_id: str, notify: Notify) -> ChatEntity:
-        existing_chat = self.db.query(ChatModel).filter(
-            ChatModel.id == chat_id).first()
-        if not existing_chat:
-            raise CacheException("Chat does not exist")
-        try:
-            for message in existing_chat.messages:
-                if message.id == notify_id:
-                    message.content['3D']['status'] = notify.status
-                    message.content['3D']['fetch_result'] = notify.output[0]
-                    break
-        except Exception as e:
-            raise CacheException("Error getting 3D")
-
-        self.db.add(existing_chat)
         self.db.commit()
 
         return ChatEntity(

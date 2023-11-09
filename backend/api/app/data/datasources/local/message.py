@@ -6,6 +6,7 @@ from uuid import uuid4
 import requests
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
+from app.data.models.user import UserModel
 from app.domain.entities.message import Message, MessageEntity
 from cloudinary.uploader import upload
 from core.errors.exceptions import CacheException
@@ -16,7 +17,7 @@ baseUrl = os.getenv("BASE_URL")
 
 class MessageLocalDataSource(ABC):
     @abstractmethod
-    async def create_chat(self, message: Message, chat_id: str) -> MessageEntity:
+    async def create_chat(self, message: Message, chat_id: str, user_id: str) -> MessageEntity:
         pass
 
 
@@ -24,7 +25,10 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
     def __init__(self, db: Session):
         self.db = db
 
-    async def create_chat(self, message: Message, chat_id: str) -> MessageEntity:
+    async def create_chat(self, message: Message, chat_id: str, user_id: str) -> MessageEntity:
+        
+        user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        
         date = datetime.utcnow()
         if 'prompt' not in message.payload:
             raise CacheException("No prompt found")
@@ -84,8 +88,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'image_variant':
             try:
                 response = await ai_generation.image_variant(message.payload)
-            except Exception as e:
-                print("The error ---------------------- ", e)
+            except:
                 raise CacheException("Error getting image from variant")
         elif message.model == 'image_from_text':
             try:
@@ -112,8 +115,7 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'text_to_3D':
             try:
                 threeD = await ai_generation.text_to_threeD(message.payload)
-            except Exception as e:
-                print("The error ---------------------- ", e)
+            except:
                 raise CacheException("3D error from text")
         elif message.model == 'image_to_3D':
             try:
@@ -127,6 +129,8 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         message_from_user = MessageEntity(
             id=str(uuid4()),
             content={
+                'name': user.first_name,
+                'image': user.image,
                 'prompt': message.payload['prompt'],
                 'imageUser': userImage,
                 'imageAI': '',
@@ -145,6 +149,8 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         message_from_ai = MessageEntity(
             id=aiMessageID,
             content={
+                'name': user.first_name,
+                'image': user.image,
                 'prompt': '',
                 'imageUser': '',
                 'imageAI': response,
@@ -161,5 +167,9 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         existing_chat.messages = new_chat
 
         self.db.commit()
+        if message.isTeam:
+            url = f"https://sketch-dq5zwrwm5q-ww.a.run.app/api/teams/{chat_id}/chat"
+            requests.post(url, json={"message": message_from_user.to_dict()})
+            requests.post(url, json={"message": message_from_ai.to_dict()})
 
         return message_from_ai

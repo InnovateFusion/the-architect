@@ -69,6 +69,9 @@ class ChatMessage extends StatelessWidget {
       BlendMode.darken,
     );
 
+    const senderColor = Color.fromARGB(255, 42, 45, 48);
+    const paddingUser = EdgeInsets.only(left: 40);
+    const paddingAi = EdgeInsets.only(right: 40);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Column(
@@ -77,16 +80,21 @@ class ChatMessage extends StatelessWidget {
           if (isSentByMe && content.imageUser.isEmpty && !content.isPicked)
             Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: senderColor,
                 borderRadius: borderRadius,
               ),
               padding: const EdgeInsets.all(10.0),
-              child: Text(
-                content.prompt,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.right,
+              margin: paddingUser,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    content.prompt,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           if (isSentByMe &&
@@ -97,6 +105,7 @@ class ChatMessage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10.0),
                 height: 400,
+                margin: const EdgeInsets.only(left: 50),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Stack(
@@ -133,8 +142,9 @@ class ChatMessage extends StatelessWidget {
             ClipRRect(
               borderRadius: borderRadius,
               child: Container(
+                margin: paddingUser,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: senderColor,
                   borderRadius: borderRadius,
                 ),
                 child: Column(
@@ -166,11 +176,13 @@ class ChatMessage extends StatelessWidget {
             ClipRRect(
               borderRadius: borderRadius,
               child: Container(
+                margin: paddingUser,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: senderColor,
                   borderRadius: borderRadius,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Image.network(
                       content.imageUser,
@@ -199,11 +211,13 @@ class ChatMessage extends StatelessWidget {
             ClipRRect(
               borderRadius: borderRadius,
               child: Container(
+                margin: paddingUser,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: senderColor,
                   borderRadius: borderRadius,
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Image.file(
                       File(content.imageUser),
@@ -228,104 +242,108 @@ class ChatMessage extends StatelessWidget {
               (content.imageAI.isNotEmpty ||
                   (content.threeD.containsKey('fetch_result') &&
                       content.threeD['fetch_result'].isNotEmpty)))
-            GestureDetector(
-              onDoubleTap: () => {
-                _showImageInFull(
-                    context,
-                    content.imageAI.isNotEmpty
-                        ? content.imageAI
-                        : content.threeD['fetch_result'])
-              },
-              child: ClipRRect(
-                borderRadius: borderRadius,
-                child: Stack(
-                  children: [
-                    Image.network(
+            Container(
+              margin: paddingAi,
+              child: GestureDetector(
+                onDoubleTap: () => {
+                  _showImageInFull(
+                      context,
                       content.imageAI.isNotEmpty
                           ? content.imageAI
-                          : content.threeD['fetch_result'],
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      left: 10,
-                      bottom: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Chat(
-                                      
-                                      user: user,
-                                      messageX: messages,
-                                      replay: content,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Icon(
-                                  Icons.replay_outlined,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CreatePostPage(
+                          : content.threeD['fetch_result'])
+                },
+                child: ClipRRect(
+                  borderRadius: borderRadius,
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        content.imageAI.isNotEmpty
+                            ? content.imageAI
+                            : content.threeD['fetch_result'],
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        left: 10,
+                        bottom: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 5),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Chat(
                                         user: user,
-                                        imageUrl: content.model == 'text_to_3D'
-                                            ? content.threeD['fetch_result']
-                                            : content.imageAI),
+                                        messageX: messages,
+                                        replay: content,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Icon(
-                                  Icons.share_outlined,
-                                  color: Colors.blue,
+                                  child: const Icon(
+                                    Icons.replay_outlined,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CreatePostPage(
+                                          user: user,
+                                          imageUrl: content.model ==
+                                                  'text_to_3D'
+                                              ? content.threeD['fetch_result']
+                                              : content.imageAI),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Icon(
+                                    Icons.share_outlined,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           if (!isSentByMe && content.chat.isNotEmpty)
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: const Color.fromARGB(255, 223, 227, 239),
                 borderRadius: borderRadius,
               ),
+              margin: paddingAi,
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 content.chat,
@@ -339,23 +357,21 @@ class ChatMessage extends StatelessWidget {
               content.analysis['detail'].isNotEmpty)
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: const Color.fromARGB(255, 223, 227, 239),
                 borderRadius: borderRadius,
               ),
               padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.only(right: 50),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      capitalizeAll(content.analysis['title']),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+                  Text(
+                    capitalizeAll(content.analysis['title']),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -381,7 +397,7 @@ class ChatMessage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: index.isEven
                             ? const Color.fromARGB(255, 0, 0, 0)
-                            : Colors.grey,
+                            : const Color.fromARGB(255, 223, 227, 239),
                       ),
                     );
                   },

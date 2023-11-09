@@ -1,7 +1,7 @@
-import '../entities/user.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../entities/user.dart';
 
 abstract class UserRepository {
   Future<Either<Failure, User>> create({
@@ -31,4 +31,5 @@ abstract class UserRepository {
   Future<Either<Failure, User>> unfollow(String id);
   Future<Either<Failure, List<User>>> followers(String id);
   Future<Either<Failure, List<User>>> followings(String id);
+  Future<Either<Failure, List<User>>> views();
 }
