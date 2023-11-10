@@ -11,12 +11,14 @@ import Hero from "./hero";
 import HomeHero from "./main";
 import Pricing from "./pricing";
 import Mobile from "./mobile";
+import Try from "./try";
 
 export default function Home() {
   return (
     <>
       <Header />
       <HomeHero />
+      <Try />
       <Hero />
       <Features />
       <FeaturesBlocks />

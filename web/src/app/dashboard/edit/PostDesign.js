@@ -45,6 +45,7 @@ export function PostDesign({ image, open, handleOpen }) {
         setPostTitle("");
         setPostDescription("");
         setSelectedtags([]);
+        toast.success("Your Design Posted Successfully.")
       }
     }
   };

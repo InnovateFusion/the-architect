@@ -1,88 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DesignView from "../../designs/DesignView";
 import ImageZoom from "react-image-zooom";
 import { Capitalize } from "@/utils/utils";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { toast } from "react-toastify";
+import { usePost } from "@/hooks/usePosts";
 export default function Design({ params: { id } }) {
-  const [design, setDesign] = useState(null);
+  const router = useRouter();
+  const { data: design, isLoading, isError, error } = usePost(id);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const router = useRouter();
 
-  const view = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="h-7 w-7 transition duration-100 cursor-pointer"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-      />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-      />
-    </svg>
-  );
-
-  const clone = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="h-7 w-7 transition duration-100 cursor-pointer"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
-      />
-    </svg>
-  );
-  useEffect(() => {
-    const fetchDesign = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Invalid Credentials. Please Sign in Again.");
-        router.push("/auth/signin");
-        return;
-      }
-      try {
-        const response = await fetch(
-          `https://the-architect.onrender.com/api/v1/posts/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.status == 200) {
-          const result = await response.json();
-          setDesign(result);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDesign();
-  }, [id]);
-
-  if (!design) {
+  if (isLoading) {
     return (
       <div className="bg-gray-100 dark:bg-gray-800 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -147,6 +79,11 @@ export default function Design({ params: { id } }) {
         </div>
       </div>
     );
+  }
+
+  if (isError) {
+    toast.error(error.message);
+    return <div>{error.message}</div>;
   }
 
   return (
@@ -231,6 +168,9 @@ export default function Design({ params: { id } }) {
                   <button
                     key={index}
                     className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600"
+                    onClick={(e) =>
+                      router.push(`/dashboard/designs/search?tags=${tag}`)
+                    }
                   >
                     {tag}
                   </button>
@@ -246,3 +186,42 @@ export default function Design({ params: { id } }) {
     </div>
   );
 }
+
+const view = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-7 w-7 transition duration-100 cursor-pointer"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+  </svg>
+);
+
+const clone = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-7 w-7 transition duration-100 cursor-pointer"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
+    />
+  </svg>
+);

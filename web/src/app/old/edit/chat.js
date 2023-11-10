@@ -298,6 +298,8 @@ export default function Chat({ changeImage, mode, image, mask }) {
                           width={200}
                           alt=""
                           height={200}
+                          priority
+                          className="w-auto"
                         />
                       </div> */}
                       <div className="mr-4" />

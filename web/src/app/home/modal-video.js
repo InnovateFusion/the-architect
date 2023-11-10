@@ -3,6 +3,7 @@
 import { useState, useRef, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 export default function ModalVideo({
   thumb,
@@ -15,6 +16,7 @@ export default function ModalVideo({
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const videoRef = useRef(null);
+  const { t } = useTranslation("common");
 
   return (
     <div>
@@ -37,6 +39,7 @@ export default function ModalVideo({
               width={thumbWidth}
               height={thumbHeight}
               alt={thumbAlt}
+              className="w-auto"
             />
             <svg
               className="absolute inset-0 max-w-full mx-auto md:max-w-none h-auto"
@@ -123,7 +126,7 @@ export default function ModalVideo({
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" />
               <path d="M10 17l6-5-6-5z" />
             </svg>
-            <span className="ml-3 ">Watch the full video (3 min)</span>
+            <span className="ml-3 ">{t("modal_video")}</span>
           </button>
         </div>
       </div>

@@ -1,4 +1,56 @@
 import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
+import { imageUrlToBase64 } from "@/utils/utils";
+
+export const usePostsStore = create((set) => ({
+  posts: [],
+  searchKey: null,
+  setSearch: (key) => ({ searchKey: key }),
+  setPosts: (data) => set({ posts: data }),
+}));
+
+export const usePostStore = create((set) => ({
+  post: [],
+  setPost: (data) => set({ post: data }),
+}));
+
+export const useTeamStore = create(
+  persist(
+    (set) => ({
+      team: null,
+      teams: null,
+      setTeam: (data) => set({ team: data }),
+      setTeams: (data) => set({ teams: data }),
+    }),
+    {
+      name: "team-storage", // name of the item in the storage (must be unique)
+    }
+  )
+);
+
+export const useEditStore = create(
+  devtools((set) => ({
+    model: "text_to_image",
+    setModel: (data) => set({ model: data }),
+
+    image: "",
+    setImage: (data) => {
+      set({ image: data });
+    },
+
+    base64: "",
+
+    setbase64: (data) => {
+      set({ base64: data });
+    },
+    getBase64: async (data) => {
+      await imageUrlToBase64(data, (base64String) => {
+        set({ base64: base64String });
+      });
+    },
+    clearImage: () => set({ base64: "", image: "" }),
+  }))
+);
 
 const designsStore = create((set, get) => ({
   designs: [],

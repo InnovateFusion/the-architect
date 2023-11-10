@@ -58,7 +58,14 @@ export default function Nav() {
     <div className="flex flex-col  gap-5 h-full">
       <h1 className="font-medium text-lg">
         <Link href="/">
-          <Image src="/logo.svg" alt="logo" width={40} height={40} priority />
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={40}
+            height={40}
+            priority
+            className="w-auto"
+          />
         </Link>
       </h1>
       <nav className="flex flex-col  flex-1 gap-2">

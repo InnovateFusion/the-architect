@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
+import useTranslation from "next-translate/useTranslation";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [email, setEmail] = React.useState("dev@bisrat.tech");
-  const [password, setPassword] = React.useState("12345678");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -58,7 +60,7 @@ export default function SignIn() {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      toast.error(err.message);
+      toast.error("Network error, Please Try again.");
       setIsLoading(false);
     }
   }
@@ -79,7 +81,7 @@ export default function SignIn() {
           {/* Page header */}
           <div className="max-w-3xl mx-auto text-center pb-12 ">
             <h1 className="h1">
-              Welcome back. We exist to make <u>Design</u> easier.
+              {t("s_welcome")} <u>{t("s_welcome_1")}</u> {t("s_welcome_2")}.
             </h1>
           </div>
 
@@ -92,7 +94,7 @@ export default function SignIn() {
                     className="block   text-sm font-medium mb-1"
                     htmlFor="email"
                   >
-                    Email
+                    {t("r_email")}
                   </label>
                   <input
                     id="email"
@@ -103,6 +105,7 @@ export default function SignIn() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -113,13 +116,13 @@ export default function SignIn() {
                       className="block   text-sm font-medium mb-1"
                       htmlFor="password"
                     >
-                      Password
+                      {t("s_password")}
                     </label>
                     <Link
                       href="/auth/reset-password"
                       className="text-sm font-medium text-blue-600 hover:underline"
                     >
-                      Having trouble signing in?
+                      {t("s_trouble")}
                     </Link>
                   </div>
                   <input
@@ -131,6 +134,7 @@ export default function SignIn() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
+                    autoComplete="current-password"
                   />
                 </div>
               </div>
@@ -142,7 +146,7 @@ export default function SignIn() {
                         type="checkbox"
                         className="text-gray-800 form-checkbox"
                       />
-                      <span className="  ml-2">Keep me signed in</span>
+                      <span className="  ml-2">{t("s_signedin")}</span>
                     </label>
                   </div>
                 </div>
@@ -162,12 +166,12 @@ export default function SignIn() {
             </form>
 
             <div className="  text-center mt-6">
-              Don&apos;t you have an account?{" "}
+              {t("r_ques")}
               <Link
                 href="/auth/signup"
                 className="text-blue-600 hover:underline transition duration-150 ease-in-out"
               >
-                Sign up
+                {t("r_action_2")}
               </Link>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import designsStore from "../../../store/designs";
+import designsStore from "../../../store/store";
 import DesignCard from "./DesignCard";
 
 function DesignList() {
@@ -12,7 +12,7 @@ function DesignList() {
   return (
     <div className="columns-1 sm:columns-2 md:columns-2 lg:columns-3 gap-4 space-y-4 py-14 px-2">
       {!isLoading
-        ? designs.map((item) => <DesignCard item={item} key={item.id} />)
+        ? designs?.map((item) => <DesignCard item={item} key={item.id} />)
         : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((item, index) => (
             <div
               key={index}

@@ -34,7 +34,7 @@ export default function Footer() {
             <ul className="text-sm">
               <li className="mb-2">
                 <a
-                  href="#0"
+                  href="https://github.com/BisRyy"
                   className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Bisrat Kebere
@@ -42,7 +42,7 @@ export default function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="#0"
+                  href="https://github.com/duressa-feyissa"
                   className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Duresa Feyisa
@@ -50,7 +50,7 @@ export default function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="#0"
+                  href="https://github.com/cypghost"
                   className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Biruk Mesfin
@@ -58,7 +58,7 @@ export default function Footer() {
               </li>
               <li className="mb-2">
                 <a
-                  href="#0"
+                  href="https://github.com/asero13th"
                   className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200 transition duration-150 ease-in-out"
                 >
                   Aser Hailu

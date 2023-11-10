@@ -1,7 +1,10 @@
 import ModalVideo from "./modal-video";
 import { ArrowBigRightDash, LucideLightbulb } from "lucide-react";
+import useTranslation from "next-translate/useTranslation";
 
 export default function Hero() {
+  const { t } = useTranslation("common");
+
   return (
     <section className="relative">
       {/* Illustration behind hero content */}
@@ -43,9 +46,9 @@ export default function Hero() {
               className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
               data-aos="zoom-y-out"
             >
-              Design Made Easy with <br />
+              {t("h_header_1")} <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
-                AI Assistant
+                {t("h_header_2")}
               </span>
             </h1>
             <div className="max-w-3xl mx-auto">
@@ -54,9 +57,7 @@ export default function Hero() {
                 data-aos="zoom-y-out"
                 data-aos-delay="150"
               >
-                AI-powered platform that assist and empowers professionals and
-                enthusiasts in the field of architecture and design by offering
-                a wide range of features and tools.
+                {t("h_header_desc")}
               </p>
               <div
                 className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
@@ -68,7 +69,7 @@ export default function Hero() {
                     className="btn text-white gap-2 bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
                     href="/dashboard"
                   >
-                    Start Designing <ArrowBigRightDash />
+                    {t("h_header_action")} <ArrowBigRightDash />
                   </a>
                 </div>
               </div>

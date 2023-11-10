@@ -20,7 +20,8 @@ const Header = () => {
           height={40}
           src="/logo.svg"
           alt="Logo"
-          className="h-8 mr-4"
+          className="h-8 mr-4 w-auto"
+          priority
         />
       </div>
       <nav>
@@ -38,10 +39,7 @@ const Header = () => {
       </nav>
       <div className="flex flex-wrap gap-5">
         <ThemeToggle />
-        <button
-          className=" hover:text-gray-400"
-          onClick={handleLogout}
-        >
+        <button className=" hover:text-gray-400" onClick={handleLogout}>
           Logout
         </button>
       </div>

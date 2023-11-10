@@ -1,6 +1,5 @@
-const withMT = require("@material-tailwind/react/utils/withMT");
 /** @type {import('tailwindcss').Config} */
-module.exports = withMT({
+module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -87,6 +86,7 @@ module.exports = withMT({
       },
       fontFamily: {
         inter: ["var(--font-inter)", "sans-serif"],
+        gagalin: ["var(--font-gagalin)"],
       },
       fontSize: {
         xs: "0.75rem",
@@ -153,24 +153,5 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("tailwind-typewriter")({
-      wordsets: {
-        facts: {
-          words: [
-            "The Colosseum could hold up to 80,000 spectators.",
-            "The Burj Khalifa in Dubai is the world's tallest skyscraper at 2,722 feet.",
-            "The Eiffel Tower can be 15 cm taller during the summer due to expansion of the iron.",
-            "The Great Wall of China is not a single wall but a series of fortifications.",
-            "There is enough gold in the Earth's core to coat the planet in 1.5 feet of the precious metal.",
-          ],
-          delay: 0,
-          writeSpeed: 0.09,
-          repeat: -1,
-          eraseSpeed: 0,
-        },
-      },
-    }),
-  ],
-});
+  plugins: [require("tailwindcss-animate")],
+};

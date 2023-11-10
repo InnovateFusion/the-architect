@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
+import useTranslation from "next-translate/useTranslation";
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -12,6 +13,7 @@ export default function SignUp() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -53,9 +55,8 @@ export default function SignUp() {
     setIsLoading(false);
   }
 
-  const [token, setToken] = React.useState(null);
   React.useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
     if (token) {
       router.push("/dashboard");
     }
@@ -68,20 +69,21 @@ export default function SignUp() {
           {/* Page header */}
           <div className="max-w-3xl mx-auto text-center pb-12 ">
             <h1 className="h1">
-              Welcome. We exist to make <u>Design</u> easier.
+              {t("su_welcome")} <u>{t("s_welcome_1")}</u> {t("s_welcome_2")}
             </h1>
           </div>
 
           {/* Form */}
           <div className="max-w-sm mx-auto">
-            <form>
+            <form onSubmit={onSubmit}>
               <div className="flex  -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
                     className="block  text-sm font-medium mb-1"
                     htmlFor="name"
                   >
-                    First Name <span className="text-red-600">*</span>
+                    {t("su_fname")}
+                    <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="firstName"
@@ -98,7 +100,8 @@ export default function SignUp() {
                     className="block  text-sm font-medium mb-1"
                     htmlFor="name"
                   >
-                    Last Name <span className="text-red-600">*</span>
+                    {t("su_lname")}
+                    <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="lastName"
@@ -117,7 +120,7 @@ export default function SignUp() {
                     className="block  text-sm font-medium mb-1"
                     htmlFor="email"
                   >
-                    Email <span className="text-red-600">*</span>
+                    {t("r_email")} <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="email"
@@ -127,6 +130,7 @@ export default function SignUp() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -136,7 +140,7 @@ export default function SignUp() {
                     className="block  text-sm font-medium mb-1"
                     htmlFor="password"
                   >
-                    Password <span className="text-red-600">*</span>
+                    {t("s_password")} <span className="text-red-600">*</span>
                   </label>
                   <input
                     id="password"
@@ -146,6 +150,7 @@ export default function SignUp() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="new-password"
                   />
                 </div>
               </div>
@@ -153,32 +158,31 @@ export default function SignUp() {
                 <div className="w-full px-3">
                   <button
                     className={`btn text-white bg-blue-500 hover:bg-blue-700 disabled:bg-black w-full`}
-                    onClick={onSubmit}
                     disabled={isLoading}
                   >
-                   {isLoading ? "Signing Up..." :  "Sign up"}
+                    {isLoading ? "Signing Up..." : "Sign up"}
                   </button>
                 </div>
               </div>
               <div className="text-sm text-gray-500 text-center mt-3">
-                By creating an account, you agree to the{" "}
+                {t("su_create")}
                 <a className="underline" href="#0">
-                  terms & conditions
+                  {t("su_term")}
                 </a>
-                , and our{" "}
+                {t("su_and")}
                 <a className="underline" href="#0">
-                  privacy policy
+                  {t("su_privacy")}
                 </a>
                 .
               </div>
             </form>
             <div className=" text-center mt-6">
-              Already using The Architect?{" "}
+              {t("su_already")}
               <Link
                 href="/auth/signin"
                 className="text-blue-600 hover:underline transition duration-150 ease-in-out"
               >
-                Sign in
+                {t("su_signin")}
               </Link>
             </div>
           </div>

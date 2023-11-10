@@ -42,12 +42,12 @@ const Clone = ({ fill }) => (
   </svg>
 );
 
-function DesignCard({ post }) {
+function DesignCard({ post, innerRef }) {
   function Capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div className="block border-2 dark:border-gray-600 border-gray-300   rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+    <div ref={innerRef} className="block border-2 dark:border-gray-600 border-gray-300   rounded-xl shadow-2xl transform transition duration-500 hover:scale-105 hover:shadow-2xl">
       <Link href={{ pathname: `/dashboard/design/${post.id}` }}>
         <Image
           className="w-full cursor-pointer rounded-t-xl"

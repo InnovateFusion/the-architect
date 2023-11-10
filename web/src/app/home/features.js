@@ -1,25 +1,28 @@
-'use client'
+"use client";
 
-import { useState, useRef, useEffect } from 'react'
-import { Transition } from '@headlessui/react'
-import Image from 'next/image'
+import { useState, useRef, useEffect } from "react";
+import { Transition } from "@headlessui/react";
+import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 export default function Features() {
-  
-  const [tab, setTab] = useState(1)
+  const [tab, setTab] = useState(1);
 
-  const tabs = useRef(null)
+  const tabs = useRef(null);
 
   const heightFix = () => {
-    if (tabs.current && tabs.current.parentElement) tabs.current.parentElement.style.height = `${tabs.current.clientHeight}px`
-  }
+    if (tabs.current && tabs.current.parentElement)
+      tabs.current.parentElement.style.height = `${tabs.current.clientHeight}px`;
+  };
 
   useEffect(() => {
-    heightFix()
-  }, []) 
+    heightFix();
+  }, []);
+
+  const { t } = useTranslation("common");
 
   return (
-    <section className="relative">
+    <section className="relative sm:pb-20" data-aos="zoom-y-out">
       {/* Section background (needs .relative class on parent and next sibling elements) */}
       <div
         className="absolute inset-0 pointer-events-none mb-16"
@@ -27,15 +30,13 @@ export default function Features() {
       ></div>
       <div className="absolute left-0 right-0 m-auto w-px p-px h-20 bg-gray-200 transform -translate-y-1/2"></div>
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 ">
         <div className="pt-12 md:pt-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto md:text-center pb-12 md:pb-16">
-            <h1 className="h2 mb-4">Explore the solutions</h1>
-            <p className="text-xl text-gray-600">
-              The Architect is a fine tuned assistant for Architects that
-              assists the architectural development from idea generation to
-              final design product.
+            <h1 className="h2 mb-4">{t("f_header")}</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              {t("f_header_desc")}
             </p>
           </div>
 
@@ -47,20 +48,21 @@ export default function Features() {
               data-aos="fade-right"
             >
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
-                <h3 className="h3 mb-3">Powerful suite of tools</h3>
-                <p className="text-xl text-gray-600">
-                  It&apos;s an AI-powered platform that empowers professionals
-                  and enthusiasts in the field of architecture and design by
-                  offering a wide range of features and tools.
+                <h3 className="h3 mb-3">{t("f_content")}</h3>
+                <p
+                  className="text-xl text-gray-600 dark:text-gray-400"
+                  data-aos="zoom-y-out"
+                >
+                  {t("f_content_desc")}
                 </p>
               </div>
               {/* Tabs buttons */}
-              <div className="mb-8 md:mb-0">
+              <div className="mb-8 md:mb-0" data-aos="zoom-y-out">
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 1
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -68,13 +70,18 @@ export default function Features() {
                     setTab(1);
                   }}
                 >
+                  {/* Tabs_1 */}
                   <div>
-                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
-                      Virtual Architectural Design Assistant
+                    <div className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1">
+                      {t("f_tabs_1")}
                     </div>
-                    <div className="text-gray-600">
-                      Our platform assists architects in generating design
-                      concepts, offering feedback, and suggesting alternatives.
+                    <div
+                      className={`text-gray-600 ${
+                        tabs == 1 ? "dark:text-black" : "dark:text-gray-400"
+                      } `}
+                      data-aos="zoom-y-out"
+                    >
+                      {t("f_tabs_1_desc")}
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
@@ -90,8 +97,8 @@ export default function Features() {
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 2
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -99,14 +106,19 @@ export default function Features() {
                     setTab(2);
                   }}
                 >
+                  {/* Tabs_2 */}
                   <div>
-                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
-                      Creativity Enhancement
+                    <div
+                      className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1"
+                      data-aos="zoom-y-out"
+                    >
+                      {t("f_tabs_2")}
                     </div>
-                    <div className="text-gray-600">
-                      We help you to generate creative ideas, offering
-                      inspirations, and refine your initial designs through
-                      conversational feedback.
+                    <div
+                      className="text-gray-600 dark:text-gray-400"
+                      data-aos="zoom-y-out"
+                    >
+                      {t("f_tabs_2_desc")}
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
@@ -125,8 +137,8 @@ export default function Features() {
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 3
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -134,14 +146,16 @@ export default function Features() {
                     setTab(3);
                   }}
                 >
+                  {/* Tabs_3 */}
                   <div>
-                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
-                      Market Research Trend Analysis and Cost Estimation
+                    <div
+                      className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1"
+                      data-aos="zoom-y-out"
+                    >
+                      {t("f_tabs_3")}
                     </div>
-                    <div className="text-gray-600">
-                      The Architects Platform streamlines financial planning by
-                      assisting in generating accurate cost estimates and
-                      budgets for architectural projects.
+                    <div className="text-gray-600 dark:text-gray-400">
+                      {t("f_tabs_3_desc")}
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
@@ -190,6 +204,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -198,6 +213,7 @@ export default function Features() {
                         height="44"
                         alt="Element"
                         style={{ top: "30%" }}
+                        priority
                       />
                     </div>
                   </Transition>
@@ -222,6 +238,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -230,6 +247,7 @@ export default function Features() {
                         height="44"
                         alt="Element"
                         style={{ top: "30%" }}
+                        priority
                       />
                     </div>
                   </Transition>
@@ -254,6 +272,7 @@ export default function Features() {
                         width={500}
                         height="462"
                         alt="Features bg"
+                        priority
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
@@ -262,6 +281,7 @@ export default function Features() {
                         height="44"
                         alt="Element"
                         style={{ top: "30%" }}
+                        priority
                       />
                     </div>
                   </Transition>

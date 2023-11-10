@@ -6,7 +6,7 @@ function ChatBubble({ m, handleOpen, setImage }) {
   const message = JSON.parse(m);
   return (
     <div
-      className={`p2-3 flex justify-${
+      className={`py-3 flex justify-${
         message?.sender == "user" ? "end" : "start"
       }`}
     >
@@ -53,7 +53,7 @@ function ChatBubble({ m, handleOpen, setImage }) {
                 onDoubleClick={(e) => handleOpen(message.content.imageAI)}
               />
             )}
-            {message?.content["3D"]?.fetch_result &&
+            {message.model == "text_to_3D" && message?.content["3D"]?.fetch_result &&
               message?.content["3D"]?.fetch_result != "" &&
               JSON.stringify(message?.content["3D"]?.fetch_result) != "{}" && (
                 <Image
