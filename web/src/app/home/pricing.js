@@ -91,7 +91,7 @@ function Pricing() {
                 ))}
               </ul>
               <a
-                href={i == 0 ? "/auth/singin" : "/subscribe"}
+                href={i == 0 ? "/auth/signin" : "/subscribe"}
                 className=" bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 rounded-lg text-sm px-5 py-2.5 text-center  dark:focus:ring-primary-900 border hover:bg-blue-600 bg-blue-500 font-extrabold"
                 data-aos="zoom-y-out"
               >

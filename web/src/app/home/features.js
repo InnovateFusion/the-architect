@@ -35,7 +35,9 @@ export default function Features() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto md:text-center pb-12 md:pb-16">
             <h1 className="h2 mb-4">{t("f_header")}</h1>
-            <p className="text-xl text-gray-600">{t("f_header_desc")}</p>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              {t("f_header_desc")}
+            </p>
           </div>
 
           {/* Section content */}
@@ -47,7 +49,10 @@ export default function Features() {
             >
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
                 <h3 className="h3 mb-3">{t("f_content")}</h3>
-                <p className="text-xl text-gray-600" data-aos="zoom-y-out">
+                <p
+                  className="text-xl text-gray-600 dark:text-gray-400"
+                  data-aos="zoom-y-out"
+                >
                   {t("f_content_desc")}
                 </p>
               </div>
@@ -56,8 +61,8 @@ export default function Features() {
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 1
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -67,10 +72,15 @@ export default function Features() {
                 >
                   {/* Tabs_1 */}
                   <div>
-                    <div className="dark:text-black font-bold leading-snug tracking-tight mb-1">
+                    <div className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1">
                       {t("f_tabs_1")}
                     </div>
-                    <div className="text-gray-600" data-aos="zoom-y-out">
+                    <div
+                      className={`text-gray-600 ${
+                        tabs == 1 ? "dark:text-black" : "dark:text-gray-400"
+                      } `}
+                      data-aos="zoom-y-out"
+                    >
                       {t("f_tabs_1_desc")}
                     </div>
                   </div>
@@ -87,8 +97,8 @@ export default function Features() {
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 2
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -99,12 +109,15 @@ export default function Features() {
                   {/* Tabs_2 */}
                   <div>
                     <div
-                      className="dark:text-black font-bold leading-snug tracking-tight mb-1"
+                      className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1"
                       data-aos="zoom-y-out"
                     >
                       {t("f_tabs_2")}
                     </div>
-                    <div className="text-gray-600" data-aos="zoom-y-out">
+                    <div
+                      className="text-gray-600 dark:text-gray-400"
+                      data-aos="zoom-y-out"
+                    >
                       {t("f_tabs_2_desc")}
                     </div>
                   </div>
@@ -124,8 +137,8 @@ export default function Features() {
                 <a
                   className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${
                     tab !== 3
-                      ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
-                      : "bg-gray-200 border-transparent"
+                      ? "dark:bg-gray-800 shadow-md dark:border-gray-700 hover:shadow-lg"
+                      : "bg-gray-300 border-transparent"
                   }`}
                   href="#0"
                   onClick={(e) => {
@@ -136,12 +149,14 @@ export default function Features() {
                   {/* Tabs_3 */}
                   <div>
                     <div
-                      className="dark:text-black font-bold leading-snug tracking-tight mb-1"
+                      className="dark:text-gray-500 font-bold leading-snug tracking-tight mb-1"
                       data-aos="zoom-y-out"
                     >
                       {t("f_tabs_3")}
                     </div>
-                    <div className="text-gray-600">{t("f_tabs_3_desc")}</div>
+                    <div className="text-gray-600 dark:text-gray-400">
+                      {t("f_tabs_3_desc")}
+                    </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3 dark:text-black ">
                     <svg
@@ -197,7 +212,7 @@ export default function Features() {
                         width={500}
                         height="44"
                         alt="Element"
-                        style={{ top: "30%"}}
+                        style={{ top: "30%" }}
                         priority
                       />
                     </div>

@@ -60,7 +60,7 @@ export default function SignIn() {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      toast.error(err.message);
+      toast.error("Network error, Please Try again.");
       setIsLoading(false);
     }
   }

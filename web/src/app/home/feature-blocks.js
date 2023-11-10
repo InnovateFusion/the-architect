@@ -18,7 +18,7 @@ export default function FeaturesBlocks() {
             <h2 className="h2 mb-4" data-aos="zoom-y-out">
               {t("f_header")}
             </h2>
-            <p className="text-xl text-gray-600">{t("f_header_desc")}</p>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t("f_header_desc")}</p>
           </div>
 
           {/* Items */}
@@ -27,7 +27,7 @@ export default function FeaturesBlocks() {
             data-aos="zoom-y-out"
           >
             {/* 1st item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -62,14 +62,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_1")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_1_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_1_desc")}</p>
             </div>
 
             {/* 2nd item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300  rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800   rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -101,14 +101,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_2")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_2_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_2_desc")}</p>
             </div>
 
             {/* 3rd item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -143,14 +143,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_3")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_3_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_3_desc")}</p>
             </div>
 
             {/* 4th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -184,14 +184,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_4")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_4_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_4_desc")}</p>
             </div>
 
             {/* 5th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -220,14 +220,14 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_5")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_5_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_5_desc")}</p>
             </div>
 
             {/* 6th item */}
-            <div className="relative border-2 border-gray-200 flex flex-col items-center p-6 dark:bg-gray-300 rounded shadow-xl">
+            <div className="relative border-2 border-gray-300 dark:border-gray-700 flex flex-col items-center p-6 dark:bg-gray-800  rounded shadow-xl">
               <svg
                 className="w-16 h-16 p-1 -mt-1 mb-2"
                 viewBox="0 0 64 64"
@@ -252,10 +252,10 @@ export default function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-center dark:text-black text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
+              <h4 className="text-center dark:text-white text-xl font-bold leading-snug tracking-tight mb-1" data-aos="zoom-y-out">
                 {t("fb_item_6")}
               </h4>
-              <p className="text-gray-600 text-center" data-aos="zoom-y-out">{t("fb_item_6_desc")}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center" data-aos="zoom-y-out">{t("fb_item_6_desc")}</p>
             </div>
           </div>
         </div>
