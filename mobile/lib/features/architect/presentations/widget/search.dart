@@ -17,50 +17,49 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          color: const Color(0xFFF4F0F3),
-          border: Border.all(
-            color: const Color(0xFFF4F0F3), // Border color
-            width: 2.0, // Border width
-          ),
-        ),
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: Icon(
-                Icons.search,
-                color: Colors.grey,
-                size: 25, // Example icon color
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                controller: searchController,
-                onSubmitted: (value) {
-                  widget.onChanged(context, value);
-                  searchController.clear();
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: "Search ",
+                hintStyle: const TextStyle(
+                  color: Color.fromRGBO(189, 189, 189, 1),
+                  fontSize: 14,
+                ),
+                contentPadding: const EdgeInsets.only(
+                    left: 10, top: 12, bottom: 12), // Add padding here
+                border: InputBorder.none,
+                suffixIcon: Container(
+                  width: 50,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff22c55e),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  border: InputBorder.none,
-                ),
-                style: const TextStyle(
-                  color: Colors.black, // Example text color
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.search,
+                      size: 30,
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      widget.onChanged(context, searchController.text);
+                    },
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 7))
+        ],
       ),
     );
   }

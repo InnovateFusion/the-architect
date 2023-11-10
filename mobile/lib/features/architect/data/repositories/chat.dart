@@ -78,11 +78,13 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<Either<Failure, Message>> message(
-      {required Map<String, dynamic> payload,
-      required String chatId,
-      required String userId,
-      required String model}) async {
+  Future<Either<Failure, Message>> message({
+    required Map<String, dynamic> payload,
+    required String chatId,
+    required String userId,
+    required String model,
+    bool? isTeam,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
         final auth = await authLocalDataSource.getToken();
@@ -91,7 +93,8 @@ class ChatRepositoryImpl extends ChatRepository {
             payload: payload,
             chatId: chatId,
             token: auth.accessToken,
-            userId: userId);
+            userId: userId,
+            isTeam: isTeam ?? false);
         print('chat $chat');
         return Right(chat);
       } on ServerException {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../domains/entities/user.dart';
-import '../../page/profile.dart';
 import '../profile_image.dart';
 
 class UserInfo extends StatelessWidget {
@@ -23,50 +22,44 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 141, 133, 137).withOpacity(0.7),
-        borderRadius: BorderRadius.circular(30),
+      width: 150,
+      height: 50,
+      decoration: const BoxDecoration(
+        color: Color(0x99000000),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          bottomRight: Radius.circular(20),
+        ),
       ),
       child: Row(
         children: [
-          GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(
-                      user: user,
-                      userId: id,
-                    ),
-                  ),
-                );
-              },
-              child: ProfileImage(imageUrl: imageUrl, size: 45)),
-          const SizedBox(width: 10),
+          const SizedBox(width: 4),
+          CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 16,
+              child: ProfileImage(imageUrl: imageUrl, size: 50)),
+          const SizedBox(width: 6),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 7),
               Text(
                 name,
                 style: const TextStyle(
-                  fontWeight: FontWeight.w400,
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 12,
                 ),
               ),
-              const SizedBox(height: 2),
               Text(
                 date,
                 style: const TextStyle(
-                  color: Color(0xFFE1DBDB),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                  fontSize: 8,
                 ),
               ),
             ],
-          ),
-          const SizedBox(width: 10),
+          )
         ],
       ),
     );

@@ -73,6 +73,13 @@ final class UpdateUserEvent extends UserEvent {
       ];
 }
 
+final class ViewsUserEvent extends UserEvent {
+  const ViewsUserEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
 final class DeleteUserEvent extends UserEvent {
   const DeleteUserEvent({required this.id});
 

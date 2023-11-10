@@ -5,7 +5,6 @@ import 'package:architect/features/architect/domains/entities/message.dart'
     as message;
 import 'package:architect/features/architect/domains/entities/post.dart';
 import 'package:architect/features/architect/presentations/bloc/chat/chat_bloc.dart';
-import 'package:architect/features/architect/presentations/page/home.dart';
 import 'package:architect/features/architect/presentations/page/setting.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_display.dart';
 import 'package:architect/features/architect/presentations/widget/chat/chat_side_bar.dart';
@@ -13,8 +12,10 @@ import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../../core/util/get_image_base64.dart';
+import '../../domains/entities/team.dart';
 import '../../domains/entities/user.dart';
 import '../bloc/type/type_bloc.dart';
 import '../widget/chat/chat_input.dart';
@@ -62,6 +63,7 @@ class Chat extends StatefulWidget {
     Key? key,
     this.messages,
     required this.user,
+    this.team,
     this.draw,
     this.replay,
     this.messageX,
@@ -73,6 +75,7 @@ class Chat extends StatefulWidget {
   final User user;
   final Post? post;
   final Message? replay;
+  final Team? team;
   final List<Message>? messageX;
 
   @override
@@ -88,7 +91,10 @@ class _ChatState extends State<Chat> {
   late TypeBloc _select;
   late String base64ImageForImageToImage;
   late String base64ImageForControlNet;
-
+  final IO.Socket socket = IO.io(
+    'https://sketch-dq5zwrwm5q-ww.a.run.app',
+    IO.OptionBuilder().setTransports(['websocket']).build(),
+  )..connect();
   @override
   void initState() {
     super.initState();
@@ -219,6 +225,14 @@ class _ChatState extends State<Chat> {
         userId: widget.user.id,
         payload: payload,
         chatId: chatId!,
+        model: model,
+      ));
+    } else if (widget.team != null) {
+      BlocProvider.of<ChatBloc>(context).add(MakeChatEvent(
+        userId: widget.user.id,
+        payload: payload,
+        chatId: widget.team!.id,
+        isTeam: true,
         model: model,
       ));
     } else {
@@ -485,6 +499,15 @@ class _ChatState extends State<Chat> {
       );
     }
 
+    socket.onConnect((_) {
+      if (widget.team != null) {
+        socket.on('teams-chat-${widget.team!.id}', (data) {
+          print('-----------------');
+          print(data);
+        });
+      }
+    });
+
     return SafeArea(
       child: MultiBlocProvider(
         providers: [
@@ -497,14 +520,13 @@ class _ChatState extends State<Chat> {
         ],
         child: Scaffold(
           key: scaffoldKey,
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 236, 238, 244),
           body: BlocBuilder<TypeBloc, TypeState>(builder: (ctx, state) {
             if (state is TypeLoaded) {
               model = state.model.name;
             }
             return Container(
-              padding: const EdgeInsets.only(
-                  top: 10, left: 10, right: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -513,45 +535,43 @@ class _ChatState extends State<Chat> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 0, 0, 0),
-                                borderRadius: BorderRadius.circular(5)),
-                            height: 40,
-                            width: 40,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.popUntil(context, (route) {
-                                  return route.runtimeType == HomePage;
-                                });
-                              },
+                          if (messages.isNotEmpty)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xff22c55e),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              height: 40,
+                              width: 40,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const HomePage(),
-                                    ),
-                                    (route) => false,
-                                  );
+                                  Navigator.of(context).pop();
                                 },
                                 child: const Icon(
                                   Icons.arrow_back_ios_new,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 20,
                                 ),
                               ),
+                            ),
+                          if (messages.isNotEmpty) const SizedBox(width: 10),
+                          const Text(
+                            "Chat",
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(width: 10),
                           const Text(
-                            "Chat",
+                            "Ai",
                             style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 32,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
                             ),
                           ),
                         ],
@@ -566,14 +586,19 @@ class _ChatState extends State<Chat> {
                             ),
                           ),
                         ),
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: FileImage(File(widget.user.image)),
-                              fit: BoxFit.fill,
+                        child: CircleAvatar(
+                          backgroundImage: Image.asset(
+                            'assets/images/user.png',
+                          ).image,
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: FileImage(File(widget.user.image)),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                         ),

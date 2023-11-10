@@ -28,24 +28,19 @@ class Tag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
       decoration: BoxDecoration(
         color: isSelected
-            ? Colors.black
+            ? const Color(0xff22c55e)
             : const Color.fromARGB(255, 255, 255, 255),
-        border: Border.all(
-          color: isSelected
-              ? const Color.fromARGB(255, 255, 255, 255)
-              : Colors.black,
-        ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
         onTap: () => onPressed(text),
         child: Text(
           capitalizeAll(text),
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
+            color: isSelected ? Colors.white : Colors.grey,
             fontSize: 13,
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:architect/features/architect/presentations/widget/loading_indica
 import 'package:architect/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext cnt) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 236, 238, 244),
       body: SafeArea(
         child: input(context),
       ),
@@ -128,192 +129,208 @@ class _SignUpState extends State<SignUp> {
   SingleChildScrollView input(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: BlocProvider(
-        create: (context) => sl<UserBloc>(),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(50),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Center(
-                            child: Image.asset('assets/images/logo.png',
-                                width: 120),
-                          ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            'The ArchiTect',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Roboto',
-                                fontSize: 28,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 0),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  TextField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'First Name',
-                      hintText: 'First Name',
-                      labelStyle: TextStyle(color: Colors.black),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Last Name',
-                      hintText: 'Last Name',
-                      labelStyle: TextStyle(color: Colors.black),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.black),
-                      border: const OutlineInputBorder(),
-                      errorText: _isEmailValid || _emailController.text == ''
-                          ? null
-                          : 'Invalid email',
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.email,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          _emailController.clear();
-                        },
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: _isObscure,
-                    autofillHints: const [AutofillHints.password],
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Password',
-                      border: const OutlineInputBorder(),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelStyle: const TextStyle(color: Colors.black),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isObscure ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.black,
-                        ),
-                        onPressed: _onToggleObscure,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  BlocConsumer<UserBloc, UserState>(
-                    listener: (contx, state) {
-                      if (state is UserCreated) {
-                        Navigator.push(
-                            contx,
-                            MaterialPageRoute(
-                                builder: (contx) => const Login()));
-                      }
-                      if (state is UserError) {
-                        showAboutDialog(context);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is UserLoading) {
-                        return const LoadingIndicator();
-                      } else {
-                        return Column(
+      child: SizedBox(
+        child: BlocProvider(
+          create: (context) => sl<UserBloc>(),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
                           children: [
-                            const SizedBox(height: 32),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  _onSignUpButtonPressed(context);
-                                },
-                                child: const Text('Sign Up',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                    )),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            SvgPicture.asset('assets/images/logo.svg',
+                                height: 90, width: 90),
+                            const SizedBox(height: 20),
+                            const Row(
                               children: [
-                                const Text(
-                                  'Already have an account?',
+                                Text(
+                                  "The",
                                   style: TextStyle(
+                                    fontSize: 32,
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Login(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                SizedBox(width: 5),
+                                Text(
+                                  "Architect",
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300,
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
-                        );
-                      }
-                    },
-                  ),
-                ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+                    TextField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'First Name',
+                        hintText: 'First Name',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Last Name',
+                        hintText: 'Last Name',
+                        labelStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'Email',
+                        labelStyle: const TextStyle(color: Colors.black),
+                        border: const OutlineInputBorder(),
+                        errorText: _isEmailValid || _emailController.text == ''
+                            ? null
+                            : 'Invalid email',
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.email,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            _emailController.clear();
+                          },
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: _isObscure,
+                      autofillHints: const [AutofillHints.password],
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        hintText: 'Password',
+                        border: const OutlineInputBorder(),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        labelStyle: const TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.black,
+                          ),
+                          onPressed: _onToggleObscure,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    BlocConsumer<UserBloc, UserState>(
+                      listener: (contx, state) {
+                        if (state is UserCreated) {
+                          Navigator.push(
+                              contx,
+                              MaterialPageRoute(
+                                  builder: (contx) => const Login()));
+                        }
+                        if (state is UserError) {
+                          showAboutDialog(context);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is UserLoading) {
+                          return const SizedBox(
+                              height: 70, child: LoadingIndicator());
+                        } else {
+                          return Column(
+                            children: [
+                              const SizedBox(height: 32),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xff22c55e),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _onSignUpButtonPressed(context);
+                                  },
+                                  child: const Text('Sign Up',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      )),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Already have an account?',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Login(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -8,19 +8,17 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Center(
-        child: SpinKitWave(
-          itemBuilder: (BuildContext context, int index) {
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                color: index.isEven
-                    ? const Color.fromARGB(255, 0, 0, 0)
-                    : Colors.grey,
-              ),
-            );
-          },
-        ),
+    return Center(
+      child: SpinKitWave(
+        itemBuilder: (BuildContext context, int index) {
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              color: index.isEven
+                  ? const Color.fromARGB(255, 200, 198, 198)
+                  : const Color.fromARGB(255, 0, 0, 0),
+            ),
+          );
+        },
       ),
     );
   }

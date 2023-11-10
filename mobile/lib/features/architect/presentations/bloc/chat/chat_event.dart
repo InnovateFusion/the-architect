@@ -51,12 +51,14 @@ final class MakeChatEvent extends ChatEvent {
     required this.payload,
     required this.chatId,
     required this.model,
+    this.isTeam
   });
 
   final Map<String, dynamic> payload;
   final String chatId;
   final String model;
   final String userId;
+  final bool? isTeam;
 
   @override
   List<Object> get props => [payload, chatId, model, userId];

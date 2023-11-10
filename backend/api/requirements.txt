@@ -11,3 +11,4 @@ passlib[bcrypt]
 PyJWT
 replicate
 Pillow
+requests

@@ -28,7 +28,9 @@ class IconBox extends StatelessWidget {
           width: 40,
           margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 181, 178, 179),
+              color: selected
+                  ? const Color.fromARGB(255, 142, 231, 175)
+                  : const Color.fromARGB(255, 210, 215, 228),
               borderRadius: BorderRadius.circular(20)),
           child: Tooltip(
             message: tooltip,

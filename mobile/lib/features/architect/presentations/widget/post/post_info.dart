@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../profile_image.dart';
 
 class PostInfo extends StatelessWidget {
   final String name;
@@ -26,7 +25,7 @@ class PostInfo extends StatelessWidget {
       ),
       child: Row(
         children: [
-          ProfileImage(imageUrl: imageUrl, size: 45),
+          
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,7 +23,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     required String password,
   }) async {
     final response = await client.post(
-      Uri.parse('https://the-architect.onrender.com/api/v1/token/'),
+      Uri.parse('$base64Url()/api/v1/token/'),
       headers: {
         'content-Type': 'application/json',
         'accept': 'application/json',

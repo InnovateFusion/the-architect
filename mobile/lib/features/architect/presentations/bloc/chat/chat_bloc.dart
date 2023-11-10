@@ -1,13 +1,13 @@
 import 'package:architect/features/architect/domains/use_cases/chat/create.dart'
     as chat_create;
+import 'package:architect/features/architect/domains/use_cases/chat/delete.dart'
+    as chat_delete;
 import 'package:architect/features/architect/domains/use_cases/chat/message.dart'
     as chat_message;
 import 'package:architect/features/architect/domains/use_cases/chat/view.dart'
     as chat_view;
 import 'package:architect/features/architect/domains/use_cases/chat/views.dart'
     as chat_views;
-import 'package:architect/features/architect/domains/use_cases/chat/delete.dart'
-    as chat_delete;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -93,6 +93,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       chatId: event.chatId,
       model: event.model,
       userId: event.userId,
+      isTeam: event.isTeam,
     ));
     emit(
       failureOrMessage.fold(

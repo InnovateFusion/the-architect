@@ -2,8 +2,8 @@ import 'package:architect/features/architect/domains/entities/chat.dart';
 import 'package:architect/features/architect/domains/entities/message.dart';
 import 'package:architect/features/architect/presentations/page/chat.dart'
     as chat;
-import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
@@ -17,7 +17,7 @@ class History extends StatefulWidget {
   }) : super(key: key);
 
   final User user;
-static const String name = '/history';
+  static const String name = '/history';
   @override
   State<History> createState() => _HistoryState();
 }
@@ -107,7 +107,7 @@ class _HistoryState extends State<History> {
   Widget historyLoaded(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 236, 238, 244),
         body: Column(
           children: [
             Container(
@@ -163,6 +163,35 @@ class _HistoryState extends State<History> {
                             ),
                           ),
                         ),
+                        const SizedBox(width: 10),
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff22c55e),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.search,
+                              size: 30,
+                            ),
+                            color: Colors.white,
+                            onPressed: () {
+                              setState(() {
+                                filteredHistory.clear();
+                                filteredHistory.addAll(
+                                  history.where(
+                                    (element) => element.title
+                                        .toLowerCase()
+                                        .contains(searchController.text
+                                            .toLowerCase()),
+                                  ),
+                                );
+                              });
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -181,10 +210,39 @@ class _HistoryState extends State<History> {
                     history.addAll(event.chats);
                     return historyMethod();
                   } else if (event is ChatError) {
-                    return Expanded(child: Center(child: Text(event.message)));
+                    return Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () {
+                          chatBloc.add(
+                            ChatViewsEvent(
+                              userId: widget.user.id,
+                            ),
+                          );
+                          return Future<void>.value();
+                        },
+                        child: ListView(
+                          padding: const EdgeInsets.only(top: 300),
+                          children: [
+                            Center(child: Text('${event.message}. Retry?')),
+                          ],
+                        ),
+                      ),
+                    );
                   }
                 }
-                return const LoadingIndicator();
+                return Padding(
+                  padding: const EdgeInsets.only(top: 300),
+                  child: SpinKitFadingCircle(
+                    size: 60,
+                    itemBuilder: (BuildContext context, int index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: index.isEven ? Colors.black : Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                );
               },
             )
           ],
@@ -195,63 +253,73 @@ class _HistoryState extends State<History> {
 
   Expanded historyMethod() {
     return Expanded(
-      child: ListView.builder(
-        itemCount: searchController.text.isNotEmpty
-            ? filteredHistory.length
-            : history.length,
-        itemBuilder: (context, index) {
-          final view = searchController.text.isNotEmpty
-              ? filteredHistory[index]
-              : history[index];
-          return ListTile(
-            titleTextStyle: const TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-            hoverColor: Colors.grey,
-            subtitle: GestureDetector(
-              onTap: () => onPressedNavigation(
-                context,
-                view.id,
-                view.userId,
-                view.messages,
-              ),
-              child: Text(
-                DateFormat('MMM d y')
-                    .format(view.messages[view.messages.length - 1].date),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            title: GestureDetector(
-              onTap: () => onPressedNavigation(
-                context,
-                view.id,
-                view.userId,
-                view.messages,
-              ),
-              child: Text(view.title.length <= 30
-                  ? capitalize(view.title)
-                  : '${capitalize(view.title.substring(0, 30))}...'),
-            ),
-            trailing: GestureDetector(
-              onTap: () {
-                conformationOfDeletion(context, view.id);
-              },
-              child: const Icon(
-                Icons.delete,
-                size: 30,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          chatBloc.add(
+            ChatViewsEvent(
+              userId: widget.user.id,
             ),
           );
+          return Future<void>.value();
         },
+        child: ListView.builder(
+          itemCount: searchController.text.isNotEmpty
+              ? filteredHistory.length
+              : history.length,
+          itemBuilder: (context, index) {
+            final view = searchController.text.isNotEmpty
+                ? filteredHistory[index]
+                : history[index];
+            return ListTile(
+              titleTextStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              hoverColor: Colors.grey,
+              subtitle: GestureDetector(
+                onTap: () => onPressedNavigation(
+                  context,
+                  view.id,
+                  view.userId,
+                  view.messages,
+                ),
+                child: Text(
+                  DateFormat('MMM d y')
+                      .format(view.messages[view.messages.length - 1].date),
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              title: GestureDetector(
+                onTap: () => onPressedNavigation(
+                  context,
+                  view.id,
+                  view.userId,
+                  view.messages,
+                ),
+                child: Text(view.title.length <= 30
+                    ? capitalize(view.title.trim())
+                    : '${capitalize(view.title.substring(0, 30).trim())}...'),
+              ),
+              trailing: GestureDetector(
+                onTap: () {
+                  conformationOfDeletion(context, view.id);
+                },
+                child: const Icon(
+                  Icons.delete,
+                  size: 30,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

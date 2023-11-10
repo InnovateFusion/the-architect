@@ -1,12 +1,15 @@
 import json
 from dataclasses import dataclass
-from pydantic import BaseModel
+
 from app.domain.entities import BaseEntity
+from pydantic import BaseModel
+
 
 class Message(BaseModel):
     user_id: str
     payload: dict
     model: str
+    isTeam: bool = False
     
     class Config:
         arbitrary_types_allowed = True

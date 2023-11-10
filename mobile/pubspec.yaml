@@ -32,7 +32,7 @@ dependencies:
     sdk: flutter
   flutter_colorpicker: ^1.0.3
   flutter_hooks: ^0.20.2
-  flutter_svg: ^2.0.7
+  flutter_svg: ^2.0.9
   file_saver: ^0.2.8
   font_awesome_flutter: ^10.5.0
   image_picker: ^1.0.4
@@ -57,6 +57,13 @@ dependencies:
   stream_transform: ^2.1.0
   bloc_concurrency: ^0.2.2
   cool_ui: ^1.3.0
+  flutter_launcher_icons: ^0.13.1
+  adaptive_theme: ^3.4.1
+  shimmer: ^3.0.0
+  skeletons: ^0.0.3
+  socket_io_client: ^2.0.3+1
+  universal_html: ^2.2.4
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +91,7 @@ flutter:
 
   assets:
     - assets/images/me.jpg
+    - assets/images/logo.svg
     - assets/images/logo.png
     - assets/images/user.png
     - assets/images/cover/1.jpg
@@ -96,6 +104,11 @@ flutter:
     - assets/images/cover/8.jpg
     - assets/images/cover.png
     - assets/images/water.png
+
+flutter_icons:
+  android: true
+
+  image_path: "assets/images/logo.svg"
 
   # To add assets to your application, add an assets section, like this:
   # assets:
