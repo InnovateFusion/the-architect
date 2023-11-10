@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { imageUrlToBase64 } from "@/utils/utils";
 
 export const usePostsStore = create((set) => ({
   posts: [],
   searchKey: null,
-  setSearch: (key) => ({ searchKey: key}),
+  setSearch: (key) => ({ searchKey: key }),
   setPosts: (data) => set({ posts: data }),
 }));
 
@@ -13,6 +13,20 @@ export const usePostStore = create((set) => ({
   post: [],
   setPost: (data) => set({ post: data }),
 }));
+
+export const useTeamStore = create(
+  persist(
+    (set) => ({
+      team: null,
+      teams: null,
+      setTeam: (data) => set({ team: data }),
+      setTeams: (data) => set({ teams: data }),
+    }),
+    {
+      name: "team-storage", // name of the item in the storage (must be unique)
+    }
+  )
+);
 
 export const useEditStore = create(
   devtools((set) => ({

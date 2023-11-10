@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 function Try() {
   const apiClient = new APIClient();
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [data, setData] = React.useState("/house.jpg");
+  const [data, setData] = React.useState("");
   const [isLoading, setLoading] = React.useState(false);
   const [isError, setError] = React.useState(false);
   const handleSearch = async () => {
@@ -32,7 +32,7 @@ function Try() {
     >
       <Logo x={1} />
       <h1
-        className="text-5xl md:text-4xl font-extrabold leading-tighter tracking-tighter mb-4 text-center"
+        className="text-5xl md:text-4xl font-extrabold leading-tighter tracking-tighter mb-4 text-center font-gagalin"
         data-aos="zoom-y-out"
       >
         Imagine, Inscribe, Innovate
@@ -70,27 +70,28 @@ function Try() {
           data-aos="zoom-y-out"
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {searchQuery == "" ? (
-          <div
-            className="m-5 p-3 hover:cursor-pointer bg-blue-500 duration-100 hover:text-white rounded-full aspect-square flex items-center justify-center resize-none"
-            data-aos="zoom-y-out"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-              />
-            </svg>
-          </div>
-        ) : (
+        {(
+        // searchQuery == "" ? (
+        //   <div
+        //     className="m-5 p-3 hover:cursor-pointer bg-blue-500 duration-100 hover:text-white rounded-full aspect-square flex items-center justify-center resize-none"
+        //     data-aos="zoom-y-out"
+        //   >
+        //     <svg
+        //       xmlns="http://www.w3.org/2000/svg"
+        //       className="h-6 w-6"
+        //       fill="none"
+        //       viewBox="0 0 24 24"
+        //       stroke="currentColor"
+        //       strokeWidth="2"
+        //     >
+        //       <path
+        //         strokeLinecap="round"
+        //         strokeLinejoin="round"
+        //         d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+        //       />
+        //     </svg>
+        //   </div>
+        // ) : (
           <div
             className="m-5 p-3 hover:cursor-pointer bg-blue-500 hover:bg-green-500 hover:m-3 hover:p-5 hover:text-white rounded-full aspect-square flex items-center justify-center resize-none"
             data-aos="zoom-y-out"
@@ -122,8 +123,8 @@ function Try() {
         <Image
           src={data}
           alt={searchQuery}
-          width={300}
-          height={300}
+          width={400}
+          height={400}
           className="py-10 rounded-xl"
         />
       )}

@@ -4,7 +4,7 @@ import PostCard from "../PostCard";
 import Skeleton from "../PostSkeleton";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useAllPosts } from "@/app/hooks/usePosts";
+import { useAllPosts } from "@/hooks/usePosts";
 import { useInView } from "react-intersection-observer";
 import { useRef, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -36,11 +36,10 @@ export default function PostList() {
       fetchNextPage();
     }
   }, [hasNextPage, inView, fetchNextPage]);
-  
+
   useEffect(() => {
-    router.refresh()
+    router.refresh();
   }, [search]);
-  
 
   if (isLoading)
     return (

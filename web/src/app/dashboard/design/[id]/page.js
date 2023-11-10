@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { usePost } from "@/app/hooks/usePosts";
+import { usePost } from "@/hooks/usePosts";
 export default function Design({ params: { id } }) {
   const router = useRouter();
   const { data: design, isLoading, isError, error } = usePost(id);

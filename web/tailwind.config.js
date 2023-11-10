@@ -86,6 +86,7 @@ module.exports = {
       },
       fontFamily: {
         inter: ["var(--font-inter)", "sans-serif"],
+        gagalin: ["var(--font-gagalin)"],
       },
       fontSize: {
         xs: "0.75rem",
@@ -152,7 +153,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-  ],
+  plugins: [require("tailwindcss-animate")],
 };

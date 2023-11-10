@@ -22,12 +22,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tags({setTag}) {
+export default function Tags({ setTag }) {
   const [selected, setSelected] = useState(taglist[0]);
-  const handleChange = (index)=>{
-    setSelected(index)
+  const handleChange = (index) => {
+    setSelected(index);
     setTag(taglist[index]);
-  }
+  };
 
   return (
     <Listbox value={selected} onChange={handleChange}>
@@ -45,7 +45,7 @@ export default function Tags({setTag}) {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                 >
                   <path
                     fill-rule="evenodd"
@@ -100,7 +100,7 @@ export default function Tags({setTag}) {
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
-                              class="w-6 h-6"
+                              className="w-6 h-6"
                             >
                               <path
                                 fill-rule="evenodd"
