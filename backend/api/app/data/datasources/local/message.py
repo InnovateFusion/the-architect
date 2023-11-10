@@ -26,9 +26,9 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         self.db = db
 
     async def create_chat(self, message: Message, chat_id: str, user_id: str) -> MessageEntity:
-        
+
         user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
-        
+
         date = datetime.utcnow()
         if 'prompt' not in message.payload:
             raise CacheException("No prompt found")

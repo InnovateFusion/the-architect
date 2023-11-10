@@ -24,15 +24,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import '../../../../../core/errors/failure.dart';
-
 part 'team_event.dart';
 part 'team_state.dart';
 
-const String SERVER_FAILURE_MESSAGE = 'Something went wrong';
-const String CACHE_FAILURE_MESSAGE = 'Something went wrong, please try again';
-
-const _postLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
@@ -301,13 +295,3 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
   }
 }
 
-String _mapFailureToMessage(Failure failure) {
-  switch (failure.runtimeType) {
-    case ServerFailure:
-      return SERVER_FAILURE_MESSAGE;
-    case CacheFailure:
-      return CACHE_FAILURE_MESSAGE;
-    default:
-      return 'Unexpected error';
-  }
-}

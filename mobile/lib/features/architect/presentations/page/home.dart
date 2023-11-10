@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:architect/features/architect/presentations/page/setting.dart';
+import 'package:architect/features/architect/presentations/page/skeleton/home.dart';
 import 'package:architect/features/architect/presentations/widget/error.dart';
-import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:architect/features/architect/presentations/widget/post/post.dart';
 import 'package:architect/features/architect/presentations/widget/tag.dart';
 import 'package:architect/injection_container.dart';
@@ -111,179 +111,176 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 236, 238, 244),
-        body: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Center(
-                                    child: SvgPicture.asset(
-                                      'assets/images/logo.svg',
-                                      height: 40,
-                                      width: 40,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    "The",
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    "Architect",
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Setting(
-                              user: widget.user,
-                            ),
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          backgroundImage: Image.asset(
-                            'assets/images/user.png',
-                          ).image,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: FileImage(File(widget.user.image)),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+        body: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            if (state.status == PostStatusAll.loading) {
+              return const HomeShimmer();
+            } else if (state.status == PostStatusAll.initial) {
+              return const HomeShimmer();
+            } else if (state.status == PostStatusAll.success) {
+              if (state.posts.isEmpty) {
+                return Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () {
+                      setState(() {
+                        selectedTags.clear();
+                      });
+                      context
+                          .read<PostBloc>()
+                          .add(const AllPosts(tags: [], skip: 0));
+                      return Future<void>.value();
+                    },
+                    color: Colors.black,
+                    child: ListView(
+                      padding: const EdgeInsets.only(top: 250),
+                      children: const [
+                        ErrorDisplay(message: 'Something went wrong. Refresh!')
+                      ],
+                    ),
+                  ),
+                );
+              }
+              length = state.posts.length;
+              return postMainDisplay(context);
+            } else {
+              return Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    setState(() {
+                      selectedTags.clear();
+                    });
+                    context
+                        .read<PostBloc>()
+                        .add(const AllPosts(tags: [], skip: 0));
+                    return Future<void>.value();
+                  },
+                  color: Colors.black,
+                  child: ListView(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(top: 250),
+                        child: ErrorDisplay(
+                            message: 'Something went wrong. Refresh!'),
+                      )
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Search(onChanged: searchPosts),
-                  const SizedBox(height: 10),
-                  BlocListener<PostBloc, PostState>(
-                    listener: (context, state) {},
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Stack postMainDisplay(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: double.infinity,
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: xTags.map(
-                          (e) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Tag(
-                                  isSelected: isSelected(e),
-                                  text: e,
-                                  onPressed: (e) => selectTag(context, e)),
-                            );
-                          },
-                        ).toList(),
+                        children: [
+                          Row(
+                            children: [
+                              Center(
+                                child: SvgPicture.asset(
+                                  'assets/images/logo.svg',
+                                  height: 40,
+                                  width: 40,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "The",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              const Text(
+                                "Architect",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Setting(
+                          user: widget.user,
+                        ),
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      backgroundImage: Image.asset(
+                        'assets/images/user.png',
+                      ).image,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: FileImage(File(widget.user.image)),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  BlocBuilder<PostBloc, PostState>(
-                    builder: (context, state) {
-                      if (state.status == PostStatusAll.loading) {
-                        return const Padding(
-                            padding: EdgeInsets.only(top: 280),
-                            child: LoadingIndicator());
-                      } else if (state.status == PostStatusAll.initial) {
-                        return const Padding(
-                            padding: EdgeInsets.only(top: 280),
-                            child: LoadingIndicator());
-                      } else if (state.status == PostStatusAll.success) {
-                        if (state.posts.isEmpty) {
-                          return Expanded(
-                            child: RefreshIndicator(
-                              onRefresh: () {
-                                setState(() {
-                                  selectedTags.clear();
-                                });
-                                context
-                                    .read<PostBloc>()
-                                    .add(const AllPosts(tags: [], skip: 0));
-                                return Future<void>.value();
-                              },
-                              color: Colors.black,
-                              child: ListView(
-                                padding: const EdgeInsets.only(top: 250),
-                                children: const [
-                                  ErrorDisplay(
-                                      message: 'Something went wrong. Refresh!')
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-
-                        length = state.posts.length;
-                        return displayPosts(state);
-                      } else {
-                        return Expanded(
-                          child: RefreshIndicator(
-                            onRefresh: () {
-                              setState(() {
-                                selectedTags.clear();
-                              });
-                              context
-                                  .read<PostBloc>()
-                                  .add(const AllPosts(tags: [], skip: 0));
-                              return Future<void>.value();
-                            },
-                            color: Colors.black,
-                            child: ListView(
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 250),
-                                  child: ErrorDisplay(
-                                      message:
-                                          'Something went wrong. Refresh!'),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              Search(onChanged: searchPosts),
+              const SizedBox(height: 10),
+              BlocListener<PostBloc, PostState>(
+                listener: (context, state) {},
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: xTags.map(
+                      (e) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: Tag(
+                              isSelected: isSelected(e),
+                              text: e,
+                              onPressed: (e) => selectTag(context, e)),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              displayPosts(context.read<PostBloc>().state),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 

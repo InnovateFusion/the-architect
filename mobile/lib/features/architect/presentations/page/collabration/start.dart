@@ -29,14 +29,17 @@ const Color kCanvasColor = Color.fromARGB(255, 236, 238, 244);
 class CollabDrawing extends StatelessWidget {
   final x_user.User user;
   final String image;
+  final String boardId;
 
-  const CollabDrawing({super.key, required this.user, required this.image});
+  const CollabDrawing(
+      {super.key,
+      required this.user,
+      required this.image,
+      required this.boardId});
 
   @override
   Widget build(BuildContext context) {
     return DrawingPage(
-      user: User(name: user.firstName, image: image),
-      boardId: 'cxcccc',
-    );
+        user: User(name: user.firstName, image: image), boardId: boardId);
   }
 }

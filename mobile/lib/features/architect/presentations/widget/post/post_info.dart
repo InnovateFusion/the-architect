@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../profile_image.dart';
 
 class PostInfo extends StatelessWidget {
   final String name;

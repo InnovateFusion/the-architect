@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:architect/features/architect/domains/entities/post.dart';
+import 'package:architect/features/architect/presentations/page/skeleton/profile.dart';
 import 'package:architect/features/architect/presentations/widget/error.dart';
-import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -130,34 +130,24 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 236, 238, 244),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: BlocProvider(
-            create: (context) =>
-                sl<PostBloc>()..add(ViewsPosts(userId: widget.userId)),
-            child: Container(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child:
-                  BlocBuilder<PostBloc, PostState>(builder: (context, state) {
-                if (state.otherPostStatus == PostStatus.loading ||
-                    state.otherPostStatus == PostStatus.initial) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 350),
-                    child: LoadingIndicator(),
-                  );
-                } else if (state.otherPostStatus == PostStatus.success) {
-                  return displayPost(context, deviceWidth, state.userPosts);
-                } else if (state.otherPostStatus == PostStatus.failure) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 350),
-                    child: ErrorDisplay(message: 'Unable to load posts'),
-                  );
-                } else {
-                  return Container();
-                }
-              }),
-            ),
-          ),
+        body: BlocProvider(
+          create: (context) =>
+              sl<PostBloc>()..add(ViewsPosts(userId: widget.userId)),
+          child: BlocBuilder<PostBloc, PostState>(builder: (context, state) {
+            if (state.otherPostStatus == PostStatus.loading ||
+                state.otherPostStatus == PostStatus.initial) {
+              return const ProfileShimmer();
+            } else if (state.otherPostStatus == PostStatus.success) {
+              return displayPost(context, deviceWidth, state.userPosts);
+            } else if (state.otherPostStatus == PostStatus.failure) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 350),
+                child: ErrorDisplay(message: 'Unable to load posts'),
+              );
+            } else {
+              return Container();
+            }
+          }),
         ),
       ),
     );
@@ -165,240 +155,249 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget displayPost(
       BuildContext context, double deviceWidth, List<Post> posts) {
-    return Column(
-      children: [
-        Stack(
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+        child: Column(
           children: [
-            Column(
+            Stack(
               children: [
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/cover/$rand.jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 60,
-                )
-              ],
-            ),
-            Positioned(
-              top: 10,
-              left: 10,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: const Color(0xff22c55e),
-                    borderRadius: BorderRadius.circular(5)),
-                height: 40,
-                width: 40,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 150,
-              right: deviceWidth / 2 - 50 - 10,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 7,
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                height: 100,
-                width: 100,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                  child: fetchedUser.image.isNotEmpty
-                      ? Image(
-                          image: NetworkImage(fetchedUser.image),
-                          fit: BoxFit.fill,
-                        )
-                      : const Image(
-                          image: AssetImage("assets/images/user.png"),
-                          fit: BoxFit.fill,
+                Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
                         ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Text(
-          capitalizeAll("${fetchedUser.firstName} ${fetchedUser.lastName}"),
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          capitalizeAll(fetchedUser.bio),
-          style: const TextStyle(
-            color: Color.fromARGB(255, 121, 119, 121),
-            fontSize: 14,
-            fontWeight: FontWeight.w300,
-          ),
-          softWrap: true,
-        ),
-        if (widget.user.id != fetchedUser.id) const SizedBox(height: 20),
-        if (widget.user.id != fetchedUser.id)
-          GestureDetector(
-            onTap: () => followAndUnFollow(context),
-            child: Container(
-              height: 45,
-              width: 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: isFollowing ? Colors.black : Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black,
-                    spreadRadius: 0.4,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  isFollowing ? 'Unfollow' : 'Follow',
-                  style: TextStyle(
-                    color: isFollowing ? Colors.white : Colors.black,
-                    fontSize: 14,
-                    fontWeight: isFollowing ? FontWeight.w400 : FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-              children: [
-                Text(
-                  followers.toString(),
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const Text(
-                  "Followers",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 121, 119, 121),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(width: 40),
-            Column(
-              children: [
-                Text(
-                  following.toString(),
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const Text(
-                  "Following",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 121, 119, 121),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(width: 40),
-            Column(
-              children: [
-                Text(
-                  posts.length.toString(),
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const Text(
-                  "Posts",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 121, 119, 121),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 15),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  for (int i = 0; i < (posts.length / 2).ceil(); i++)
-                    if (i % 2 == 0)
-                      GalleryItem(
-                        user: fetchedUser,
-                        half: false,
-                        post: posts[i],
-                      )
-                    else
-                      GalleryItem(
-                        user: fetchedUser,
-                        half: true,
-                        post: posts[i],
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/cover/$rand.jpg"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  for (int i = (posts.length / 2).ceil(); i < posts.length; i++)
-                    if (i % 2 == 0)
-                      GalleryItem(
-                        user: fetchedUser,
-                        half: false,
-                        post: posts[i],
-                      )
-                    else
-                      GalleryItem(
-                        user: fetchedUser,
-                        half: true,
-                        post: posts[i],
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    )
+                  ],
+                ),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xff22c55e),
+                        borderRadius: BorderRadius.circular(5)),
+                    height: 40,
+                    width: 40,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 20,
                       ),
-                ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 150,
+                  right: deviceWidth / 2 - 50 - 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 7,
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    height: 100,
+                    width: 100,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                      child: fetchedUser.image.isNotEmpty
+                          ? Image(
+                              image: NetworkImage(fetchedUser.image),
+                              fit: BoxFit.fill,
+                            )
+                          : const Image(
+                              image: AssetImage("assets/images/user.png"),
+                              fit: BoxFit.fill,
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              capitalizeAll("${fetchedUser.firstName} ${fetchedUser.lastName}"),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w500,
               ),
             ),
+            const SizedBox(height: 5),
+            Text(
+              capitalizeAll(fetchedUser.bio),
+              style: const TextStyle(
+                color: Color.fromARGB(255, 121, 119, 121),
+                fontSize: 14,
+                fontWeight: FontWeight.w300,
+              ),
+              softWrap: true,
+            ),
+            if (widget.user.id != fetchedUser.id) const SizedBox(height: 20),
+            if (widget.user.id != fetchedUser.id)
+              GestureDetector(
+                onTap: () => followAndUnFollow(context),
+                child: Container(
+                  height: 45,
+                  width: 130,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: isFollowing ? Colors.black : Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black,
+                        spreadRadius: 0.4,
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      isFollowing ? 'Unfollow' : 'Follow',
+                      style: TextStyle(
+                        color: isFollowing ? Colors.white : Colors.black,
+                        fontSize: 14,
+                        fontWeight:
+                            isFollowing ? FontWeight.w400 : FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      followers.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Text(
+                      "Followers",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 121, 119, 121),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(width: 40),
+                Column(
+                  children: [
+                    Text(
+                      following.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Text(
+                      "Following",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 121, 119, 121),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(width: 40),
+                Column(
+                  children: [
+                    Text(
+                      posts.length.toString(),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Text(
+                      "Posts",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 121, 119, 121),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < (posts.length / 2).ceil(); i++)
+                        if (i % 2 == 0)
+                          GalleryItem(
+                            user: fetchedUser,
+                            half: false,
+                            post: posts[i],
+                          )
+                        else
+                          GalleryItem(
+                            user: fetchedUser,
+                            half: true,
+                            post: posts[i],
+                          ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (int i = (posts.length / 2).ceil();
+                          i < posts.length;
+                          i++)
+                        if (i % 2 == 0)
+                          GalleryItem(
+                            user: fetchedUser,
+                            half: false,
+                            post: posts[i],
+                          )
+                        else
+                          GalleryItem(
+                            user: fetchedUser,
+                            half: true,
+                            post: posts[i],
+                          ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
           ],
         ),
-        const SizedBox(height: 10),
-      ],
+      ),
     );
   }
 }

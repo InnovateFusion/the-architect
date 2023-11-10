@@ -108,7 +108,7 @@ flutter:
 flutter_icons:
   android: true
 
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/logo.svg"
 
   # To add assets to your application, add an assets section, like this:
   # assets:

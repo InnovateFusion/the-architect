@@ -2,8 +2,8 @@ import 'package:architect/features/architect/domains/entities/chat.dart';
 import 'package:architect/features/architect/domains/entities/message.dart';
 import 'package:architect/features/architect/presentations/page/chat.dart'
     as chat;
-import 'package:architect/features/architect/presentations/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../injection_container.dart';
@@ -230,9 +230,18 @@ class _HistoryState extends State<History> {
                     );
                   }
                 }
-                return const Padding(
-                  padding: EdgeInsets.only(top: 300),
-                  child: LoadingIndicator(),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 300),
+                  child: SpinKitFadingCircle(
+                    size: 60,
+                    itemBuilder: (BuildContext context, int index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: index.isEven ? Colors.black : Colors.white,
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             )

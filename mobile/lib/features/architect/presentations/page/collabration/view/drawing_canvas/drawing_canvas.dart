@@ -51,12 +51,12 @@ class DrawingCanvas extends HookWidget {
     socket.onConnect((_) {
       print('connect');
     });
-    socket.on('currentSketch', (data) {
+    socket.on('currentSketch-$boardId', (data) {
       currentSketchStream.sink.add(data);
       currentSketch.value = Sketch.fromJson(jsonDecode(data));
     });
 
-    socket.on('allSketches', (data) {
+    socket.on('allSketches-$boardId', (data) {
       allSketchesStream.sink.add(data);
       allSketches.value = (jsonDecode(data) as List)
           .map((json) => Sketch.fromJson(json as Map<String, dynamic>))

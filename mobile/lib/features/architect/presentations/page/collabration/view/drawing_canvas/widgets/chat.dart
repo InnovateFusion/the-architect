@@ -45,25 +45,27 @@ class ChatDisplay extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      socket.on('allChat', (data) {
-        chatStreamController.sink.add(data);
-        allChat.value = (jsonDecode(data) as List)
-            .map((json) => Chat.fromJson(json as Map<String, dynamic>))
-            .toList();
+      socket.onConnect((_) {
+        socket.on('allChat-$id', (data) {
+          chatStreamController.sink.add(data);
+          allChat.value = (jsonDecode(data) as List)
+              .map((json) => Chat.fromJson(json as Map<String, dynamic>))
+              .toList();
+        });
+        return () {
+          textController.dispose();
+          chatStreamController.close();
+          chatStreamController.sink.close();
+          socket.disconnect();
+        };
       });
-      return () {
-        textController.dispose();
-        chatStreamController.close();
-        chatStreamController.sink.close();
-        socket.disconnect();
-      };
     }, []);
 
     socket.onConnect((_) {
       print('connect');
     });
 
-    socket.on('allChat', (data) {
+    socket.on('allChat-$id', (data) {
       chatStreamController.sink.add(data);
       allChat.value = (jsonDecode(data) as List)
           .map((json) => Chat.fromJson(json as Map<String, dynamic>))

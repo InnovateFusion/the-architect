@@ -11,6 +11,7 @@ import 'package:architect/features/architect/domains/use_cases/team/member.dart'
 import 'package:architect/features/architect/domains/use_cases/team/update.dart';
 import 'package:architect/features/architect/domains/use_cases/team/view.dart';
 import 'package:architect/features/architect/domains/use_cases/team/views.dart';
+import 'package:architect/features/architect/presentations/bloc/sketch/sketch_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/team/team_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/type/type_bloc.dart'
     as type;
@@ -28,15 +29,18 @@ import 'features/architect/data/datasources/remote/auth.dart';
 import 'features/architect/data/datasources/remote/chat.dart';
 import 'features/architect/data/datasources/remote/download_image.dart';
 import 'features/architect/data/datasources/remote/post.dart';
+import 'features/architect/data/datasources/remote/sketch.dart';
 import 'features/architect/data/datasources/remote/user.dart';
 import 'features/architect/data/repositories/auth.dart';
 import 'features/architect/data/repositories/chat.dart';
 import 'features/architect/data/repositories/post.dart';
+import 'features/architect/data/repositories/sketch.dart';
 import 'features/architect/data/repositories/type.dart';
 import 'features/architect/data/repositories/user.dart';
 import 'features/architect/domains/repositories/auth.dart';
 import 'features/architect/domains/repositories/chat.dart';
 import 'features/architect/domains/repositories/post.dart';
+import 'features/architect/domains/repositories/sketch.dart';
 import 'features/architect/domains/repositories/type.dart';
 import 'features/architect/domains/repositories/user.dart';
 import 'features/architect/domains/use_cases/auth/delete.dart';
@@ -55,6 +59,11 @@ import 'features/architect/domains/use_cases/post/unlike.dart';
 import 'features/architect/domains/use_cases/post/update.dart';
 import 'features/architect/domains/use_cases/post/view.dart';
 import 'features/architect/domains/use_cases/post/views.dart';
+import 'features/architect/domains/use_cases/sketch/create.dart';
+import 'features/architect/domains/use_cases/sketch/delete.dart';
+import 'features/architect/domains/use_cases/sketch/update.dart';
+import 'features/architect/domains/use_cases/sketch/view.dart';
+import 'features/architect/domains/use_cases/sketch/views.dart';
 import 'features/architect/domains/use_cases/type/get.dart';
 import 'features/architect/domains/use_cases/type/set.dart';
 import 'features/architect/domains/use_cases/user/create.dart';
@@ -76,6 +85,16 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Features
+
+  // Sketch
+  sl.registerFactory(() => SketchBloc(
+        create: sl(),
+        update: sl(),
+        delete: sl(),
+        view: sl(),
+        views: sl(),
+      ));
+
   // Type
   sl.registerFactory(() => type.TypeBloc(
         getType: sl(),
@@ -139,6 +158,14 @@ Future<void> init() async {
       ));
 
   // Use cases
+  // Sketch
+  sl.registerLazySingleton(() => SketchCreate(sl()));
+  sl.registerLazySingleton(() => SketchUpdate(sl()));
+  sl.registerLazySingleton(() => SketchDelete(sl()));
+  sl.registerLazySingleton(() => SketchView(sl()));
+  sl.registerLazySingleton(() => SketchViews(sl()));
+
+  // Team
   sl.registerLazySingleton(() => TeamCreate(sl()));
   sl.registerLazySingleton(() => TeamViews(sl()));
   sl.registerLazySingleton(() => TeamView(sl()));
@@ -189,6 +216,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteAuth(sl()));
 
   // Repository
+  // Sketch
+  sl.registerLazySingleton<SketchRepository>(
+    () => SketchRepositoryImpl(
+      remoteDataSource: sl(),
+      networkInfo: sl(),
+      authLocalDataSource: sl(),
+    ),
+  );
 
   // Team
   sl.registerLazySingleton<TeamRepository>(
@@ -245,6 +280,9 @@ Future<void> init() async {
   // Data sources
   // Remote
   // Image
+
+  sl.registerLazySingleton<RemoteSketchDataSource>(
+      () => RemoteSketchDataSourceImpl(client: sl()));
 
   sl.registerLazySingleton<TeamRemoteDataSource>(
       () => TeamRemoteDataSourceImpl(client: sl()));

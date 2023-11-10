@@ -119,8 +119,6 @@ class SketchLocalDataSourceImpl(SketchLocalDataSource):
 
         sketches = self.db.query(SketchModel).filter(SketchModel.team_id == team_id).all()
 
-        if not sketches:
-            raise CacheException("No sketches found for this team")
         return [SketchEntity(id=sketch.id, title=sketch.name) for sketch in sketches]
 
     async def view_sketch(self, sketch_id: str, user_id: str) -> Either[Failure, SketchEntity]:

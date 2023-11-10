@@ -44,7 +44,7 @@ class DrawingPage extends HookWidget {
   final allChatStream = StreamController<String>();
 
   final IO.Socket socket = IO.io(
-    'ws://localhost:3000',
+    'https://sketch-dq5zwrwm5q-ww.a.run.app',
     IO.OptionBuilder().setTransports(['websocket']).build(),
   )..connect();
 
@@ -128,19 +128,37 @@ class DrawingPage extends HookWidget {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(5)),
                 height: 50,
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
+                    Container(
+                      decoration: BoxDecoration(
+                          color: const Color(0xff22c55e),
+                          borderRadius: BorderRadius.circular(5)),
+                      height: 40,
+                      width: 40,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
                       "Share",
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Text(
+                    const SizedBox(width: 10),
+                    const Text(
                       "Sketch",
                       style: TextStyle(
                         fontSize: 32,
