@@ -104,7 +104,8 @@ class MessageLocalDataSourceImpl(MessageLocalDataSource):
         elif message.model == 'chatbot':
             try:
                 chatResponse = await ai_generation.chatbot(message.payload)
-            except:
+            except Exception as e:
+                print(e)
                 raise CacheException("Chatbot error")
         elif message.model == 'analysis':
             try:
