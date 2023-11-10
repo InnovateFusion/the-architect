@@ -8,7 +8,7 @@ from uuid import uuid4
 import requests
 from app.data.datasources.remote.ai import AiGeneration
 from app.data.models.chat import ChatModel
-from app.data.models.team import TeamModel, UserTeamModel
+from app.data.models.team import SketchModel, TeamModel, UserTeamModel
 from app.data.models.user import UserModel
 from app.domain.entities.message import Message, MessageEntity
 from app.domain.entities.team import Team, TeamEntity
@@ -160,7 +160,17 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
             TeamModel.id == team_id).first()
         if not existing_team:
             raise CacheException("Team does not exist")
-
+        
+        existingTeamSketchs = self.db.query(SketchModel).filter(
+            SketchModel.team_id == team_id).all()
+        for sketch in existingTeamSketchs:
+            self.db.delete(sketch)
+        
+        exisitingUserTeam = self.db.query(UserTeamModel).filter(
+            UserTeamModel.team_id == team_id).all()
+        for userTeam in exisitingUserTeam:
+            self.db.delete(userTeam)    
+        
         self.db.delete(existing_team)
         self.db.commit()
 

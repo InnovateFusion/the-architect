@@ -44,7 +44,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.post(
       Uri.parse(
-          'https://the-architect.onrender.com/api/v1/teams/$teamId/sketches'),
+          '$base64Url()/api/v1/teams/$teamId/sketches'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -70,7 +70,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.put(
       Uri.parse(
-          'https://the-architect.onrender.com/api/v1/teams/$teamId/sketches/$sketchId'),
+          '$base64Url()/api/v1/teams/$teamId/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -94,7 +94,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.get(
       Uri.parse(
-          'https://the-architect.onrender.com/api/v1/teams/$teamId/sketches'),
+          '$base64Url()/api/v1/teams/$teamId/sketches'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -112,7 +112,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   @override
   Future<SketchModel> view(String sketchId, String token) async {
     final response = await client.get(
-      Uri.parse('https://the-architect.onrender.com/api/v1/sketches/$sketchId'),
+      Uri.parse('$base64Url()/api/v1/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -132,7 +132,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
     required String token,
   }) async {
     final response = await client.delete(
-      Uri.parse('https://the-architect.onrender.com/api/v1/sketches/$sketchId'),
+      Uri.parse('$base64Url()/api/v1/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

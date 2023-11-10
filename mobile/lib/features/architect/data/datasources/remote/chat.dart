@@ -44,7 +44,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }) async {
     String theurl = (model == 'text_to_3D')
         ? "https://the-architect-3d.onrender.com/api/v1/chats/"
-        : "https://the-architect.onrender.com/api/v1/chats/";
+        : "$base64Url()/api/v1/chats/";
 
     final response = await client.post(Uri.parse(theurl),
         headers: {
@@ -67,7 +67,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<ChatModel> viewChat(String id, String token) async {
     final response = await client.get(
-      Uri.parse("https://the-architect.onrender.com/api/v1/chats/$id"),
+      Uri.parse("$base64Url()/api/v1/chats/$id"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -85,8 +85,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<List<ChatModel>> viewChats(String userId, String token) async {
     final response = await client.get(
-      Uri.parse(
-          "https://the-architect.onrender.com/api/v1/users/$userId/chats"),
+      Uri.parse("$base64Url()/api/v1/users/$userId/chats"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -117,7 +116,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }) async {
     String theurl = (model == 'text_to_3D')
         ? "https://the-architect-3d.onrender.com/api/v1/chats/$chatId/messages"
-        : "https://the-architect.onrender.com/api/v1/chats/$chatId/messages";
+        : "$base64Url()/api/v1/chats/$chatId/messages";
 
     final response = await client.post(Uri.parse(theurl),
         headers: {
@@ -143,7 +142,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<ChatModel> delete(String id, String token) async {
     final response = await client.delete(
-      Uri.parse("https://the-architect.onrender.com/api/v1/chats/$id"),
+      Uri.parse("$base64Url()/api/v1/chats/$id"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

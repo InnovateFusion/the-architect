@@ -55,7 +55,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
       List<String> usersIds, String token, String teamId) async {
     final response = await client.post(
       Uri.parse(
-          'https://the-architect.onrender.com/api/v1/teams/$teamId/add-users'),
+          '$base64Url()/api/v1/teams/$teamId/add-users'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -83,7 +83,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
       String? image,
       List<String>? members}) async {
     final response = await client.post(
-      Uri.parse('https://the-architect.onrender.com/api/v1/teams/'),
+      Uri.parse('$base64Url()/api/v1/teams/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -108,7 +108,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   @override
   Future<Team> delete(String id, String token) async {
     final response = await client.delete(
-        Uri.parse('https://the-architect.onrender.com/api/v1/teams/$id'),
+        Uri.parse('$base64Url()/api/v1/teams/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -125,7 +125,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   Future<Team> join(String teamId, String userId, String token) async {
     final response = await client.get(
         Uri.parse(
-            'https://the-architect.onrender.com/api/v1/teams/$teamId/users/$userId/join'),
+            '$base64Url()/api/v1/teams/$teamId/users/$userId/join'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -142,7 +142,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   Future<Team> leave(String teamId, String userId, String token) async {
     final response = await client.get(
         Uri.parse(
-            'https://the-architect.onrender.com/api/v1/teams/$teamId/users/$userId/leave'),
+            '$base64Url()/api/v1/teams/$teamId/users/$userId/leave'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -159,7 +159,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   Future<List<User>> teamMembers(String teamId, String token) async {
     final response = await client.get(
         Uri.parse(
-            'https://the-architect.onrender.com/api/v1/teams/$teamId/members'),
+            '$base64Url()/api/v1/teams/$teamId/members'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -184,7 +184,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
     List<String>? members,
   }) async {
     final response = await client.put(
-      Uri.parse('https://the-architect.onrender.com/api/v1/teams/$teamId'),
+      Uri.parse('$base64Url()/api/v1/teams/$teamId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -210,7 +210,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   @override
   Future<Team> view(String id, String token) async {
     final response = await client.get(
-        Uri.parse('https://the-architect.onrender.com/api/v1/teams/$id'),
+        Uri.parse('$base64Url()/api/v1/teams/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -226,7 +226,7 @@ class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
   @override
   Future<List<Team>> views(String token) async {
     final response = await client.get(
-        Uri.parse('https://the-architect.onrender.com/api/v1/teams/'),
+        Uri.parse('$base64Url()/api/v1/teams/'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
