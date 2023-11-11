@@ -37,17 +37,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<AuthModel> isValid() async {
-      final auth = await getToken();
-      final token = auth.accessToken;
-      final Map<String, dynamic> decodedMap = json
-          .decode(String.fromCharCodes(base64Url.decode(token.split('.')[1])));
-      int expTimestamp = decodedMap['exp'];
-      int currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-      if (expTimestamp > currentTimestamp) {
-        return auth;
-      } else {
-        throw CacheException();
-      }
+    return await getToken();
   }
 
   @override

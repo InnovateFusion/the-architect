@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:architect/features/architect/data/models/message.dart';
 import 'package:architect/features/architect/domains/entities/message.dart'
     as message;
 import 'package:architect/features/architect/domains/entities/post.dart';
@@ -30,6 +31,8 @@ class Message {
   final Map<String, dynamic> analysis;
   final Map<String, dynamic> threeD;
   final String chat;
+  final String? image;
+  final bool? isTeam;
 
   Message({
     required this.prompt,
@@ -41,13 +44,15 @@ class Message {
     required this.threeD,
     required this.chat,
     required this.isPicked,
+    this.image,
+    this.isTeam = false,
   });
 }
 
 List<String> modelsX = [
   "new_chat",
   "history",
-  'text_to_image',
+  'image_from_text',
   "image_to_image",
   "instruction",
   "controlNet",
@@ -121,6 +126,10 @@ class _ChatState extends State<Chat> {
               analysis: message.content['analysis'] ?? {},
               threeD: message.content['3D'] ?? {},
               chat: message.content['chat'] ?? '',
+              image: message.content.containsKey('image')
+                  ? message.content['image']
+                  : widget.user.image,
+              isTeam: widget.team != null ? true : false,
               isPicked: false);
           messages.insert(0, element);
         } else {
@@ -133,6 +142,10 @@ class _ChatState extends State<Chat> {
               analysis: message.content['analysis'] ?? {},
               threeD: message.content['3D'] ?? {},
               chat: message.content['chat'] ?? '',
+              image: message.content.containsKey('image')
+                  ? message.content['image']
+                  : widget.user.image,
+              isTeam: widget.team != null ? true : false,
               isPicked: false);
           messages.insert(0, element);
         }
@@ -256,6 +269,8 @@ class _ChatState extends State<Chat> {
                 analysis: {},
                 threeD: {},
                 chat: '',
+                isTeam: false,
+                image: widget.user.image,
                 isPicked: false),
           );
         } else {
@@ -268,6 +283,8 @@ class _ChatState extends State<Chat> {
               analysis: {},
               threeD: {},
               chat: 'x',
+              isTeam: false,
+              image: widget.user.image,
               isPicked: false);
           messages[0] = element;
         }
@@ -283,7 +300,9 @@ class _ChatState extends State<Chat> {
               analysis: {},
               threeD: {},
               chat: '',
-              isPicked: false),
+              isPicked: false,
+              isTeam: false,
+              image: widget.user.image),
         );
       }
     });
@@ -302,6 +321,8 @@ class _ChatState extends State<Chat> {
             analysis: json['analysis'],
             threeD: json['3D'],
             chat: json['chat'],
+            isTeam: false,
+            image: widget.user.image,
             isPicked: false),
       );
     });
@@ -342,7 +363,9 @@ class _ChatState extends State<Chat> {
                 analysis: {},
                 threeD: {},
                 chat: '',
-                isPicked: true),
+                isPicked: true,
+                isTeam: false,
+                image: widget.user.image),
           );
         } else {
           messages.insert(
@@ -355,6 +378,8 @@ class _ChatState extends State<Chat> {
                 model: model,
                 analysis: {},
                 threeD: {},
+                isTeam: false,
+                image: widget.user.image,
                 chat: '',
                 isPicked: true),
           );
@@ -377,6 +402,8 @@ class _ChatState extends State<Chat> {
             model: model,
             analysis: {},
             threeD: {},
+            isTeam: false,
+            image: widget.user.image,
             chat: '',
             isPicked: true),
       );
@@ -400,6 +427,8 @@ class _ChatState extends State<Chat> {
                 imageUser: ximage,
                 imageAI: 'xxx',
                 model: model,
+                isTeam: false,
+                image: widget.user.image,
                 analysis: {},
                 threeD: {},
                 chat: '',
@@ -428,6 +457,8 @@ class _ChatState extends State<Chat> {
                 model: model,
                 analysis: {},
                 threeD: {},
+                isTeam: false,
+                image: widget.user.image,
                 chat: '',
                 isPicked: true),
           );
@@ -452,6 +483,8 @@ class _ChatState extends State<Chat> {
               imageUser: sketchX,
               imageAI: '',
               model: model,
+              isTeam: false,
+              image: widget.user.image,
               analysis: {},
               threeD: {},
               chat: '',
@@ -469,6 +502,8 @@ class _ChatState extends State<Chat> {
               imageAI: '',
               model: model,
               analysis: {},
+              isTeam: false,
+              image: widget.user.image,
               threeD: {},
               chat: '',
               isPicked: true),
@@ -495,6 +530,8 @@ class _ChatState extends State<Chat> {
             analysis: xxx.analysis,
             threeD: xxx.threeD,
             chat: xxx.chat,
+            isTeam: false,
+            image: widget.user.image,
             isPicked: xxx.isPicked),
       );
     }
@@ -502,8 +539,9 @@ class _ChatState extends State<Chat> {
     socket.onConnect((_) {
       if (widget.team != null) {
         socket.on('teams-chat-${widget.team!.id}', (data) {
-          print('-----------------');
-          print(data);
+          final json = jsonDecode(data);
+          final jsonModel = MessageModel.fromJson(json);
+          reveiveMessage(jsonModel.content);
         });
       }
     });

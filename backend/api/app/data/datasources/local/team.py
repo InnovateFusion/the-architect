@@ -54,11 +54,10 @@ class TeamLocalDataSource(ABC):
     async def team_members(self, team_id: str) -> List[UserEntity]:
         ...
 
-
-        
     @abstractmethod
     async def add_team_member(self, team_id: str, creator_id: str, user_ids: List[str]) -> TeamEntity:
         ...
+
 
 class TeamLocalDataSourceImpl(TeamLocalDataSource):
 
@@ -105,7 +104,7 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
         self.db.add(_team)
         self.db.commit()
         self.db.refresh(_team)
-        
+
         self.add_team_member(_team.id, user_id, user_ids)
 
         created_team = TeamEntity(
@@ -118,7 +117,7 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
             first_name=creator_first_name,
             last_name=creator_last_name,
             create_at=_team.date
-            
+
         )
 
         return created_team
@@ -160,17 +159,17 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
             TeamModel.id == team_id).first()
         if not existing_team:
             raise CacheException("Team does not exist")
-        
+
         existingTeamSketchs = self.db.query(SketchModel).filter(
             SketchModel.team_id == team_id).all()
         for sketch in existingTeamSketchs:
             self.db.delete(sketch)
-        
+
         exisitingUserTeam = self.db.query(UserTeamModel).filter(
             UserTeamModel.team_id == team_id).all()
         for userTeam in exisitingUserTeam:
-            self.db.delete(userTeam)    
-        
+            self.db.delete(userTeam)
+
         self.db.delete(existing_team)
         self.db.commit()
 
@@ -197,17 +196,21 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
         team_entities = []
         for user_team in existing_user.teams:
             team = user_team.team
+
+            creator = self.db.query(UserModel).filter(
+                UserModel.id == team.creator_id).first()
+
             if team:
                 team_entities.append(TeamEntity(
                     id=team.id,
                     title=team.title,
                     description=team.description,
                     creator_id=team.creator_id,
-                    creator_image=existing_user.image,
+                    creator_image=creator.image,
                     image=team.image,
                     create_at=team.date,
-                    first_name=existing_user.first_name,
-                    last_name=existing_user.last_name
+                    first_name=creator.first_name,
+                    last_name=creator.last_name
                 ))
 
         return team_entities
@@ -347,10 +350,11 @@ class TeamLocalDataSourceImpl(TeamLocalDataSource):
         if not existing_team:
             raise CacheException("Team does not exist")
 
-        creator = self.db.query(UserModel).filter(UserModel.id == existing_team.creator_id).first()
+        creator = self.db.query(UserModel).filter(
+            UserModel.id == existing_team.creator_id).first()
         if creator_id != existing_team.creator_id:
             raise CacheException("User is not the creator of the team")
-        
+
         for user_id in user_ids:
             existing_user = self.db.query(UserModel).filter(
                 UserModel.id == user_id).first()

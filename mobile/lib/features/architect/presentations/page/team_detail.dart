@@ -7,6 +7,7 @@ import 'package:architect/features/architect/presentations/page/chat.dart';
 import 'package:architect/features/architect/presentations/page/collabration/start.dart';
 import 'package:architect/features/architect/presentations/page/edit_team.dart';
 import 'package:architect/features/architect/presentations/page/skeleton/team_detail.dart';
+import 'package:architect/features/architect/presentations/widget/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -126,8 +127,31 @@ class _TeamDetailState extends State<TeamDetail> {
                   return const TeamDetailShimmer();
                 } else if (state.statusSketch == SketchStatus.failure ||
                     state.statusAll == SketchstatusAll.failure) {
-                  return const Center(
-                    child: Text("Unable to load sketches"),
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      userBloc.add(ViewUserEvent(id: widget.user.id));
+                      chatBloc.add(
+                        ChatViewEvent(
+                          id: widget.team.id,
+                        ),
+                      );
+                      sketchBloc.add(
+                        SketchEventViews(
+                          teamId: widget.team.id,
+                        ),
+                      );
+                      return Future<void>.value();
+                    },
+                    color: Colors.black,
+                    child: ListView(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.4),
+                      children: const [
+                        Center(
+                            child: ErrorDisplay(
+                                message: 'Connect to internet. Refresh it.'))
+                      ],
+                    ),
                   );
                 } else {
                   return dispayContent(context);

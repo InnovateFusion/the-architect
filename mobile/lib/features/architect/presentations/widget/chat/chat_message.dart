@@ -79,21 +79,46 @@ class ChatMessage extends StatelessWidget {
         children: <Widget>[
           if (isSentByMe && content.imageUser.isEmpty && !content.isPicked)
             Container(
-              decoration: BoxDecoration(
-                color: senderColor,
-                borderRadius: borderRadius,
-              ),
-              padding: const EdgeInsets.all(10.0),
               margin: paddingUser,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              child: Stack(
                 children: [
-                  Text(
-                    content.prompt,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: senderColor,
+                          borderRadius: borderRadius,
+                        ),
+                        child: Text(
+                          content.prompt,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  Positioned(
+                    bottom: 5,
+                    right: 5,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: content.isTeam!
+                              ? Image.network(content.image!).image
+                              : Image.file(
+                                  File(content.image!),
+                                ).image,
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -161,9 +186,24 @@ class ChatMessage extends StatelessWidget {
                         textAlign: TextAlign.right,
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, bottom: 5),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: content.isTeam!
+                                ? Image.network(content.image!).image
+                                : Image.file(
+                                    File(content.image!),
+                                  ).image,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -196,9 +236,24 @@ class ChatMessage extends StatelessWidget {
                         textAlign: TextAlign.right,
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, bottom: 5),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: content.isTeam!
+                                ? Image.network(content.image!).image
+                                : Image.file(
+                                    File(content.image!),
+                                  ).image,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -231,9 +286,24 @@ class ChatMessage extends StatelessWidget {
                         textAlign: TextAlign.right,
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, bottom: 5),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: content.isTeam!
+                                ? Image.network(content.image!).image
+                                : Image.file(
+                                    File(content.image!),
+                                  ).image,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

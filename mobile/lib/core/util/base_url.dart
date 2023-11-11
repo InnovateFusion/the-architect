@@ -1,1 +1,1 @@
-String baseUrl() => 'https://the-architect.onrender.com';
+String baseUrlRoute() => 'https://the-architect.onrender.com';

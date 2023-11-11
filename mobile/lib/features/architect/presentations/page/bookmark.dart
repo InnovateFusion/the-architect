@@ -121,14 +121,23 @@ class BookMark extends StatelessWidget {
                     ),
                   ],
                 );
-              } else if (state.otherPostStatus == PostStatus.failure) {
-                return const SizedBox(
-                    height: 550,
-                    child: ErrorDisplay(
-                      message: "Unable to load posts",
-                    ));
               } else {
-                return Container();
+                return RefreshIndicator(
+                  onRefresh: () {
+                    sl<PostBloc>().add(ViewsPosts(userId: user.id));
+                    return Future<void>.value();
+                  },
+                  color: Colors.black,
+                  child: ListView(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.4),
+                    children: const [
+                      Center(
+                          child: ErrorDisplay(
+                              message: 'Connect to internet. Refresh it.'))
+                    ],
+                  ),
+                );
               }
             },
           ),

@@ -109,42 +109,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 236, 238, 244),
-        body: BlocBuilder<PostBloc, PostState>(
-          builder: (context, state) {
-            if (state.status == PostStatusAll.loading) {
-              return const HomeShimmer();
-            } else if (state.status == PostStatusAll.initial) {
-              return const HomeShimmer();
-            } else if (state.status == PostStatusAll.success) {
-              if (state.posts.isEmpty) {
-                return Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () {
-                      setState(() {
-                        selectedTags.clear();
-                      });
-                      context
-                          .read<PostBloc>()
-                          .add(const AllPosts(tags: [], skip: 0));
-                      return Future<void>.value();
-                    },
-                    color: Colors.black,
-                    child: ListView(
-                      padding: const EdgeInsets.only(top: 250),
-                      children: const [
-                        ErrorDisplay(message: 'Something went wrong. Refresh!')
-                      ],
-                    ),
-                  ),
-                );
-              }
-              length = state.posts.length;
-              return postMainDisplay(context);
-            } else {
-              return Expanded(
-                child: RefreshIndicator(
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          if (state.status == PostStatusAll.loading) {
+            return const HomeShimmer();
+          } else if (state.status == PostStatusAll.initial) {
+            return const HomeShimmer();
+          } else if (state.status == PostStatusAll.success) {
+            if (state.posts.isEmpty) {
+              return Scaffold(
+                backgroundColor: const Color.fromARGB(255, 236, 238, 244),
+                body: RefreshIndicator(
                   onRefresh: () {
                     setState(() {
                       selectedTags.clear();
@@ -156,131 +131,161 @@ class _HomePageState extends State<HomePage> {
                   },
                   color: Colors.black,
                   child: ListView(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.4),
                     children: const [
-                      Padding(
-                        padding: EdgeInsets.only(top: 250),
-                        child: ErrorDisplay(
-                            message: 'Something went wrong. Refresh!'),
-                      )
+                      Center(
+                          child: ErrorDisplay(
+                              message: 'Connect to internet. Refresh it.'))
                     ],
                   ),
                 ),
               );
             }
-          },
-        ),
+            length = state.posts.length;
+            return postMainDisplay(context);
+          } else {
+            return Scaffold(
+              backgroundColor: const Color.fromARGB(255, 236, 238, 244),
+              body: RefreshIndicator(
+                onRefresh: () {
+                  setState(() {
+                    selectedTags.clear();
+                  });
+                  context
+                      .read<PostBloc>()
+                      .add(const AllPosts(tags: [], skip: 0));
+                  return Future<void>.value();
+                },
+                color: Colors.black,
+                child: ListView(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.4),
+                  children: const [
+                    Center(
+                        child: ErrorDisplay(
+                            message: 'Connect to internet. Refresh it.'))
+                  ],
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
 
-  Stack postMainDisplay(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: double.infinity,
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Center(
-                                child: SvgPicture.asset(
-                                  'assets/images/logo.svg',
-                                  height: 40,
-                                  width: 40,
+  Widget postMainDisplay(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 236, 238, 244),
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset(
+                                    'assets/images/logo.svg',
+                                    height: 40,
+                                    width: 40,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              const Text(
-                                "The",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(width: 10),
+                                const Text(
+                                  "The",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Text(
-                                "Architect",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300,
+                                const SizedBox(width: 5),
+                                const Text(
+                                  "Architect",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w300,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Setting(
-                          user: widget.user,
-                        ),
-                      ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    child: CircleAvatar(
-                      backgroundImage: Image.asset(
-                        'assets/images/user.png',
-                      ).image,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: FileImage(File(widget.user.image)),
-                            fit: BoxFit.fill,
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Setting(
+                            user: widget.user,
                           ),
                         ),
                       ),
+                      child: CircleAvatar(
+                        backgroundImage: Image.asset(
+                          'assets/images/user.png',
+                        ).image,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(File(widget.user.image)),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Search(onChanged: searchPosts),
-              const SizedBox(height: 10),
-              BlocListener<PostBloc, PostState>(
-                listener: (context, state) {},
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: xTags.map(
-                      (e) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: Tag(
-                              isSelected: isSelected(e),
-                              text: e,
-                              onPressed: (e) => selectTag(context, e)),
-                        );
-                      },
-                    ).toList(),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Search(onChanged: searchPosts),
+                const SizedBox(height: 10),
+                BlocListener<PostBloc, PostState>(
+                  listener: (context, state) {},
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: xTags.map(
+                        (e) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Tag(
+                                isSelected: isSelected(e),
+                                text: e,
+                                onPressed: (e) => selectTag(context, e)),
+                          );
+                        },
+                      ).toList(),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 15),
-              displayPosts(context.read<PostBloc>().state),
-            ],
+                const SizedBox(height: 15),
+                displayPosts(context.read<PostBloc>().state),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -94,10 +94,18 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
           statusTeam: TeamStatus.failure,
           team: null,
         ),
-        (type) => state.copyWith(
-          statusTeam: TeamStatus.success,
-          team: type,
-        ),
+        (type) {
+          List<Team> teams = [];
+          for (var i = 0; i < state.teams.length; i++) {
+            teams.add(state.teams[i]);
+          }
+          teams.add(type);
+          return state.copyWith(
+            statusTeam: TeamStatus.success,
+            team: type,
+            teams: teams,
+          );
+        },
       ),
     );
   }
@@ -231,8 +239,13 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
                 statusTeam: TeamStatus.failure,
                 team: null,
               ), (type) {
-        List<Team> teams = state.teams;
-        teams.removeWhere((element) => element.id == event.teamId);
+        List<Team> teams = [];
+        for (var i = 0; i < state.teams.length; i++) {
+          if (state.teams[i].id != type.id) {
+            teams.add(state.teams[i]);
+          }
+        }
+
         return state.copyWith(
           statusTeam: TeamStatus.success,
           team: type,
@@ -257,8 +270,11 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
                 statusTeam: TeamStatus.failure,
                 team: null,
               ), (type) {
-        List<Team> teams = state.teams;
-        teams.removeWhere((element) => element.id == event.teamId);
+        List<Team> teams = [];
+        for (var i = 0; i < state.teams.length; i++) {
+          teams.add(state.teams[i]);
+        }
+        teams.add(type);
         return state.copyWith(
           statusTeam: TeamStatus.success,
           team: type,
@@ -294,4 +310,3 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
     );
   }
 }
-

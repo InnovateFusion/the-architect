@@ -6,8 +6,24 @@ class ErrorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(message),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.network_check_rounded,
+          size: 40,
+          color: Color.fromARGB(255, 0, 0, 0),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          message,
+          style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic),
+        ),
+      ],
     );
   }
 }

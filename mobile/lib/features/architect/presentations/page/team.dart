@@ -4,8 +4,10 @@ import 'package:architect/features/architect/presentations/bloc/team/team_bloc.d
 import 'package:architect/features/architect/presentations/page/create_team.dart';
 import 'package:architect/features/architect/presentations/page/skeleton/team.dart';
 import 'package:architect/features/architect/presentations/page/team_detail.dart';
+import 'package:architect/features/architect/presentations/widget/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../injection_container.dart';
 import '../../domains/entities/team.dart';
@@ -86,8 +88,21 @@ class _TeamPageState extends State<TeamPage> {
               } else if (state.statusAll == TeamstatusAll.success) {
                 return displayTeams(context);
               } else {
-                return const Center(
-                  child: Text("Error loading data!"),
+                return RefreshIndicator(
+                  onRefresh: () {
+                    teamBloc.add(const TeamViewsEvent());
+                    return Future<void>.value();
+                  },
+                  color: Colors.black,
+                  child: ListView(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.4),
+                    children: const [
+                      Center(
+                          child: ErrorDisplay(
+                              message: 'Connect to internet. Refresh it.'))
+                    ],
+                  ),
                 );
               }
             },
@@ -262,79 +277,139 @@ class _TeamPageState extends State<TeamPage> {
                       ),
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                          image: NetworkImage(searchController.text.isEmpty
-                              ? teams[index].image
-                              : filterTeamSearch[index].image),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.6),
-                            BlendMode.darken,
+                  child: Dismissible(
+                    key: Key(const Uuid().v4()),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      if (direction == DismissDirection.endToStart) {
+                        showDialog(
+                          context: context,
+                          builder: (cntx) {
+                            return AlertDialog(
+                              title: const Text(
+                                "Are you sure you want to delete this team?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(cntx).pop();
+                                    setState(() {});
+                                  },
+                                  child: const Text("Cancel",
+                                      style: TextStyle(color: Colors.black)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    teamBloc.add(
+                                      TeamDeleteEvent(
+                                        id: searchController.text.isEmpty
+                                            ? teams[index].id
+                                            : filterTeamSearch[index].id,
+                                      ),
+                                    );
+                                    Navigator.of(cntx).pop();
+                                  },
+                                  child: const Text("Delete",
+                                      style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            image: NetworkImage(searchController.text.isEmpty
+                                ? teams[index].image.isEmpty
+                                    ? imageXUrl
+                                    : teams[index].image
+                                : filterTeamSearch[index].image.isEmpty
+                                    ? imageXUrl
+                                    : filterTeamSearch[index].image),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.6),
+                              BlendMode.darken,
+                            ),
                           ),
                         ),
-                      ),
-                      height: 80,
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          searchController.text.isEmpty
-                                              ? teams[index].image
-                                              : filterTeamSearch[index].image),
-                                      fit: BoxFit.cover,
+                        height: 80,
+                        child: Stack(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            searchController.text.isEmpty
+                                                ? teams[index].image.isEmpty
+                                                    ? imageXUrl
+                                                    : teams[index].image
+                                                : filterTeamSearch[index]
+                                                        .image
+                                                        .isEmpty
+                                                    ? imageXUrl
+                                                    : filterTeamSearch[index]
+                                                        .image),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    capitalize(searchController.text.isEmpty
-                                        ? teams[index].title
-                                        : filterTeamSearch[index].title),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 10,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      capitalize(searchController.text.isEmpty
+                                          ? teams[index].title
+                                          : filterTeamSearch[index].title),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                            blurRadius: 10,
+                                            color: Colors.black,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Created by ${searchController.text.isEmpty ? teams[index].firstName : filterTeamSearch[index].firstName}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromARGB(255, 177, 164, 164),
+                                    Text(
+                                      'Created by ${searchController.text.isEmpty ? teams[index].firstName : filterTeamSearch[index].firstName}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color:
+                                            Color.fromARGB(255, 177, 164, 164),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -370,7 +445,7 @@ class CoolCard extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
                 blurRadius: 5,
               ),
             ],
@@ -378,7 +453,7 @@ class CoolCard extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              team.image,
+              team.image.isEmpty ? imageXUrl : team.image,
               fit: BoxFit.cover,
             ),
           ),
@@ -387,3 +462,6 @@ class CoolCard extends StatelessWidget {
     );
   }
 }
+
+String imageXUrl =
+    'https://images.pexels.com/photos/3760529/pexels-photo-3760529.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';

@@ -28,6 +28,8 @@ abstract class ChatRemoteDataSource {
   });
 }
 
+String baseUrlArch = 'https://the-architect.onrender.com';
+
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   ChatRemoteDataSourceImpl({
     required this.client,
@@ -44,7 +46,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }) async {
     String theurl = (model == 'text_to_3D')
         ? "https://the-architect-3d.onrender.com/api/v1/chats/"
-        : "$base64Url()/api/v1/chats/";
+        : "$baseUrlArch/api/v1/chats/";
 
     final response = await client.post(Uri.parse(theurl),
         headers: {
@@ -67,7 +69,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<ChatModel> viewChat(String id, String token) async {
     final response = await client.get(
-      Uri.parse("$base64Url()/api/v1/chats/$id"),
+      Uri.parse("$baseUrlArch/api/v1/chats/$id"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -85,7 +87,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<List<ChatModel>> viewChats(String userId, String token) async {
     final response = await client.get(
-      Uri.parse("$base64Url()/api/v1/users/$userId/chats"),
+      Uri.parse("$baseUrlArch/api/v1/users/$userId/chats"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -116,7 +118,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }) async {
     String theurl = (model == 'text_to_3D')
         ? "https://the-architect-3d.onrender.com/api/v1/chats/$chatId/messages"
-        : "$base64Url()/api/v1/chats/$chatId/messages";
+        : "$baseUrlArch/api/v1/chats/$chatId/messages";
 
     final response = await client.post(Uri.parse(theurl),
         headers: {
@@ -142,7 +144,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<ChatModel> delete(String id, String token) async {
     final response = await client.delete(
-      Uri.parse("$base64Url()/api/v1/chats/$id"),
+      Uri.parse("$baseUrlArch/api/v1/chats/$id"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
