@@ -1,5 +1,6 @@
 import 'package:architect/features/architect/presentations/bloc/post/post_bloc.dart';
 import 'package:architect/features/architect/presentations/bloc/user/user_bloc.dart';
+import 'package:architect/features/architect/presentations/page/onBoarding.dart';
 import 'package:architect/injection_container.dart';
 import 'package:architect/simple_bloc_observer.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'features/architect/presentations/bloc/auth/auth_bloc.dart';
 import 'features/architect/presentations/bloc/type/type_bloc.dart';
-import 'features/architect/presentations/page/login.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const Login(),
+        home: const OnBoardingScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );

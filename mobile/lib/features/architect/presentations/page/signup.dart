@@ -173,7 +173,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     TextField(
                       controller: _firstNameController,
                       decoration: const InputDecoration(

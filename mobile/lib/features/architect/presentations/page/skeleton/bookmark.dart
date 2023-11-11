@@ -62,7 +62,7 @@ class _BooKMarkShimmerState extends State<BooKMarkShimmer> {
                         children: [
                           SkeletonLine(
                             style: SkeletonLineStyle(
-                                height: 35,
+                                height: 40,
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 borderRadius: BorderRadius.circular(8)),
                           ),
@@ -75,15 +75,16 @@ class _BooKMarkShimmerState extends State<BooKMarkShimmer> {
                       const SizedBox(height: 10),
                       SkeletonLine(
                         style: SkeletonLineStyle(
-                            height: 20,
+                            height: 30,
                             width: MediaQuery.of(context).size.width * 0.75,
                             borderRadius: BorderRadius.circular(8)),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 10),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.85,
+                  height: MediaQuery.of(context).size.height * 0.83,
                   child: SingleChildScrollView(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,

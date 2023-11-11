@@ -52,7 +52,7 @@ class _ChatSideBarState extends State<ChatSideBar> {
   List<String> modelsX = [
     "new_chat",
     "history",
-    'text_to_image',
+    'image_from_text',
     "image_to_image",
     "instruction",
     "controlNet",

@@ -140,9 +140,23 @@ class _ProfilePageState extends State<ProfilePage> {
             } else if (state.otherPostStatus == PostStatus.success) {
               return displayPost(context, deviceWidth, state.userPosts);
             } else if (state.otherPostStatus == PostStatus.failure) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 350),
-                child: ErrorDisplay(message: 'Unable to load posts'),
+              return RefreshIndicator(
+                onRefresh: () {
+                  userBloc.add(ViewUserEvent(id: widget.userId));
+                  userBloc.add(FollowersUserEvent(id: widget.userId));
+                  postBloc.add(ViewsPosts(userId: widget.userId));
+                  return Future<void>.value();
+                },
+                color: Colors.black,
+                child: ListView(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.4),
+                  children: const [
+                    Center(
+                        child: ErrorDisplay(
+                            message: 'Connect to internet. Refresh it.'))
+                  ],
+                ),
               );
             } else {
               return Container();

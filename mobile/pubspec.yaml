@@ -64,6 +64,7 @@ dependencies:
   socket_io_client: ^2.0.3+1
   universal_html: ^2.2.4
   url_launcher: ^6.2.1
+  lottie: ^2.7.0
 
 dev_dependencies:
   flutter_test:
@@ -104,6 +105,14 @@ flutter:
     - assets/images/cover/8.jpg
     - assets/images/cover.png
     - assets/images/water.png
+    - assets/images/onBoarding/Create-cuate.svg
+    - assets/images/onBoarding/Creation process-cuate.svg
+    - assets/images/onBoarding/Design Process-bro.svg
+    - assets/images/onBoarding/Design thinking-pana.svg
+    - assets/images/onBoarding/Design tools-pana.svg
+    - assets/images/onBoarding/Team-bro.svg
+    - assets/images/onBoarding/start.svg
+    - assets/images/onBoarding/start.png
 
 flutter_icons:
   android: true

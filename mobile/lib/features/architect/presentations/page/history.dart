@@ -2,6 +2,7 @@ import 'package:architect/features/architect/domains/entities/chat.dart';
 import 'package:architect/features/architect/domains/entities/message.dart';
 import 'package:architect/features/architect/presentations/page/chat.dart'
     as chat;
+import 'package:architect/features/architect/presentations/widget/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
@@ -37,13 +38,6 @@ class _HistoryState extends State<History> {
         userId: widget.user.id,
       ),
     );
-    chatBloc.stream.listen((event) {
-      if (event is ChatViewsLoaded) {
-        setState(() {
-          history.addAll(event.chats);
-        });
-      }
-    });
   }
 
   String capitalize(String input) {
@@ -101,10 +95,8 @@ class _HistoryState extends State<History> {
 
   @override
   Widget build(BuildContext context) {
-    return historyLoaded(context);
-  }
+    print('history: ${history}');
 
-  Widget historyLoaded(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 236, 238, 244),
@@ -222,8 +214,9 @@ class _HistoryState extends State<History> {
                         },
                         child: ListView(
                           padding: const EdgeInsets.only(top: 300),
-                          children: [
-                            Center(child: Text('${event.message}. Retry?')),
+                          children: const [
+                            ErrorDisplay(
+                                message: 'Connect to internet. Refresh it.'),
                           ],
                         ),
                       ),
@@ -263,13 +256,9 @@ class _HistoryState extends State<History> {
           return Future<void>.value();
         },
         child: ListView.builder(
-          itemCount: searchController.text.isNotEmpty
-              ? filteredHistory.length
-              : history.length,
+          itemCount: history.length,
           itemBuilder: (context, index) {
-            final view = searchController.text.isNotEmpty
-                ? filteredHistory[index]
-                : history[index];
+            final view = history[index];
             return ListTile(
               titleTextStyle: const TextStyle(
                 color: Colors.black,
@@ -286,8 +275,9 @@ class _HistoryState extends State<History> {
                   view.messages,
                 ),
                 child: Text(
-                  DateFormat('MMM d y')
-                      .format(view.messages[view.messages.length - 1].date),
+                  DateFormat('MMM d y').format(view.messages.isNotEmpty
+                      ? view.messages.last.date
+                      : DateTime.now()),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Colors.black,

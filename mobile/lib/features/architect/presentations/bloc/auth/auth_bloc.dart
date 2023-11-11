@@ -47,7 +47,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       password: event.password,
     ));
 
-    print(failureOrAuth);
     emit(
       failureOrAuth.fold(
           (failure) => AuthError(message: _mapFailureToMessage(failure)),
@@ -61,7 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final failureOrAuth = await checkAuth(NoParams());
     emit(
       failureOrAuth.fold(
-        (failure) => AuthInitial(),
+        (failure) => AuthError(message: _mapFailureToMessage(failure)),
         (auth) => Authenticated(
           auth: auth,
         ),

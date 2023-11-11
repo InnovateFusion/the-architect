@@ -40,6 +40,8 @@ abstract class PostRemoteDataSource {
   Future<PostModel> viewPost(String id, String token);
 }
 
+String baseUrlArch = 'https://the-architect.onrender.com';
+
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   const PostRemoteDataSourceImpl({required this.client});
 
@@ -53,7 +55,6 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     int? skip,
     int? limit,
   }) async {
-    String baseUrl = '$base64Url()/api/v1/posts/all';
     final queryParameters = <String, dynamic>{};
 
     if (search != null && search.isNotEmpty) {
@@ -76,8 +77,9 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       queryParameters['limit'] = '8';
     }
 
-    final url =
-        Uri.parse(baseUrl).replace(queryParameters: queryParameters).toString();
+    final url = Uri.parse('$baseUrlArch/api/v1/posts/all')
+        .replace(queryParameters: queryParameters)
+        .toString();
 
     final response = await client.get(
       Uri.parse(url),
@@ -100,7 +102,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<List<PostModel>> viewsPost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/users/$id/posts'),
+      Uri.parse('$baseUrlArch/api/v1/users/$id/posts'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -121,7 +123,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> clonePost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/posts/$id/clone'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id/clone'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -139,7 +141,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> likePost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/posts/$id/like'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id/like'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -157,7 +159,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> unLikePost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/posts/$id/unlike'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id/unlike'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -181,7 +183,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       required String userId,
       required String token}) async {
     final response = await client.post(
-      Uri.parse('$base64Url()/api/v1/posts/'),
+      Uri.parse('$baseUrlArch/api/v1/posts/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -208,7 +210,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> deletePost(String id, String token) async {
     final response = await client.delete(
-      Uri.parse('$base64Url()/api/v1/posts/$id'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -233,7 +235,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
       required String id,
       required String token}) async {
     final response = await client.put(
-      Uri.parse('$base64Url()/api/v1/posts/$id'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -262,7 +264,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<PostModel> viewPost(String id, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/posts/$id'),
+      Uri.parse('$baseUrlArch/api/v1/posts/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

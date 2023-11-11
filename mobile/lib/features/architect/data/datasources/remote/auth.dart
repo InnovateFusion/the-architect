@@ -12,6 +12,8 @@ abstract class AuthRemoteDataSource {
   });
 }
 
+String baseUrlArch = 'https://the-architect.onrender.com';
+
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final Client client;
 
@@ -23,7 +25,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     required String password,
   }) async {
     final response = await client.post(
-      Uri.parse('$base64Url()/api/v1/token/'),
+      Uri.parse('$baseUrlArch/api/v1/token/'),
       headers: {
         'content-Type': 'application/json',
         'accept': 'application/json',

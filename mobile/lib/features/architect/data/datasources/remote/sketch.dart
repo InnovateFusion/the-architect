@@ -30,6 +30,7 @@ abstract class RemoteSketchDataSource {
     required String token,
   });
 }
+String baseUrlArch = 'https://the-architect.onrender.com';
 
 class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   final Client client;
@@ -44,7 +45,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.post(
       Uri.parse(
-          '$base64Url()/api/v1/teams/$teamId/sketches'),
+          '$baseUrlArch/api/v1/teams/$teamId/sketches'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -70,7 +71,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.put(
       Uri.parse(
-          '$base64Url()/api/v1/teams/$teamId/sketches/$sketchId'),
+          '$baseUrlArch/api/v1/teams/$teamId/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -94,7 +95,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   }) async {
     final response = await client.get(
       Uri.parse(
-          '$base64Url()/api/v1/teams/$teamId/sketches'),
+          '$baseUrlArch/api/v1/teams/$teamId/sketches'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -112,7 +113,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
   @override
   Future<SketchModel> view(String sketchId, String token) async {
     final response = await client.get(
-      Uri.parse('$base64Url()/api/v1/sketches/$sketchId'),
+      Uri.parse('$baseUrlArch/api/v1/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -132,7 +133,7 @@ class RemoteSketchDataSourceImpl implements RemoteSketchDataSource {
     required String token,
   }) async {
     final response = await client.delete(
-      Uri.parse('$base64Url()/api/v1/sketches/$sketchId'),
+      Uri.parse('$baseUrlArch/api/v1/sketches/$sketchId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
