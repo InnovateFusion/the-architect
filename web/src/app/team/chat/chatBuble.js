@@ -16,6 +16,16 @@ function ChatBubble({ message }) {
         }`}
       >
         <div className="mr-4" />
+        {message?.content?.senderImage && (
+          <Image
+            src={message?.content?.senderImage || logo.svg}
+            alt="logo"
+            width={40}
+            height={40}
+            priority
+            className="w-auto"
+          />
+        )}
         <div
           className={`relative  rounded-xl rounded-t${
             message?.sender == "user" ? "r" : "l"
