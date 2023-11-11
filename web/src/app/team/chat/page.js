@@ -17,7 +17,7 @@ export default function Chat({ params: { id } }) {
     isLoading,
     isError,
     error,
-  } = useMessages(currentTeam.id || id);
+  } = useMessages(currentTeam?.id || id);
   const [message, setMessage] = useState("");
 
   const handleSend = () => {

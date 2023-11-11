@@ -67,7 +67,7 @@ function Projects() {
   return (
     <div className="flex md:flex-row flex-col p-3 gap-3 h-[100%]">
       <div
-        className={`w-fit min-h-[40%] md:h-[100%] p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
+        className={`max-w-sm min-h-[40%] md:h-[100%] p-5 bg-gray-3 border border-gray-2  rounded-lg sticky top-0 overflow-auto`}
       >
         <div className="flex flex-col gap-2 justify-around">
           <div className="flex sticky w-full justify-center">
@@ -89,7 +89,7 @@ function Projects() {
             const Icon = Icons["link"];
             return (
               <div
-                className={`flex w-full items-center space-x-2 p-2 cursor-pointer hover:bg-gray-300 hover:border-r-8 border-gray-500 dark:hover:bg-gray-700 overflow-x-hidden ${
+                className={`flex m-w-sm items-center space-x-2 p-2 cursor-pointer hover:bg-gray-300 hover:border-r-8 border-gray-500 dark:hover:bg-gray-700 overflow-x-hidden ${
                   chat.id == chatItem.id &&
                   "dark:bg-gray-700 bg-gray-300 border-r-8 border-gray-500"
                 }`}
@@ -111,7 +111,11 @@ function Projects() {
           })}
         </div>
       </div>
-      <Chat2 size={size} chat={chat} handleDelete={handleDelete} />
+      {chat ? (
+        <Chat2 size={size} chat={chat} handleDelete={handleDelete} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

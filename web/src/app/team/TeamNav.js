@@ -29,17 +29,17 @@ export const dashboardConfig = {
       icon: "folder",
     },
     {
-      title: "Chat",
+      title: "Design",
+      href: "/team/chat",
+      icon: "drafting",
+    },
+    {
+      title: "Team Chat",
       href: "/team/socket",
       icon: "brush",
     },
     {
-      title: "Draw",
-      href: "/team/draw",
-      icon: "drafting",
-    },
-    {
-      title: "My Designs",
+      title: "Profile",
       href: "/team/profile",
       icon: "mine",
     },

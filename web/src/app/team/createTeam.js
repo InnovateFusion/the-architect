@@ -1,9 +1,29 @@
 "use client";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-
+import { Fragment, useState } from "react";
+import TeamAPIClient from "@/store/apiClientTeam";
+import { TextInput, Textarea } from "@tremor/react";
 export default function CreateTeam({ closeModal, isOpen }) {
-  const handleCreate = () => {
+  const [title, setTitle] = useState("Innovate Fusion");
+  const [description, setdescription] = useState(
+    "We are here to create with Magit and Innovation."
+  );
+  const [image, setimage] = useState(
+    "https://res.cloudinary.com/dtghsmx0s/image/upload/v1699557278/zc85wpbwdquldsdkivqw.png"
+  );
+  const [user_ids, setuser_ids] = useState([
+    "35a70fdf-7d7d-4f2f-a97c-5e1eeb5bc33a",
+  ]);
+
+  const apiClient = new TeamAPIClient();
+  const handleCreate = async () => {
+    const x = await apiClient.createTeam({
+      title,
+      description,
+      image,
+      user_ids,
+    });
+    console.log(x);
     closeModal();
   };
   return (
@@ -37,13 +57,11 @@ export default function CreateTeam({ closeModal, isOpen }) {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Payment successful
+                  Create New Team
                 </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We&apos;ve
-                    sent you an email with all of the details of your order.
-                  </p>
+                <div className="flex flex-col mt-2 gap-4">
+                  <TextInput placeholder="Team Name" />
+                  <Textarea placeholder="Team Description" />
                 </div>
 
                 <div className="mt-4 text-end">

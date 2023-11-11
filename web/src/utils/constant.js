@@ -140,7 +140,7 @@ export const pricing = [
     ],
     priceD: "9.99",
     duration: "month",
-    priceB: "999.99",
+    priceB: "599.99",
     link: "link-to-starter-tier",
   },
   {
@@ -159,7 +159,7 @@ export const pricing = [
     ],
     priceD: "29.99",
     duration: "month",
-    priceB: "2999.99",
+    priceB: "1799.99",
     link: "link-to-professional-tier",
   },
   {

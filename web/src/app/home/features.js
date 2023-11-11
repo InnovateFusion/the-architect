@@ -208,7 +208,7 @@ export default function Features() {
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
-                        src={"/house.jpg"}
+                        src={"/asistant.jpeg"}
                         width={500}
                         height="44"
                         alt="Element"

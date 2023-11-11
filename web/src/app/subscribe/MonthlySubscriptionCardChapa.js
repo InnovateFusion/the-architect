@@ -20,11 +20,11 @@ const ChapaMonthlySubscriptionCard = ({ plan }) => {
     // step 2: define the data for monthly subscription
     const body = {
       interval: "month",
-      amount: plan == "Starter" ? 1000 : 3000,
-      plan: "yearly",
+      amount: plan == "Starter" ? 600 : 1800,
+      plan: "monthly",
       planDescription: `Subscribe for $ ${
-        plan == "Starter" ? 10.0 : 30.0
-      } Monthly`,
+        plan == "Starter" ? 599.99 : 1799.99
+      } Monthly. Best option for personal use & for your next design project.`,
     };
 
     // step 3: make a post fetch api call to /checkout-session handler

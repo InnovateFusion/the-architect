@@ -57,7 +57,7 @@ export default function PopOver() {
                           className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
                           <div className="flex h-6 w-6 shrink-0 items-center justify-center text-white sm:h-7 sm:w-7">
-                            <IconOne />
+                            <TeamIcon />
                           </div>
                           <div className="ml-4 whitespace-nowrap overflow-hidden">
                             <p className="text-sm font-medium text-gray-900 flex flex-nowrap overflow-hidden">
@@ -71,18 +71,19 @@ export default function PopOver() {
                       ))
                     )}
                   </div>
-                  <div className="bg-gray-50 p-4">
+                  <hr />
+                  <div className="bg-gray-50 p-4 pt-0">
                     <a
-                      href="##"
+                      href="/dashboard"
                       className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                     >
                       <span className="flex items-center">
-                        {/* <span className="text-sm font-medium text-gray-900">
-                          Create Team
-                        </span> */}
+                        <span className="text-sm font-medium text-gray-900">
+                          Solo Plans
+                        </span>
                       </span>
                       <span className="text-sm text-gray-500 hidden md:block">
-                        Please Select Team
+                        Back to Home
                       </span>
                     </a>
                   </div>
@@ -96,7 +97,7 @@ export default function PopOver() {
   );
 }
 
-function IconOne() {
+function TeamIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -105,9 +106,9 @@ function IconOne() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       class="lucide lucide-users-2"
     >
       <path d="M14 19a6 6 0 0 0-12 0" stroke="#FB923C" />
