@@ -3,13 +3,14 @@ import React, { useEffect } from "react";
 import Logo from "./logo";
 
 import Image from "next/image";
+import ImageZoom from "react-image-zooom";
 import APIClient from "@/store/apiClient";
 import { toast } from "react-toastify";
 import { prompts } from "@/utils/constant";
 function Try() {
   const apiClient = new APIClient();
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [data, setData] = React.useState("");
+  const [data, setData] = React.useState("/house.jpg");
   const [isLoading, setLoading] = React.useState(false);
   const [isError, setError] = React.useState(false);
 
@@ -31,13 +32,11 @@ function Try() {
     setLoading(false);
   };
 
-  useEffect(e=>{
-    
-  })
+  useEffect((e) => {});
 
   return (
     <div
-      className="max-w-6xl p-5 md:py-20 mx-auto flex flex-col items-center"
+      className="max-w-6xl p-5 md:py-20 mx-auto flex flex-col items-center gap-5"
       data-aos="zoom-y-out"
     >
       <Logo x={1} />
@@ -49,8 +48,8 @@ function Try() {
       </h1>
 
       <div
-        className="md:w-[60%] h-fit mx-auto mt-7 flex w-[92%] items-center rounded-full border border-gray-800 hover:shadow-md ring ring-indigo-400 justify-center"
-        data-aos="zoom-y-out pb-5"
+        className="md:w-[60%] h-fit mx-auto flex w-[92%] items-center rounded-full border border-gray-800 hover:shadow-md ring ring-indigo-400 justify-center"
+        data-aos="zoom-y-out"
       >
         <button
           className="m-3 p-3 hover:cursor-pointer"
@@ -80,8 +79,9 @@ function Try() {
         <textarea
           placeholder="Write your design imagination here. The sky is the limit..."
           type="text"
-          className="w-full h-full bg-transparent rounded-full py-[14px] pl-4 outline-none items-center"
+          className="w-full h-full bg-transparent rounded-full py-[14px] pl-4 outline-none items-center pb-10"
           data-aos="zoom-y-out"
+          value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         {
@@ -134,12 +134,13 @@ function Try() {
       </div>
       {isLoading && <p>Loading...</p>}
       {data && (
-        <Image
+        <ImageZoom
+          zoom="300"
           src={data}
           alt={searchQuery}
           width={400}
           height={400}
-          className="py-10 rounded-xl"
+          className="rounded-xl"
         />
       )}
     </div>

@@ -276,7 +276,7 @@ export default function Features() {
                       />
                       <Image
                         className="md:max-w-none absolute w-full left-0 transform animate-float"
-                        src={"/house.jpg"}
+                        src="http://res.cloudinary.com/dtghsmx0s/image/upload/v1699729683/lkxshykon3eozqayqph8.png"
                         width={500}
                         height="44"
                         alt="Element"
