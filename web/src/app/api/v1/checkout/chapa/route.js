@@ -9,6 +9,7 @@ export async function POST(req) {
   const success_url = !body.userId
     ? `${origin}/dashboard`
     : `${origin}/dashboard`;
+  console.log(body)
 
   const tx_ref = await chapa.generateTransactionReference();
   const customerInfo = {
@@ -16,10 +17,10 @@ export async function POST(req) {
     last_name: "Doe",
     email: "john@gmail.com",
     currency: "ETB",
-    amount: "200",
+    amount: body.amount,
     tx_ref: tx_ref,
-    callback_url: "https://thearc.tech/dashboard",
-    return_url: "https://thearc.tech/dashboard",
+    callback_url: "https://thearc.tech/team?plan=premium",
+    return_url: "https://thearc.tech/team?plan=premium",
     customization: {
       title: "Test Title",
       description: "Test Description",
@@ -27,13 +28,13 @@ export async function POST(req) {
   };
 
   try {
-    console.log("--------")
+    console.log("--------");
     const session = await chapa
       .initialize(customerInfo)
       .then((response) => response)
       .catch((e) => console.log(e));
-    
-    console.log(session)
+
+    console.log(session);
 
     return NextResponse.json(session);
   } catch (error) {

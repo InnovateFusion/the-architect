@@ -8,8 +8,8 @@ export async function POST(req) {
 
   // if user is logged in, redirect to thank you page, otherwise redirect to signup page.
   const success_url = !body.customerId
-    ? `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`
-    : `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`;
+    ? `${origin}/team?plan=premium&session_id={CHECKOUT_SESSION_ID}`
+    : `${origin}/team?plan=premium&session_id={CHECKOUT_SESSION_ID}`;
 
   try {
     const session = await stripe.checkout.sessions.create({

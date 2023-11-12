@@ -44,7 +44,6 @@ export default function Team({ searchParams, params: { id } }) {
   }
 
   if (teamError) {
-    toast.error("Team not Found.");
     router.push("/team");
     return <div>Something went wrong.</div>;
   }

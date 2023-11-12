@@ -14,10 +14,13 @@ import { fDate } from "@/utils/formatTime";
 import { Trash } from "lucide-react";
 import TeamAPIClient from "@/store/apiClientTeam";
 import ConfirmDelete from "../../dashboard/projects/chat";
+import { useQueryClient } from "@tanstack/react-query";
 export default function Team({ searchParams, params: { id } }) {
   const router = useRouter();
   const search = searchParams.q ?? "";
   const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
+  queryClient.invalidateQueries({ queryKey: ["todos"] });
 
   const {
     data: team,
@@ -37,10 +40,11 @@ export default function Team({ searchParams, params: { id } }) {
     isError: usersError,
   } = useAllMembers();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log("delete");
     const apiClient = new TeamAPIClient();
-    apiClient.deleteTeam(id);
+    await apiClient.deleteTeam(id);
+
     toast.success("Team Successfully Deleted.");
     router.push("/team");
     router.refresh("/team");
@@ -117,18 +121,18 @@ export default function Team({ searchParams, params: { id } }) {
             </div>
           </div>
         </div>
-        <button
-          className="flex w-9 h-9 flex-end justify-end items-end cursor-pointer p-2 hover:bg-gray-2 rounded-lg transition-colors my-2 hover:bg-red-600"
-          onClick={handleDelete}
-        >
-          <Trash />
-        </button>
         <div className="rounded-lg m-4 flex flex-col flex-end">
           Team Description:
           <h2 className="font-bold text-gray-800 dark:text-white mb-2">
             {Capitalize(team.description)}
           </h2>
         </div>
+        <button
+          className="flex w-9 h-9 flex-end justify-end items-end cursor-pointer p-2 hover:bg-gray-2 rounded-lg transition-colors my-2 hover:bg-red-600"
+          onClick={handleDelete}
+        >
+          <Trash />
+        </button>
       </div>
       <Title>Team Members</Title>
       <Text>This is list of users in your team.</Text>

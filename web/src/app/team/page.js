@@ -10,8 +10,14 @@ import { toast } from "react-toastify";
 import { useTeamStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { Button } from "@tremor/react";
+import { useSearchParams } from "next/navigation";
 
 export default function Test() {
+  const searchParams = useSearchParams();
+  const plan = localStorage.getItem("plan") || searchParams.get("plan") || "";
+  if (plan) {
+    localStorage.setItem("plan", "premium");
+  }
   const { data: teams, isLoading, isError, error } = useTeams();
   let [isOpen, setIsOpen] = useState(false);
   const currentTeam = useTeamStore((state) => state.team);
@@ -54,8 +60,8 @@ export default function Test() {
           {teams?.map((team, i) => (
             <div className="w-full  lg:flex" key={i}>
               <Image
-                className="h-48 lg:h-48 lg:w-48 flex-none bg-cover rounded-tl-lg lg:rounded-t-none lg:rounded-l text-center overflow-hidden border border-r-0 dark:border-gray-500 border-gray-400"
-                src={team.image || "/housteam.jpg"}
+                className="h-48 lg:h-48 lg:w-48 aspect-square flex-none bg-cover rounded-tl-lg lg:rounded-t-none lg:rounded-l text-center overflow-hidden border border-r-0 dark:border-gray-500 border-gray-400"
+                src={team.image || "/house.jpg"}
                 width={512}
                 height={512}
                 alt={team.first_name}

@@ -88,7 +88,6 @@ class TeamAPIClient {
 
   createTeam = async ({ title, description, image, user_ids }) => {
     const response = await axiosInstance.post(`teams`, {
-      method: "POST",
       headers: token,
       body: JSON.stringify({ title, description, image, user_ids }),
     });

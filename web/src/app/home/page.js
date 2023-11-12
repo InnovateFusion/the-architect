@@ -18,8 +18,8 @@ export default function Home() {
     <>
       <Header />
       <HomeHero />
-      <Try />
       <Hero />
+      <Try />
       <Features />
       <FeaturesBlocks />
       <Mobile />

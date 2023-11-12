@@ -4,13 +4,27 @@ import Link from "next/link";
 import { services } from "@/utils/constant";
 import { Button } from "@tremor/react";
 import { Gem } from "lucide-react";
+import { useState, useEffect } from "react";
+
 export default function Test() {
+
+  const [plan, setPlan] = useState("")
+  
+  useEffect(()=>{
+    setPlan(localStorage.getItem("plan"))
+    console.log(plan)
+  })
+
   return (
     <div>
       <div className="box p-6 shadow w-full sticky top-0 z-50 px-2 py-2 bg-transparent gap-2 backdrop-blur-sm flex flex-row  items-center justify-end mx-auto ">
-        <Link href="/team">
-          <Button variant="secondary" className="bg-green-500 rounded-xl" icon={Gem}>
-            Upgrade to Pro
+        <Link href={plan == "premium" ? "/team" : "/subscribe"}>
+          <Button
+            variant="secondary"
+            className="bg-green-500 rounded-xl dark:text-black"
+            icon={plan == "premium" ? TeamIcon : Gem }
+          >
+            {plan == "premium" ? "Design in Team" : "Upgrade to Teams"}
           </Button>
         </Link>
       </div>
@@ -49,5 +63,26 @@ export default function Test() {
         ))}
       </div>
     </div>
+  );
+}
+
+function TeamIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-users-2 pr-1 dark:text-white"
+    >
+      <path d="M14 19a6 6 0 0 0-12 0" stroke="black" />
+      <circle cx="8" cy="9" r="4" stroke="black" />
+      <path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8" stroke="black" />
+    </svg>
   );
 }

@@ -1,10 +1,35 @@
 {
-  "locales": ["en", "tr", "ao", "am"],
+  "locales": [
+    "en",
+    "am",
+    "ao",
+    "tr",
+    "hs",
+    "ig",
+    "pr",
+    "sh",
+    "so",
+    "sw",
+    "xh",
+    "yo",
+    "zu",
+    "fr"
+  ],
   "countries": {
     "en": { "name": "English", "image": "us" },
     "tr": { "name": "Turkish", "image": "tr" },
     "ao": { "name": "Afaan Oromo", "image": "ao" },
-    "am": { "name": "Amharic", "image": "am" }
+    "am": { "name": "Amharic", "image": "am" },
+    "hs": { "name": "Housa", "image": "ng" },
+    "ig": { "name": "Igbo", "image": "ng" },
+    "pr": { "name": "Portugese", "image": "pr" },
+    "sh": { "name": "Shona", "image": "zm" },
+    "so": { "name": "Somali", "image": "so" },
+    "sw": { "name": "Swahili", "image": "ke" },
+    "xh": { "name": "Xhosa", "image": "sa" },
+    "yo": { "name": "Yoruba", "image": "bn" },
+    "zu": { "name": "Zulu", "image": "sa" },
+    "fr": { "name": "French", "image": "fr" }
   },
   "defaultLocale": "en",
   "pages": {
