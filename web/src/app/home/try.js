@@ -10,7 +10,7 @@ import { prompts } from "@/utils/constant";
 function Try() {
   const apiClient = new APIClient();
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [data, setData] = React.useState("/house.jpg");
+  const [data, setData] = React.useState(null);
   const [isLoading, setLoading] = React.useState(false);
   const [isError, setError] = React.useState(false);
 
