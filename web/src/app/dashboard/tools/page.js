@@ -175,8 +175,8 @@ export default function Chat() {
                 ? "instruct-pix2pix"
                 : "stable-diffusion-v1-5",
             prompt: message,
-            controlnet: "scribble-1.1",
-            image: model == "controlNet" ? drawing.substring(22) : base64,
+            controlnet: "lineart-1.1",
+            image: model == "controlNet" ? base64 : base64,
             negative_prompt: "Disfigured, cartoon, blurry",
             mask_image: model == "painting" ? mask.substring(22) : "",
             strength: 0.5,
@@ -302,12 +302,28 @@ export default function Chat() {
     <div className="h-full sm:flex ">
       <div className="gap-2 w-full sm:w-1/2 min-h-[532px] flex flex-col justify-top items-center p-4 md:resize">
         {model == "controlNet" ? (
-          <ExcalidrawPage
-            excalidrawRef={excalidrawRef}
-            exportToCanvasRef={exportToCanvasRef}
-            changeImage={getCanvasUrl}
-          />
-        ) : model == "painting" ? (
+          !image ? (
+            <Dropzone
+              onImageDropped={handleUpload}
+              predictions={predictions}
+              userUploadedImage={image}
+            />
+          ) : (
+            <ImageZoom
+              zoom="300"
+              height={512}
+              width={512}
+              alt="gallery"
+              src={upload ? URL.createObjectURL(image) : image}
+              className="rounded-lg border border-gray-600"
+            />
+          )
+        ) : // <ExcalidrawPage
+        //   excalidrawRef={excalidrawRef}
+        //   exportToCanvasRef={exportToCanvasRef}
+        //   changeImage={getCanvasUrl}
+        // />
+        model == "painting" ? (
           !image ? (
             <Dropzone
               onImageDropped={handleUpload}
