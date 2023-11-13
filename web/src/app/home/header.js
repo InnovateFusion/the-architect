@@ -14,21 +14,14 @@ const Header = () => {
   return (
     <header className="max-w-6xl mx-auto w-full pt-4 bg-transparent flex flex-col px-4 gap-2">
       <div className="p-3 w-full flex flex-row justify-center items-center text-center border border-dashed font-gagalin text-lg gap-2">
-        Finalist Project on{" "}
+        Winner of $2500 prize for Best Technical Implementation Award on 
         <Link
           href="https://hacks.a2sv.org"
           className="text-blue-500 hover:underline"
+          target="_blank"
         >
-          A2SV Generative AI for Africa Hackaton
+          A2SV Generative AI for Africa Hackaton.
         </Link>
-        Join Us at
-        <Link
-          href="https://t.me/A2SV_expo_feedback_bot"
-          className="text-blue-500 hover:underline"
-        >
-          The A2SV Expo
-        </Link>
-        at Abrehot Library, Ethiopia
       </div>
       <div className="flex flex-row justify-between items-center w-full  gap-2 ">
         <div className="flex items-center gap-3">
